@@ -1,5 +1,5 @@
-name: Gogs
+name: Gitea
 description: |
   Lightweight alternative to GitHub
-version: v0.11.34
+version: v1.3
 category: Git

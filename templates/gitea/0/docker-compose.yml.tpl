@@ -1,14 +1,16 @@
 version: '2'
 services:
-  gogs-data:
+  gitea-data:
     image: busybox
     labels:
       io.rancher.container.start_once: true
     volumes:
       - /data
-  gogs:
-    image: ${gogs_image}
+  gitea:
+    image: ${gitea_image}
+    external_links:
+      - ${db_service}:db
     labels:
-      io.rancher.sidekicks: gogs-data
+      io.rancher.sidekicks: gitea-data
     volumes_from:
-      - gogs-data
+      - gitea-data

@@ -13,6 +13,7 @@ catalog:
       type: enum
       options: # List of options if using type of `enum`
         - gogs/gogs:0.11.34
+        - gogs/gogs:latest
 services:
   gogs:
     scale: 1

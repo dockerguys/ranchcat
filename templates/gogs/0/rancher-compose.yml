@@ -1,0 +1,28 @@
+version: '2'
+catalog:
+  name: "Gogs"
+  version: "v0.11.34"
+  description: "A painless self-hosted Git service"
+  minimum_rancher_version: v0.51.0
+  questions:
+    - variable: "gogs_image"
+      description: "Image to use"
+      required: true
+      default: "gogs/gogs:0.11.34"
+      type: enum
+      options: # List of options if using type of `enum`
+        - gogs/gogs:0.11.34
+services:
+  gogs:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

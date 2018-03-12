@@ -1,0 +1,25 @@
+.catalog:
+  name: "alpine"
+  version: "v3.6"
+  description: "Lightweight container instances for testing"
+  minimum_rancher_version: v1.2.0
+  questions:
+    - variable: alpine_image
+      description: "The docker image to use for the testing container."
+      label: "Container Image"
+      type: "enum"
+      options:
+        - "dockerguys/alpine:3.6"
+      default: "dockerguys/alpine:3.6"
+      required: true
+    - variable: host_affinity_label
+      description: "The container will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      default: ""
+      required: false
+
+version: '2'
+services:
+  alpine:
+    scale: 1

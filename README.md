@@ -1,2 +1,4 @@
-# ranchcat
-Rancher catalog files
+RanchCat
+========
+Catalog for the Rancher infrastructure.
+

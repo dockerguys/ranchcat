@@ -6,6 +6,7 @@ catalog:
   minimum_rancher_version: v0.51.0
   questions:
     - variable: "gogs_image"
+      label: "Gogs Image"
       description: "Image to use"
       required: true
       default: "gogs/gogs:0.11.34"

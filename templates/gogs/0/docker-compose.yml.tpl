@@ -9,6 +9,6 @@ services:
   gogs:
     image: ${gogs_image}
     labels:
-      io.rancher.sidekicks: mysql-data
+      io.rancher.sidekicks: gogs-data
     volumes_from:
       - gogs-data

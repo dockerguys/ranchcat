@@ -3,3 +3,6 @@ description: |
   Lightweight alternative to GitHub
 version: v1.3
 category: Git
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

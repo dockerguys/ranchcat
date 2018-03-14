@@ -3,3 +3,6 @@ description: |
   Keycloak is a self-hosted single sign-on solution.
 version: 3.2.1
 category: Authentication
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

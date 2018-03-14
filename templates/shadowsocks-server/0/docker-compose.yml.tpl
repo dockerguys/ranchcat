@@ -6,7 +6,7 @@ services:
     stdin_open: true
     labels:
       # label all hosts that you prefer to run shadowsocks server with this
-      io.rancher.scheduler.affinity:host_label: io.fabric.connectivity=ssobfus
+      io.rancher.scheduler.affinity:host_label: io.fabric.connectivity.obfus=ssobfus
     environment:
       SS_CRYPTO: ${ss_crypto}
       SS_TIMEOUT: ${ss_timeout}

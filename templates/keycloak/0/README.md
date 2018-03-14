@@ -1,10 +1,6 @@
 Keycloak
 ========
-
-What is Keycloak
-----------------
 A complete self-hosted single sigon (SSO) solution.
-
 
 Services
 --------

@@ -1,13 +1,9 @@
 Gitea
 =====
-
-What is Gitea
-------------
 Lightweight GitHub clone. GitHub and GitLab hardware requirements are high (e.g. 4GB ram). Gogs and Gitea are clones that 
 are very lightweight, but not suitable for large scale usage.
 
 Gogs has a problem with MariaDB 10.1. Gitea seems to be more functional.
-
 
 Services
 --------

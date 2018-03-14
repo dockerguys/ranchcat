@@ -100,8 +100,23 @@ version: '2'
       type: "password"
       required: true
       default: ChangeMeChangeMe
+    - variable: kcptun_datashard
+      description: "Reed-solomon erasure coding - datashard"
+      label: "KCPTun Datashard"
+      default: 10
+      type: int
+    - variable: kcptun_parityshard
+      description: "Reed-solomon erasure coding - parityshard"
+      label: "KCPTun Parityshard"
+      default: 3
+      type: int
+    - variable: kcptun_nocomp
+      description: "Do not compress data."
+      label: "KCPTun Disable Compression"
+      default: false
+      type: boolean
     - variable: kcptun_mode
-      description: "Aggresiveness on retransmission for embeded modes"
+      description: "Default aggresiveness on retransmission for embeded modes"
       label: "KCPTun Mode"
       default: "fast2"
       type: enum
@@ -111,25 +126,20 @@ version: '2'
       - fast
       - normal
     - variable: kcptun_mtu
-      description: "set maximum transmission unit for UDP packets."
+      description: "Default maximum transmission unit for UDP packets."
       label: "KCPTun MTU"
       default: 1350
       type: int
     - variable: kcptun_sndwnd
-      description: "Set send window size (number of packets)."
+      description: "Default send window size (number of packets)."
       label: "KCPTun SNDWND"
       default: 1024
       type: int
     - variable: kcptun_rcvwnd
-      description: "Set receive window size (number of packets)."
+      description: "Default receive window size (number of packets)."
       label: "KCPTun RCVWND"
       default: 1024
       type: int
-    - variable: kcptun_nocomp
-      description: "Enables data compression."
-      label: "KCPTun Compression"
-      default: false
-      type: boolean
 services:
   shadowsocks-server:
     scale: 1

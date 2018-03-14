@@ -1,0 +1,82 @@
+version: '2'
+.catalog:
+  name: "Keycloak"
+  version: "3.2.1"
+  description: "Self-hosted single sign-on solution"
+  questions:
+    - variable: keycloak_user
+      description: "Primary administrative user"
+      label: "Admin User"
+      type: "string"
+      required: true
+      default: admin
+    - variable: keycloak_password
+      description: "Password for primary administrative user"
+      label: "Admin Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: db_vendor
+      description: "Use embedded h2 for testing purposes only. Otherwise you need to set up postgres and mysql first."
+      label: "Database Vendor"
+      type: enum
+      options:
+      - postgres
+      - mysql
+      - h2
+      required: true
+      default: h2
+    - variable: "keycloak_image"
+      label: "Keycloak Image"
+      description: "Image to use"
+      required: true
+      default: "dockerguys/keycloak:3.4.3"
+      type: enum
+      options: # List of options if using type of `enum`
+        - jboss/keycloak:latest
+        - jboss/keycloak:3.4.3.Final
+        - dockerguys/keycloak:3.4.3
+    - variable: "db_service"
+      description: "External DB service to use (if 'Database Vendor' is not 'h2'). You can reference the service as 'db' by setting this."
+      label: "DB Service"
+      default: ""
+      required: true
+      type: "service"
+    - variable: keycloak_dbname
+      description: "Name of database to use. Ignore this if 'Database Vendor' is h2."
+      label: "Database Name"
+      type: "string"
+      required: true
+      default: "keycloak"
+    - variable: keycloak_dbuser
+      description: "Username to login to the database. Ignore this if 'Database Vendor' is h2."
+      label: "Database Username"
+      type: "string"
+      required: true
+      default: "keycloakapp"
+    - variable: keycloak_dbpassword
+      description: "User password to login to the database. Ignore this if 'Database Vendor' is h2."
+      label: "Database Password"
+      type: "password"
+      required: true
+      default: "DatabasePassword"
+    - variable: keycloak_extarg
+      description: "Additional startup arguments to '/opt/jboss/keycloak/bin/standalone.sh'. Use '--server-config=standalone-ha.xml' for cluster mode. Check official documentation at 'http://www.keycloak.org/docs/latest' for details."
+      label: "Extra Starup Arguments"
+      type: "string"
+      required: true
+      default: "--server-config=standalone-ha.xml"
+services:
+  keycloak:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

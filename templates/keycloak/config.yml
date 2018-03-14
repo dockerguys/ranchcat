@@ -2,4 +2,4 @@ name: Keycloak
 description: |
   Keycloak is a self-hosted single sign-on solution.
 version: 3.2.1
-category: auth
+category: Authentication

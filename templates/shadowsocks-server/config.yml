@@ -1,0 +1,5 @@
+name: Shadowsocks Server
+description: |
+  Active traffic obfuscation using SOCKS5 based proxy.
+version: 3.1.3
+category: VPN

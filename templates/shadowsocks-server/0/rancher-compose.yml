@@ -1,0 +1,138 @@
+version: '2'
+.catalog:
+  name: "Shadowsocks Server"
+  version: "3.1.3"
+  description: "Active traffic obfuscation using SOCKS5 proxy"
+  questions:
+    - variable: shadowsocks_image
+      description: "Shadowsocks server image"
+      label: "Shadowsocks Image"
+      type: enum
+      options:
+      - dockerguys/shadowsocks-server:3.1.3
+      required: true
+      default: "dockerguys/shadowsocks-server:3.1.3"
+    - variable: ss_crypto
+      description: "Cryptographic algorithm for traffic encryption"
+      label: "Encryption Algorithm"
+      type: enum
+      options:
+      - rc4-md5
+      - aes-128-gcm
+      - aes-192-gcm
+      - aes-256-gcm
+      - aes-128-cfb
+      - aes-192-cfb
+      - aes-256-cfb
+      - aes-128-ctr
+      - aes-192-ctr
+      - aes-256-ctr
+      - camellia-128-cfb
+      - camellia-192-cfb
+      - camellia-256-cfb
+      - bf-cfb
+      - chacha20-poly1305
+      - chacha20-ietf-poly1305
+      - salsa20
+      - chacha20
+      - chacha20-ietf
+      required: true
+      default: aes-256-cfb
+    - variable: ss_key
+      description: "Connection password for default user at port 53000"
+      label: "Default Account Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: ss_mode
+      description: "Support for TCP and UDP protocol"
+      label: "TCP/UDP Support"
+      type: enum
+      options:
+      - tcp_only
+      - udp_only
+      - tcp_and_udp
+      required: true
+      default: tcp_and_udp
+    - variable: ss_reuse_port
+      description: "Enables port reuse. Only available with Linux kernel > 3.9.0."
+      label: "Reuse Ports"
+      default: true
+      type: boolean
+      required: true
+    - variable: ss_fastopen
+      description: "Enables fast open. Only available with Linux kernel > 3.7.0."
+      label: "Reuse Ports"
+      default: true
+      type: boolean
+      required: true
+    - variable: ss_timeout
+      description: "Set the socket timeout in seconds."
+      label: "Socket Timeout"
+      default: 60
+      type: int
+    - variable: ss_external_dns
+      description: "Setup name servers for internal DNS resolver (libudns). The default server is fetched from /etc/resolv.conf."
+      label: "External DNS"
+      default: "8.8.8.8"
+      type: string
+    - variable: kcptun_crypto
+      description: "Cryptographic algorithm for KCPTUN connections"
+      label: "KCPTUN Encryption"
+      default: "aes"
+      type: enum
+      options:
+      - aes
+      - aes-128
+      - aes-192
+      - salsa20
+      - blowfish
+      - twofish
+      - cast5
+      - 3des
+      - tea
+      - xtea
+      - xor
+      - none
+    - variable: kcptun_mode
+      description: "Aggresiveness on retransmission for embeded modes"
+      label: "KCPTUN Mode"
+      default: "fast2"
+      type: enum
+      options:
+      - fast3
+      - fast2
+      - fast
+      - normal
+    - variable: kcptun_mtu
+      description: "set maximum transmission unit for UDP packets."
+      label: "KCPTUN MTU"
+      default: 1350
+      type: int
+    - variable: kcptun_sndwnd
+      description: "Set send window size (number of packets)."
+      label: "KCPTUN SNDWND"
+      default: 1024
+      type: int
+    - variable: kcptun_rcvwnd
+      description: "Set receive window size (number of packets)."
+      label: "KCPTUN RCVWND"
+      default: 1024
+      type: int
+    - variable: kcptun_nocomp
+      description: "Enables data compression."
+      label: "KCPTUN Compression"
+      default: false
+      type: boolean
+services:
+  shadowsocks-server:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 53000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

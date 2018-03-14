@@ -77,8 +77,8 @@ version: '2'
       default: "8.8.8.8"
       type: string
     - variable: kcptun_crypto
-      description: "Cryptographic algorithm for KCPTUN connections"
-      label: "KCPTUN Encryption"
+      description: "Cryptographic algorithm for KCPTun connections"
+      label: "KCPTun Encryption"
       default: "aes"
       type: enum
       options:
@@ -94,9 +94,15 @@ version: '2'
       - xtea
       - xor
       - none
+    - variable: kcptun_key
+      description: "Connection password for default KCPTun user at port 34567"
+      label: "KCPTun Account Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
     - variable: kcptun_mode
       description: "Aggresiveness on retransmission for embeded modes"
-      label: "KCPTUN Mode"
+      label: "KCPTun Mode"
       default: "fast2"
       type: enum
       options:
@@ -106,22 +112,22 @@ version: '2'
       - normal
     - variable: kcptun_mtu
       description: "set maximum transmission unit for UDP packets."
-      label: "KCPTUN MTU"
+      label: "KCPTun MTU"
       default: 1350
       type: int
     - variable: kcptun_sndwnd
       description: "Set send window size (number of packets)."
-      label: "KCPTUN SNDWND"
+      label: "KCPTun SNDWND"
       default: 1024
       type: int
     - variable: kcptun_rcvwnd
       description: "Set receive window size (number of packets)."
-      label: "KCPTUN RCVWND"
+      label: "KCPTun RCVWND"
       default: 1024
       type: int
     - variable: kcptun_nocomp
       description: "Enables data compression."
-      label: "KCPTUN Compression"
+      label: "KCPTun Compression"
       default: false
       type: boolean
 services:

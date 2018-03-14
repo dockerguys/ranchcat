@@ -22,3 +22,7 @@ services:
       KCPTUN_RCVWND: ${kcptun_rcvwnd}
       KCPTUN_NOCOMP: ${kcptun_nocomp}
       KCPTUN_KEY: ${kcptun_key}
+    ports: # haproxy doesn't support udp
+    - 53000:53000/tcp
+    - 53000:53000/udp
+    - 34567:34567/udp

@@ -1,0 +1,53 @@
+version: '2'
+catalog:
+  name: "mattermost"
+  minimum_rancher_version: v0.51.0
+  version: "v4.8.0"
+  description: "Mattermost is an open source, self-hosted Slack-alternative."
+  maintainer: dockerguys <dockerguys@lizoc.com>
+  questions:
+    - variable: "mattermost_image"
+      description: "Mattermost server image"
+      label: "Server Image"
+      type: "enum"
+      options: 
+        - "mattermost/mattermost-prod-app:4.8.0"
+      required: true
+      default: "mattermost/mattermost-prod-app:4.8.0"
+    - variable: "mattermost_db_name"
+      description: "Mattermost database name"
+      label: "Database Name"
+      type: "string"
+      required: true
+      default: "mattermost"
+    - variable: "mattermost_db_user"
+      description: "Mattermost database user name"
+      label: "Database Account"
+      type: "string"
+      required: true
+      default: "mattermostapp"
+    - variable: "mattermost_db_password"
+      description: "Password for Mattermost database account"
+      label: "Database Password"
+      type: "password"
+      required: true
+      default: "MySecret0"
+    - variable: "mysql_service"
+      description: "Service link or external service link to MySQL."
+      label: "MySQL service"
+      default: "mysql-lb.mysql"
+      required: true
+      type: "service"
+services:
+  mattermost:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

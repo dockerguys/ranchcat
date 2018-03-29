@@ -6,7 +6,6 @@ services:
       io.rancher.container.start_once: true
     volumes:
     - /opt/jboss/keycloak/standalone/data
-    command: chown -R 1000 /opt/jboss/keycloak/standalone/data
   keycloak:
     image: ${keycloak_image}
     external_links:

@@ -27,18 +27,24 @@ services:
       DB_VENDOR: ${db_vendor}
       EXTARG_KEYCLOAK: ${keycloak_extarg}
 {{- if eq .Values.db_vendor "mysql"}}
+      MYSQL_PORT_3306_TCP_ADDR: db
+      MYSQL_PORT_3306_TCP_PORT: 3306
       MYSQL_ADDR: db
       MYSQL_DATABASE: ${keycloak_dbname}
       MYSQL_USER: ${keycloak_dbuser}
       MYSQL_PASSWORD: ${keycloak_dbpassword}
 {{- end}}
 {{- if eq .Values.db_vendor "mariadb"}}
+      MARIADB_PORT_3306_TCP_ADDR: db
+      MARIADB_PORT_3306_TCP_PORT: 3306
       MARIADB_ADDR: db
       MARIADB_DATABASE: ${keycloak_dbname}
       MARIADB_USER: ${keycloak_dbuser}
       MARIADB_PASSWORD: ${keycloak_dbpassword}
 {{- end}}
 {{- if eq .Values.db_vendor "postgres"}}
+      POSTGRES_PORT_5432_TCP_ADDR: db
+      POSTGRES_PORT_5432_TCP_PORT: 5432
       POSTGRES_ADDR: db
       POSTGRES_DATABASE: ${keycloak_dbname}
       POSTGRES_USER: ${keycloak_dbuser}

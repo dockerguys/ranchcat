@@ -13,6 +13,9 @@ services:
       - ${db_service}:db
     labels:
       io.rancher.sidekicks: keycloak-data
+{{- if (.Values.host_affinity_label)}}
+      io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
+{{- end}}
     volumes_from:
       - keycloak-data
     tty: true

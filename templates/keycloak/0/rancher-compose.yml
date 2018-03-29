@@ -9,7 +9,7 @@ version: '2'
       label: "Admin User"
       type: "string"
       required: true
-      default: admin
+      default: administrator
     - variable: keycloak_password
       description: "Password for primary administrative user"
       label: "Admin Password"
@@ -66,6 +66,12 @@ version: '2'
       type: "string"
       required: true
       default: "-b=0.0.0.0 --server-config=standalone-ha.xml"
+    - variable: host_affinity_label
+      description: "The container will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      default: ""
+      required: false
 services:
   keycloak:
     scale: 1

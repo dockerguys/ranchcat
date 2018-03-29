@@ -17,13 +17,14 @@ version: '2'
       required: true
       default: ChangeMeChangeMe
     - variable: db_vendor
-      description: "Use embedded h2 for testing purposes only. Otherwise you need to set up postgres and mysql first."
+      description: "Use embedded h2 for testing purposes only. Otherwise you need to set up postgres and mysql/mariadb first."
       label: "Database Vendor"
       type: enum
       options:
-      - postgres
-      - mysql
-      - h2
+        - postgres
+        - mysql
+        - mariadb
+        - h2
       required: true
       default: h2
     - variable: "keycloak_image"

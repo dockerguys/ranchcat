@@ -20,6 +20,7 @@ services:
     tty: true
     stdin_open: true
     environment:
+      PROXY_ADDRESS_FORWARDING: true
       KEYCLOAK_USER: ${keycloak_user}
       KEYCLOAK_PASSWORD: ${keycloak_password}
       DB_VENDOR: ${db_vendor}
@@ -29,6 +30,12 @@ services:
       MYSQL_DATABASE: ${keycloak_dbname}
       MYSQL_USER: ${keycloak_dbuser}
       MYSQL_PASSWORD: ${keycloak_dbpassword}
+{{- end}}
+{{- if eq .Values.db_vendor "mariadb"}}
+      MARIADB_ADDR: db
+      MARIADB_DATABASE: ${keycloak_dbname}
+      MARIADB_USER: ${keycloak_dbuser}
+      MARIADB_PASSWORD: ${keycloak_dbpassword}
 {{- end}}
 {{- if eq .Values.db_vendor "postgres"}}
       POSTGRES_ADDR: db

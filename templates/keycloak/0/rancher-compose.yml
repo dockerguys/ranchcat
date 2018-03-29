@@ -41,7 +41,7 @@ version: '2'
       description: "External DB service to use (if 'Database Vendor' is not 'h2'). You can reference the service as 'db' by setting this."
       label: "DB Service"
       default: ""
-      required: true
+      required: false
       type: "service"
     - variable: keycloak_dbname
       description: "Name of database to use. Ignore this if 'Database Vendor' is h2."

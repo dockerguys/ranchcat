@@ -1,0 +1,8 @@
+name: NextCloud
+description: |
+  Dropbox replacement and web apps anywhere
+version: 1.0.0
+category: File Synchronisation
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

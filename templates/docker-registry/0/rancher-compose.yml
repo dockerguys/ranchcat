@@ -20,10 +20,6 @@ version: '2'
       description: "Certificate bundle provided by OAuth server."
       required: true
       type: "string"
-      default: |
-        -----BEGIN CERTIFICATE-----
-        [fill me in]
-        -----END CERTIFICATE-----
     - variable: oauth_token_realm_url
       label: "OAuth Token Realm Url"
       description: "FQDN of oauth2 url that will provides the token realm. Corresponds to 'REGISTRY_AUTH_TOKEN_REALM' registry setting."

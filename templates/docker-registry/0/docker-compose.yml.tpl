@@ -7,7 +7,10 @@ services:
     volumes:
       - /var/lib/registry
       - /certs
-    command: echo '${oauth_cert}' > /certs/registry_trust_chain.pem
+    command: |
+      echo '-----BEGIN CERTIFICATE-----
+      ${oauth_cert}
+      -----END CERTIFICATE-----' > /certs/registry_trust_chain.pem
   registry:
     image: ${registry_image}
     volumes_from:

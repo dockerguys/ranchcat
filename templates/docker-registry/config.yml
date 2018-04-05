@@ -1,0 +1,8 @@
+name: Docker Registry
+description: |
+  A self-hosted docker registry and web portal similar to docker hub.
+version: 3.2.1
+category: Docker
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

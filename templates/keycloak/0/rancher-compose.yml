@@ -66,7 +66,7 @@ version: '2'
       label: "Starup Arguments"
       type: "string"
       required: true
-      default: "-b=0.0.0.0 --server-config=standalone-ha.xml"
+      default: "-b=0.0.0.0 -Dkeycloak.profile.feature.docker=enabled --server-config=standalone-ha.xml"
     - variable: host_affinity_label
       description: "The container will launch on one of the hosts that has this label."
       label: "Host Affinity Label"

@@ -38,6 +38,12 @@ version: '2'
       required: true
       type: "string"
       default: "https://signin.lizoc.com/auth/realms/lizoc.com"
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      default: ""
+      required: false
 services:
   registry:
     scale: 1

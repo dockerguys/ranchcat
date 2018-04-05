@@ -18,8 +18,9 @@ services:
     image: ${registry_image}
     labels:
       io.rancher.sidekicks: registry-data
-      # label all hosts that you prefer to run etcd with this
-      io.rancher.scheduler.affinity:host_label: io.fabric.docker_registry=true
+{{- if (.Values.host_affinity_label)}}
+      io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
+{{- end}}
     volumes_from:
       - registry-data
     environment:

@@ -1,0 +1,56 @@
+version: '2'
+.catalog:
+  name: "Docker Registry"
+  version: "2.6.2"
+  description: "Self-hosted docker registry"
+  questions:
+    - variable: "registry_image"
+      label: "Registry Image"
+      description: "Image to use for Docker Registry"
+      required: true
+      default: "dockerguys/registry:2.6.2"
+      type: enum
+      options: # List of options if using type of `enum`
+        - registry:latest
+        - registry:2.6.2
+        - dockerguys/registry:2.6.2
+    # --- OAUTH2 settings ---
+    - variable: oauth_cert
+      label: "OAuth Certificate"
+      description: "Certificate bundle provided by OAuth server."
+      required: true
+      type: "string"
+      default: |
+        -----BEGIN CERTIFICATE-----
+        [fill me in]
+        -----END CERTIFICATE-----
+    - variable: oauth_token_realm_url
+      label: "OAuth Token Realm Url"
+      description: "FQDN of oauth2 url that will provides the token realm. Corresponds to 'REGISTRY_AUTH_TOKEN_REALM' registry setting."
+      required: true
+      type: "string"
+      default: "https://signin.lizoc.com/auth/realms/lizoc.com/protocol/docker-v2/auth"
+    - variable: oauth_token_service_name
+      label: "OAuth Token Service Name"
+      description: "Unique service name provided by the authentication service. Corresponds to 'REGISTRY_AUTH_TOKEN_SERVICE' registry setting."
+      required: true
+      type: "string"
+      default: "docker-registry"
+    - variable: oauth_token_issuer_url
+      label: "OAuth Token Issuer Url"
+      description: "FQDN of oauth2 issuer URL. Corresponds to 'REGISTRY_AUTH_TOKEN_ISSUER' registry setting."
+      required: true
+      type: "string"
+      default: "https://signin.lizoc.com/auth/realms/lizoc.com"
+services:
+  registry:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 5000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

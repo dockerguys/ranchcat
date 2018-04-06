@@ -6,6 +6,40 @@ catalog:
   minimum_rancher_version: v0.51.0
   maintainer: dockerguys <dockerguys@lizoc.com>
   questions:
+    - variable: gitea_appname
+      label: "Gitea Slogan"
+      description: "Slogon to display as title"
+      required: true
+      default: "Gitea: Git with a cup of tea"
+      type: "string"
+    - variable: gitea_disable_ssh
+      label: "Disable SSH"
+      description: "Disables git operation using the SSH protocol"
+      required: true
+      default: false
+      type: boolean
+    - variable: gitea_ssh_domain
+      label: "SSH Domain"
+      description: "Domain for SSH clone service"
+      required: true
+      default: "code.lizoc.com"
+      type: "string"
+    - variable: gitea_runmode
+      label: "Run Mode"
+      description: "Run in developer, production or test debug mode."
+      required: true
+      default: "prod"
+      type: enum
+      options: 
+        - dev
+        - prod
+        - test
+    - variable: gitea_secret
+      label: "Gitea Secret Token"
+      description: "Token for encrypting data. Change this to keep user data safe!"
+      required: true
+      default: "ChangeMeChangeMe"
+      type: "password"
     - variable: "gitea_image"
       label: "Gitea Image"
       description: "Image to use"
@@ -17,12 +51,41 @@ catalog:
         - gitea/gitea:1.3.3
         - gitea/gitea:latest
         - dockerguys/gitea:1.4
+    - variable: "db_vendor"
+      description: "Database backend for Gitea. The default is sqlite3, which should not be used for production purposes."
+      label: "DB Vendor"
+      default: "sqlite3"
+      required: true
+      type: "enum"
+      options:
+        - sqlite3
+        - mysql
+        - postgres
+        - mssql
     - variable: "db_service"
-      description: "External DB service to use. You can reference the service as 'db' by setting this."
+      description: "External DB service to use. You can reference the service as 'db' by setting this. Ignore this if using sqlite3."
       label: "DB Service"
       default: ""
-      required: true
+      required: false
       type: "service"
+    - variable: "db_name"
+      description: "Name of database. Ignore this if using sqlite3."
+      label: "Database Name"
+      required: true
+      type: "string"
+      default: "gitea"
+    - variable: "db_username"
+      description: "Database user with full access to the database. Ignore this if using sqlite3."
+      label: "Database User Name"
+      required: true
+      type: "string"
+      default: "gitapp"
+    - variable: "db_password"
+      description: "Password for database user with full access to the database. Ignore this if using sqlite3."
+      label: "Database Password"
+      required: true
+      type: "password"
+      default: "DatabasePassword"
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"

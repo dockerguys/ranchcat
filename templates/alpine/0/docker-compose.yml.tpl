@@ -1,11 +1,7 @@
 version: '2'
 services:
   alpine:
-{{- if (.Values.docker_registry_name)}}
-    image: "${docker_registry_name}/${alpine_image}"
-{{- else}}
-    image: ${alpine_image}
-{{- end}}
+    image: "${docker_registry_name}${alpine_image}"
     tty: true
     stdin_open: true
     labels:

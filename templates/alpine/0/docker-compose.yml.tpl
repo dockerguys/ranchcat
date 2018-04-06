@@ -6,7 +6,6 @@ services:
 {{- else }}
     image: ${alpine_image}
 {{- end }}
-    image: ${alpine_image}
     tty: true
     stdin_open: true
     labels:

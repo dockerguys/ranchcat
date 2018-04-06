@@ -8,7 +8,7 @@ services:
 {{- end }}
     tty: true
     stdin_open: true
-    labels:
 {{- if (.Values.host_affinity_label) }}
+    labels:
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

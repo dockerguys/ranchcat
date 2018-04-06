@@ -11,6 +11,7 @@ catalog:
       type: "enum"
       options:
         - "dockerguys/alpine:3.6"
+        - "alpine:3.6"
       default: "dockerguys/alpine:3.6"
       required: true
     - variable: docker_registry_name

@@ -27,6 +27,7 @@ services:
       REGISTRY_LOG_LEVEL: warn
       REGISTRY_LOG_ACCESSLOG_DISABLED: false
       REGISTRY_STORAGE_DELETE_ENABLED: true
+      REGISTRY_HTTP_SECRET: ${registry_shared_secret}
       REGISTRY_AUTH: token
       REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/registry_trust_chain.pem
       REGISTRY_AUTH_TOKEN_REALM: ${oauth_token_realm_url}

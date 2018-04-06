@@ -4,6 +4,12 @@ version: '2'
   version: "2.6.2"
   description: "Self-hosted docker registry"
   questions:
+    - variable: "registry_shared_secret"
+      label: "Registry Shared Secret"
+      description: "Shared secret for high availability clustering. All nodes in the cluster must have the same secret."
+      required: true
+      default: "ChangeMeChangeMe"
+      type: "password"
     - variable: "registry_image"
       label: "Registry Image"
       description: "Image to use for Docker Registry"

@@ -23,6 +23,16 @@ catalog:
       default: ""
       required: true
       type: "service"
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
 services:
   gitea:
     scale: 1

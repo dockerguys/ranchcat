@@ -3,12 +3,20 @@ services:
   mattermost-data:
     labels:
       io.rancher.container.start_once: 'true'
+{{- if (.Values.docker_registry_name) }}
+    image: "${docker_registry_name}/busybox"
+{{- else }}
     image: busybox
+{{- end }}
     volumes:
     - /mattermost/config
     - /mattermost/data
   mattermost:
+{{- if (.Values.docker_registry_name) }}
+    image: "${docker_registry_name}/${mattermost_image}"
+{{- else }}
     image: ${mattermost_image}
+{{- end }}
     environment:
       MM_USERNAME: ${mattermost_db_user}
       MM_PASSWORD: ${mattermost_db_password}
@@ -21,6 +29,9 @@ services:
     - ${mysql_service}:mysql
     labels:
       io.rancher.sidekicks: mattermost-data
+{{- if (.Values.host_affinity_label) }}
+      io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
+{{- end }}
     volumes:
       - /etc/localtime:/etc/localtime:ro
     volumes_from:

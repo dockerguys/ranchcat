@@ -1,5 +1,5 @@
 version: '2'
-.catalog:
+catalog:
   name: "Keycloak"
   version: "3.2.1"
   description: "Self-hosted single sign-on solution"
@@ -68,10 +68,14 @@ version: '2'
       required: true
       default: "-b=0.0.0.0 -Dkeycloak.profile.feature.docker=enabled --server-config=standalone-ha.xml"
     - variable: host_affinity_label
-      description: "The container will launch on one of the hosts that has this label."
+      description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"
       type: "string"
-      default: ""
+      required: false
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
       required: false
 services:
   keycloak:

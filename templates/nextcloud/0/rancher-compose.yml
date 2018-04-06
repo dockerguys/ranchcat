@@ -1,5 +1,5 @@
 version: '2'
-.catalog:
+catalog:
   name: "NextCloud"
   version: "13.0.1"
   description: "Web storage and more!"
@@ -59,11 +59,15 @@ version: '2'
       options: # List of options if using type of `enum`
         - nextcloud:13.0.1-fpm-alpine
         - nextcloud:13.0.1-apache
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
     - variable: host_affinity_label
       description: "The container will launch on one of the hosts that has this label."
       label: "Host Affinity Label"
       type: "string"
-      default: ""
       required: false
 services:
   nextcloud:

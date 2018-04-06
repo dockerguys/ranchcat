@@ -1,12 +1,17 @@
 version: '2'
 services:
   shadowsocks-server:
+{{- if (.Values.docker_registry_name) }}
+    image: "${docker_registry_name}/${shadowsocks_image}"
+{{- else }}
     image: ${shadowsocks_image}
+{{- end }}
     tty: true
     stdin_open: true
+{{- if (.Values.host_affinity_label) }}
     labels:
-      # label all hosts that you prefer to run shadowsocks server with this
-      io.rancher.scheduler.affinity:host_label: io.fabric.connectivity.obfus=ssobfus
+      io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
+{{- end }}
     environment:
       SS_CRYPTO: ${ss_crypto}
       SS_TIMEOUT: ${ss_timeout}

@@ -1,7 +1,11 @@
 version: '2'
 services:
   registry-data:
+{{- if (.Values.docker_registry_name) }}
+    image: "${docker_registry_name}/busybox"
+{{- else }}
     image: busybox
+{{- end }}
     labels:
       io.rancher.container.start_once: true
     volumes:
@@ -15,12 +19,16 @@ services:
         echo '${oauth_cert}' >> /certs/registry_trust_chain.pem
         echo '-----END CERTIFICATE-----' >> /certs/registry_trust_chain.pem
   registry:
+{{- if (.Values.docker_registry_name) }}
+    image: "${docker_registry_name}/${registry_image}"
+{{- else }}
     image: ${registry_image}
+{{- end }}
     labels:
       io.rancher.sidekicks: registry-data
-{{- if (.Values.host_affinity_label)}}
+{{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
-{{- end}}
+{{- end }}
     volumes_from:
       - registry-data
     environment:

@@ -35,9 +35,18 @@ catalog:
     - variable: "mysql_service"
       description: "Service link or external service link to MySQL."
       label: "MySQL service"
-      default: "mysql-lb.mysql"
       required: true
       type: "service"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+    - variable: host_affinity_label
+      description: "The container will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
 services:
   mattermost:
     scale: 1

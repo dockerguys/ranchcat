@@ -1,21 +1,29 @@
 version: '2'
 services:
   nextcloud-data:
+{{- if (.Values.docker_registry_name) }}
+    image: "${docker_registry_name}/busybox"
+{{- else }}
     image: busybox
+{{- end }}
     labels:
       io.rancher.container.start_once: true
       io.rancher.container.hostname_override: container_name
     volumes:
       - /var/www/html
   nextcloud:
+{{- if (.Values.docker_registry_name) }}
+    image: "${docker_registry_name}/${nextcloud_image}"
+{{- else }}
     image: ${nextcloud_image}
+{{- end }}
     external_links:
       - ${db_service}:db
     labels:
       io.rancher.sidekicks: nextcloud-data
-{{- if (.Values.host_affinity_label)}}
+{{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
-{{- end}}
+{{- end }}
     volumes_from:
       - nextcloud-data
     tty: true

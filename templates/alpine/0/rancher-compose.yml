@@ -17,13 +17,11 @@ catalog:
       description: "Pull from private registry. Leave blank to pull from public Docker Hub."
       label: "Private Registry"
       type: "string"
-      default: ""
       required: false
     - variable: host_affinity_label
       description: "The container will launch on one of the hosts that has this label."
       label: "Host Affinity Label"
       type: "string"
-      default: ""
       required: false
 services:
   alpine:

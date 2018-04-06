@@ -1,4 +1,5 @@
-.catalog:
+version: '2'
+catalog:
   name: "alpine"
   version: "v3.6"
   description: "Lightweight container instances for testing"
@@ -24,7 +25,6 @@
       type: "string"
       default: ""
       required: false
-version: '2'
 services:
   alpine:
     scale: 1

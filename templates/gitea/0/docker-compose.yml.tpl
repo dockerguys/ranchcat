@@ -20,6 +20,9 @@ services:
       - ${db_service}:db
     labels:
       io.rancher.sidekicks: gitea-data
+{{- if (.Values.repull_image) }}
+      io.rancher.container.pull_image: always
+{{- end }}
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

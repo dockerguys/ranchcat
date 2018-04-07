@@ -12,6 +12,12 @@ catalog:
       required: true
       default: "Gitea: Git with a cup of tea"
       type: "string"
+    - variable: gitea_install_lock
+      label: "Disable Setup Wizard"
+      description: "Disables the initial configuration wizard page. First person to sign up is admin."
+      required: true
+      default: true
+      type: boolean
     - variable: gitea_disable_ssh
       label: "Disable SSH"
       description: "Disables git operation using the SSH protocol"

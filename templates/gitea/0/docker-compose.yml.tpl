@@ -37,6 +37,7 @@ services:
       APP_NAME: ${gitea_appname}
       RUN_MODE: ${gitea_runmode}
       DISABLE_SSH: ${gitea_disable_ssh}
+      INSTALL_LOCK: ${gitea_install_lock}
       DB_TYPE: ${db_vendor}
 {{- if ne .Values.db_vendor "sqlite3" }}
       DB_HOST: "db:3306"

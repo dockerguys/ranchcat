@@ -29,10 +29,13 @@ services:
     volumes_from:
       - gitea-data
     environment:
+      GITEA_DOMAIN: ${gitea_domain}
+      ROOT_URL: "https://${gitea_domain}"
       SECRET_KEY: ${gitea_secret}
+      LFS_SECRET: ${gitea_lfs_secret}
+      LOG_LEVEL: ${gitea_loglevel}
       APP_NAME: ${gitea_appname}
       RUN_MODE: ${gitea_runmode}
-      SSH_DOMAIN: ${gitea_ssh_domain}
       DISABLE_SSH: ${gitea_disable_ssh}
       DB_TYPE: ${db_vendor}
 {{- if ne .Values.db_vendor "sqlite3" }}

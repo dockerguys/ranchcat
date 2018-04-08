@@ -6,6 +6,12 @@ catalog:
   minimum_rancher_version: v0.51.0
   maintainer: dockerguys <dockerguys@lizoc.com>
   questions:
+    - variable: gitea_appid
+      label: "Gitea Branding ID"
+      description: "Rebranding application ID for Gitea. Use lower-case letters. This value is used to prefix cookie names."
+      required: true
+      default: "gitea"
+      type: "string"
     - variable: gitea_appname
       label: "Gitea Slogan"
       description: "Slogon to display as title"
@@ -42,13 +48,13 @@ catalog:
         - test
     - variable: gitea_secret
       label: "Gitea Secret Token"
-      description: "Token for encrypting data (alphanumeric only). Change this to keep user data safe!"
+      description: "Token for encrypting data ('#' and ';' is not allowed). Change this to keep user data safe!"
       required: true
       default: "ChangeMeChangeMe"
       type: "password"
     - variable: gitea_lfs_secret
       label: "LFS Secret Token"
-      description: "Git LFS authentication secret (alphanumeric only). Change this to something unique!"
+      description: "Git LFS authentication secret ('#' and ';' is not allowed). Change this to something unique!"
       required: true
       default: "ChangeMeChangeMe2"
       type: "password"
@@ -67,7 +73,7 @@ catalog:
         - Critical
     - variable: "gitea_image"
       label: "Gitea Image"
-      description: "Image to use"
+      description: "Image to use. Be sure to fill in the 'Private Registry' field too if the image is not available publically."
       required: true
       default: "gitea/gitea:1.4"
       type: enum
@@ -105,7 +111,7 @@ catalog:
       type: "string"
       default: "gitapp"
     - variable: "db_password"
-      description: "Password for database user with full access to the database (alphanumeric only). Ignore this if using sqlite3."
+      description: "Password for database user with full access to the database ('#' and ';' is not allowed). Ignore this if using sqlite3."
       label: "Database Password"
       required: true
       type: "password"

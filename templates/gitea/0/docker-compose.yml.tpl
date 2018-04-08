@@ -34,6 +34,7 @@ services:
       SECRET_KEY: ${gitea_secret}
       LFS_SECRET: ${gitea_lfs_secret}
       LOG_LEVEL: ${gitea_loglevel}
+      APP_ID: ${gitea_appid}
       APP_NAME: ${gitea_appname}
       RUN_MODE: ${gitea_runmode}
       DISABLE_SSH: ${gitea_disable_ssh}

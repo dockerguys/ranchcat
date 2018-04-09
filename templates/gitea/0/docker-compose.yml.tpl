@@ -10,6 +10,7 @@ services:
       io.rancher.container.start_once: true
     volumes:
       - /data
+    command: echo '' > /data/fix_perm.conf
   gitea:
 {{- if (.Values.docker_registry_name) }}
     image: "${docker_registry_name}/${gitea_image}"

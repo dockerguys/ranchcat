@@ -14,7 +14,7 @@ services:
 {{- end }}
 {{- if (.Values.volume_name) }}
     volumes:
-      - ${volume_name}:${volume_mountpoint}
+      - bluegro:/var/lib/storage
 volumes:
   bluegro:
   	driver: ${volume_driver}

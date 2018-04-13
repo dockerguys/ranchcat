@@ -12,11 +12,9 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
-{{- if (.Values.volume_name) }}
     volumes:
       - bluegro:/var/lib/storage
 volumes:
   bluegro:
   	driver: ${volume_driver}
   	external: true
-{{- end }}

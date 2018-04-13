@@ -14,6 +14,26 @@ catalog:
         - "alpine:3.6"
       default: "dockerguys/alpine:3.6"
       required: true
+    - variable: volume_name
+      description: "Name of volume to mount. Ignore if not mounting an external volume."
+      label: "External Volume"
+      type: "string"
+      required: false
+    - variable: volume_driver
+      label: "Volume Driver"
+      description: "Driver to use for volume. Ignore if not mounting an external volume."
+      type: "enum"
+      options:
+        - local
+        - rancher-nfs
+      required: true
+      default: "local"
+    - variable: volume_mountpoint
+      description: "Path to mount volume. Ignore if not mounting an external volume."
+      label: "Volume Mountpoint"
+      type: "string"
+      required: true
+      default: "/var/lib/storage"
     - variable: docker_registry_name
       description: "Pull from private registry. Leave blank to pull from public Docker Hub."
       label: "Private Registry"

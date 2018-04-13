@@ -12,3 +12,11 @@ services:
     labels:
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
+{{- if (.Values.volume_name) }}
+    volumes:
+      ${volume_name}:${volume_mountpoint}
+volumes:
+  ${volume_name}:
+  	driver: ${volume_driver}
+  	external: true
+{{- end }}

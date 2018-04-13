@@ -23,7 +23,7 @@ Usage
 3. If you didn't enable install lock, just go to the web UI and perform setup. Otherwise, you need to enter the container and type the following to create the default admin:
 
 ```
-/app/gitea/gitea create-user --name superman --password MySecret --email superman@mydomain.com --admin --config /data/gitea/conf/app.ini
+/app/gitea/gitea admin create-user --name superman --password MySecret --email superman@mydomain.com --admin --config /data/gitea/conf/app.ini
 ```
 
 4. For OAuth2 based users, you need to setup the password for the user, otherwise that user cannot logon.

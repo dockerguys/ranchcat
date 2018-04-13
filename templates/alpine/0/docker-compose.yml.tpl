@@ -16,7 +16,7 @@ services:
     volumes:
       - ${volume_name}:${volume_mountpoint}
 volumes:
-  ${volume_name}:
+  bluegro:
   	driver: ${volume_driver}
   	external: true
 {{- end }}

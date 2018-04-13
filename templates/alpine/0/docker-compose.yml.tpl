@@ -14,7 +14,7 @@ services:
 {{- end }}
 {{- if (.Values.volume_name) }}
     volumes:
-      ${volume_name}:${volume_mountpoint}
+      - ${volume_name}:${volume_mountpoint}
 volumes:
   ${volume_name}:
   	driver: ${volume_driver}

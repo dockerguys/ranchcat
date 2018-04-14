@@ -1,0 +1,83 @@
+version: '2'
+catalog:
+  name: "NextCloud"
+  version: "13.0.1-Custom"
+  description: "Web storage and more!"
+  questions:
+    - variable: nextcloud_user
+      description: "Primary administrative user"
+      label: "Admin User"
+      type: "string"
+      required: true
+      default: administrator
+    - variable: nextcloud_password
+      description: "Password for primary administrative user"
+      label: "Admin Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: db_vendor
+      description: "Use embedded sqlite for testing purposes only. Otherwise you need to set up postgres and mysql/mariadb first."
+      label: "Database Vendor"
+      type: enum
+      options:
+        - postgres
+        - mysql
+        - sqlite
+      required: true
+      default: sqlite
+    - variable: "db_service"
+      description: "External DB service to use (if 'Database Vendor' is not 'sqlite'). You can reference the service as 'db' by setting this."
+      label: "DB Service"
+      default: ""
+      required: false
+      type: "service"
+    - variable: nextcloud_dbname
+      description: "Name of database to use. Ignore this if 'Database Vendor' is sqlite."
+      label: "Database Name"
+      type: "string"
+      required: true
+      default: "nextcloud"
+    - variable: nextcloud_dbuser
+      description: "Username to login to the database. Ignore this if 'Database Vendor' is sqlite."
+      label: "Database Username"
+      type: "string"
+      required: true
+      default: "nextcloudapp"
+    - variable: nextcloud_dbpassword
+      description: "User password to login to the database. Ignore this if 'Database Vendor' is sqlite."
+      label: "Database Password"
+      type: "password"
+      required: true
+      default: "DatabasePassword"
+    - variable: "nextcloud_image"
+      label: "NextCloud Image"
+      description: "Image to use"
+      required: true
+      default: "dockerguys/nextcloud:13.0"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/nextcloud:13.0
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+    - variable: host_affinity_label
+      description: "The container will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
+services:
+  nextcloud:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

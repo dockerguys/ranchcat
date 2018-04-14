@@ -12,11 +12,7 @@ services:
     volumes:
       - /var/www/html
   redis:
-{{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/${redis_image}"
-{{- else }}
-    image: ${redis_image}
-{{- end }}
+    image: redis
     restart: always
   nextcloud:
 {{- if (.Values.docker_registry_name) }}
@@ -35,7 +31,11 @@ services:
       - nextcloud-data
     tty: true
     stdin_open: true
+    restart: always
+    depends_on:
+      - redis
     environment:
+      ENABLE_REDIS: true
       NEXTCLOUD_ADMIN_USER: ${nextcloud_user}
       NEXTCLOUD_ADMIN_PASSWORD: ${nextcloud_password}
 {{- if eq .Values.db_vendor "sqlite"}}

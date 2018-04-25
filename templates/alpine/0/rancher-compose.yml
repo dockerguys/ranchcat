@@ -11,8 +11,10 @@ catalog:
       type: "enum"
       options:
         - "dockerguys/alpine:3.6"
+        - "dockerguys/alpine:3.7"
         - "alpine:3.6"
-      default: "dockerguys/alpine:3.6"
+        - "alpine:3.7"
+      default: "dockerguys/alpine:3.7"
       required: true
     - variable: docker_registry_name
       description: "Pull from private registry. Leave blank to pull from public Docker Hub."

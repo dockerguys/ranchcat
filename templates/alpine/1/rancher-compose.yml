@@ -11,8 +11,10 @@ catalog:
       type: "enum"
       options:
         - "dockerguys/alpine:3.6"
+        - "dockerguys/alpine:3.7"
         - "alpine:3.6"
-      default: "dockerguys/alpine:3.6"
+        - "alpine:3.7"
+      default: "dockerguys/alpine:3.7"
       required: true
     - variable: volume_name
       description: "Name of volume to mount. Ignore if not mounting an external volume."

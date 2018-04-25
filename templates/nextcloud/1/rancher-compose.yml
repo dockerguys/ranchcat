@@ -9,7 +9,7 @@ catalog:
       label: "Admin User"
       type: "string"
       required: true
-      default: administrator
+      default: cloudmaster
     - variable: nextcloud_password
       description: "Password for primary administrative user"
       label: "Admin Password"

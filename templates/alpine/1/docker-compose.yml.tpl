@@ -1,6 +1,6 @@
 version: '2'
 volumes:
-  bluegro:
+  ${volume_name}:
     external: true
     driver: ${volume_driver}
 services:
@@ -13,8 +13,12 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - bluegro:/var/lib/storage
-{{- if (.Values.host_affinity_label) }}
+      - ${volume_name}:/var/lib/storage
     labels:
+      io.testing.os: "alpine-linux"
+{{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
+{{- end }}
+{{- if eq .Values.repull_image "always" }}
+      io.rancher.container.pull_image: always
 {{- end }}

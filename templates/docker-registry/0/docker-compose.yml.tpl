@@ -29,6 +29,9 @@ services:
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
+{{- if eq .Values.repull_image "always" }}
+      io.rancher.container.pull_image: always
+{{- end }}
     volumes_from:
       - registry-data
     environment:

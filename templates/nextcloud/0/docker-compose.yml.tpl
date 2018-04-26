@@ -18,6 +18,10 @@ services:
     image: ${redis_image}
 {{- end }}
     restart: always
+{{- if eq .Values.repull_image "always" }}
+    labels:
+      io.rancher.container.pull_image: always
+{{- end }}
   nextcloud:
 {{- if (.Values.docker_registry_name) }}
     image: "${docker_registry_name}/${nextcloud_image}"
@@ -30,6 +34,9 @@ services:
       io.rancher.sidekicks: nextcloud-data
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
+{{- end }}
+{{- if eq .Values.repull_image "always" }}
+      io.rancher.container.pull_image: always
 {{- end }}
     volumes_from:
       - nextcloud-data

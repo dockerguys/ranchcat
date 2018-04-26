@@ -8,9 +8,13 @@ services:
 {{- end }}
     tty: true
     stdin_open: true
-{{- if (.Values.host_affinity_label) }}
     labels:
+      io.shadowsocks.role: server
+{{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
+{{- end }}
+{{- if eq .Values.repull_image "always" }}
+      io.rancher.container.pull_image: always
 {{- end }}
     environment:
       SS_CRYPTO: ${ss_crypto}

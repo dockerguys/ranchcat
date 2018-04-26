@@ -76,9 +76,12 @@ catalog:
     - variable: repull_image
       description: "Pull from registry source even if the host already have a local image with the same tag."
       label: "Reload Images"
-      type: boolean
+      type: enum
+      options:
+        - always
+        - never
       required: true
-      default: false
+      default: "never"
     - variable: docker_registry_name
       description: "Pull from private registry. Leave blank to pull from public Docker Hub."
       label: "Private Registry"

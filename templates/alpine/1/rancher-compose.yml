@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "alpine"
-  version: "v3.6.1"
+  version: "v3.7"
   description: "Lightweight container instances for testing"
   minimum_rancher_version: v1.2.0
   questions:

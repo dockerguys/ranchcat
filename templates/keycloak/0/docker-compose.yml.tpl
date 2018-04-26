@@ -24,6 +24,9 @@ services:
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
+{{- if (.Values.repull_image) }}
+      io.rancher.container.pull_image: always
+{{- end }}
     volumes_from:
       - keycloak-data
     tty: true

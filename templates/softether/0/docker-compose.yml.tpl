@@ -18,5 +18,3 @@ services:
 {{- end }}
     ports: # haproxy doesn't support udp
     - 1194:1194/udp
-    - 500:500/udp
-    - 4500:4500/udp

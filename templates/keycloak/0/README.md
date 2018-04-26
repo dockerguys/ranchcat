@@ -1,6 +1,6 @@
 Keycloak
 ========
-A complete self-hosted single sigon (SSO) solution.
+A complete self-hosted single sign-on (SSO) solution.
 
 Services
 --------

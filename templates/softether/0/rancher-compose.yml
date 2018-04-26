@@ -1,0 +1,45 @@
+version: '2'
+catalog:
+  name: "Softether VPN Server"
+  version: "4.27.9666"
+  description: "All-in-one VPN solution featuring various protocols."
+  questions:
+    - variable: softether_image
+      description: "Softether VPN server image"
+      label: "Softether Image"
+      type: enum
+      options:
+        - dockerguys/softether:4.27.9666
+      required: true
+      default: "dockerguys/softether:4.27.9666"
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+services:
+  softether-server:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 443
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

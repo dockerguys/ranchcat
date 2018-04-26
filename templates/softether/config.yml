@@ -1,0 +1,8 @@
+name: Softether VPN
+description: |
+  VPN server featuring OpenVPN, SSTP, L2TP/IPSec, L2TPv3 and more.
+version: 4.27
+category: Networking
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

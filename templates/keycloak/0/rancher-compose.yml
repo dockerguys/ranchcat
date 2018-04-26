@@ -37,6 +37,7 @@ catalog:
         - jboss/keycloak:latest
         - jboss/keycloak:3.4.3.Final
         - dockerguys/keycloak:3.4.3
+        - dockerguys/keycloak:3.4.3-mk2
     - variable: "db_service"
       description: "External DB service to use (if 'Database Vendor' is not 'h2'). You can reference the service as 'db' by setting this."
       label: "DB Service"

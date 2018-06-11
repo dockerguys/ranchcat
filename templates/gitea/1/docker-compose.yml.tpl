@@ -58,7 +58,7 @@ volumes:
   {{-   if (.Values.storage_driver_nfsopts_host) }}
     driver_opts: 
       host: ${storage_driver_nfsopts_host}
-      export: ${storage_driver_nfsopts_export}
+      export: ${storage_driver_nfsopts_export}/${datavolume_name}
   {{-   end }}
   {{- end }}
 {{- end }}

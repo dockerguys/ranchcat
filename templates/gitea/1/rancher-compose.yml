@@ -147,10 +147,11 @@ catalog:
       required: false
       type: string
     - variable: storage_driver_nfsopts_export
-      label: NFS Driver Export Path
+      label: NFS Driver Volume Path
       description: |
-        Specify the path on the NFS server that will be mounted.Only use this option if "Volume Storage Driver" is 
-        set to "rancher-nfs".
+        Specify the path on the NFS server that will be mounted (e.g. "/storage/nfsvol"). The full directory created 
+        on the NFS server will be this path and the volume name. Do not append the "/" at the end. Only use this 
+        option if "Volume Storage Driver" is set to "rancher-nfs".
       required: false
       type: string
     - variable: repull_image

@@ -50,6 +50,7 @@ services:
       DB_NAME: ${db_name}
       DB_USER: ${db_username}
       DB_PASSWD: ${db_password}
+{{- if (.Values.datavolume_name) }}
 volumes:
   {{.Values.datavolume_name}}:
   {{- if eq .Values.storage_driver "rancher-nfs" }}

@@ -1,0 +1,98 @@
+version: '2'
+catalog:
+  name: "Docker Registry"
+  version: "3.1.0"
+  description: "Self-hosted docker registry"
+  questions:
+    - variable: "registry_shared_secret"
+      label: "Registry Shared Secret"
+      description: "Shared secret for high availability clustering. All nodes in the cluster must have the same secret."
+      required: true
+      default: "ChangeMeChangeMe"
+      type: "password"
+    - variable: "registry_image"
+      label: "Registry Image"
+      description: "Image to use for Docker Registry"
+      required: true
+      default: "dockerguys/registry:2.6.2"
+      type: enum
+      options: # List of options if using type of `enum`
+        - registry:latest
+        - registry:2.6.2
+        - dockerguys/registry:2.6.2
+    # --- OAUTH2 settings ---
+    - variable: oauth_cert
+      label: "OAuth Certificate"
+      description: "Certificate bundle provided by OAuth server."
+      required: true
+      type: "string"
+    - variable: oauth_token_realm_url
+      label: "OAuth Token Realm Url"
+      description: "FQDN of oauth2 url that will provides the token realm. Corresponds to 'REGISTRY_AUTH_TOKEN_REALM' registry setting."
+      required: true
+      type: "string"
+      default: "https://signin.lizoc.com/auth/realms/lizoc.com/protocol/docker-v2/auth"
+    - variable: oauth_token_service_name
+      label: "OAuth Token Service Name"
+      description: "Unique service name provided by the authentication service. Corresponds to 'REGISTRY_AUTH_TOKEN_SERVICE' registry setting."
+      required: true
+      type: "string"
+      default: "docker-registry"
+    - variable: oauth_token_issuer_url
+      label: "OAuth Token Issuer Url"
+      description: "FQDN of oauth2 issuer URL. Corresponds to 'REGISTRY_AUTH_TOKEN_ISSUER' registry setting."
+      required: true
+      type: "string"
+      default: "https://signin.lizoc.com/auth/realms/lizoc.com"
+    - variable: datavolume_name
+      label: Volume Name
+      description: |
+        To store the application data in a volume, enter the volume name that should be used.
+        By default this will be a (host scoped) named Docker volume. Set "Storage Driver" other storage options.
+      required: false
+      type: string
+    - variable: storage_driver
+      label: Volume Storage Driver
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. rancher-nfs). This also requires "Volume Name" to be set.
+      required: false
+      type: string
+    - variable: storage_driver_opts
+      label: Storage Driver Option
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+services:
+  registry:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 5000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

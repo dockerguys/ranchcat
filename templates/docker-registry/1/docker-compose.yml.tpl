@@ -10,8 +10,8 @@ services:
       io.rancher.container.start_once: true
     volumes:
 {{- if (.Values.datavolume_name) }}
-    - {{.Values.datavolume_name}}:/var/lib/registry
-    - {{.Values.datavolume_name}}_certs:/certs
+    - ${datavolume_name}:/var/lib/registry
+    - ${datavolume_name}_certs:/certs
 {{- else }}
       - /var/lib/registry
       - /certs
@@ -53,20 +53,20 @@ services:
     stdin_open: true
 {{- if (.Values.datavolume_name) }}
 volumes:
-  {{.Values.datavolume_name}}:
+  ${datavolume_name}:
   {{- if (.Values.storage_driver) }}
-  driver: {{.Values.storage_driver}}
+    driver: ${storage_driver}
   {{-   if (.Values.storage_driver_opts) }}
-  driver_opts: 
-    {{.Values.storage_driver_opts}}
+    driver_opts: 
+      ${storage_driver_opts}
   {{-   end }}
   {{- end }}
-  {{.Values.datavolume_name}}_certs:
+  ${datavolume_name}_certs:
   {{- if (.Values.storage_driver) }}
-  driver: {{.Values.storage_driver}}
+    driver: ${storage_driver}
   {{-   if (.Values.storage_driver_opts) }}
-  driver_opts: 
-    {{.Values.storage_driver_opts}}
+    driver_opts: 
+      ${storage_driver_opts}
   {{-   end }}
   {{- end }}
 {{- end }}

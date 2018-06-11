@@ -10,7 +10,7 @@ services:
       io.rancher.container.start_once: true
     volumes:
 {{- if (.Values.datavolume_name) }}
-    - {{.Values.datavolume_name}}:/opt/jboss/keycloak/standalone/data
+    - ${datavolume}:/opt/jboss/keycloak/standalone/data
 {{- else }}
     - /opt/jboss/keycloak/standalone/data
 {{- end }}
@@ -69,10 +69,10 @@ services:
 volumes:
   {{.Values.datavolume_name}}:
   {{- if (.Values.storage_driver) }}
-  driver: {{.Values.storage_driver}}
+    driver: ${storage_driver}
   {{-   if (.Values.storage_driver_opts) }}
-  driver_opts: 
-    {{.Values.storage_driver_opts}}
+    driver_opts: 
+      ${storage_driver_opts}
   {{-   end }}
   {{- end }}
 {{- end }}

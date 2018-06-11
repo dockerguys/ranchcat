@@ -52,11 +52,12 @@ services:
       DB_PASSWD: ${db_password}
 volumes:
   {{.Values.datavolume_name}}:
-  {{- if (.Values.storage_driver) }}
+  {{- if eq .Values.storage_driver "rancher-nfs" }}
     driver: ${storage_driver}
-  {{-   if (.Values.storage_driver_opts) }}
+  {{-   if (.Values.storage_driver_nfsopts_host) }}
     driver_opts: 
-      ${storage_driver_opts}
+      host: ${storage_driver_nfsopts_host}
+      export: ${storage_driver_nfsopts_export}
   {{-   end }}
   {{- end }}
 {{- end }}

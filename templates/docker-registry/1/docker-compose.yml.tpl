@@ -53,7 +53,7 @@ services:
     stdin_open: true
 {{- if (.Values.datavolume_name) }}
 volumes:
-  ${datavolume_name}:
+  {{.Values.datavolume_name}}:
   {{- if (.Values.storage_driver) }}
     driver: ${storage_driver}
   {{-   if (.Values.storage_driver_opts) }}
@@ -61,7 +61,7 @@ volumes:
       ${storage_driver_opts}
   {{-   end }}
   {{- end }}
-  ${datavolume_name}_certs:
+  {{.Values.datavolume_name}}_certs:
   {{- if (.Values.storage_driver) }}
     driver: ${storage_driver}
   {{-   if (.Values.storage_driver_opts) }}

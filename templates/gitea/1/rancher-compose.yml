@@ -1,0 +1,172 @@
+version: '2'
+catalog:
+  name: "Gitea"
+  version: "v1.3.1"
+  description: "A lightweight GitHub clone"
+  minimum_rancher_version: v0.51.0
+  maintainer: dockerguys <dockerguys@lizoc.com>
+  questions:
+    - variable: gitea_appid
+      label: "Gitea Branding ID"
+      description: "Rebranding application ID for Gitea. Use lower-case letters. This value is used to prefix cookie names."
+      required: true
+      default: "gitea"
+      type: "string"
+    - variable: gitea_appname
+      label: "Gitea Slogan"
+      description: "Slogon to display as title"
+      required: true
+      default: "Gitea: Git with a cup of tea"
+      type: "string"
+    - variable: gitea_install_lock
+      label: "Disable Setup Wizard"
+      description: "Disables the initial configuration wizard page. First person to sign up is admin."
+      required: true
+      default: true
+      type: boolean
+    - variable: gitea_disable_ssh
+      label: "Disable SSH"
+      description: "Disables git operation using the SSH protocol"
+      required: true
+      default: false
+      type: boolean
+    - variable: gitea_domain
+      label: "SSH Domain"
+      description: "Domain to access Gitea. The SSH domain will also be set to this FQDN. Root URL will be set as 'https://<this_domain>'."
+      required: true
+      default: "code.lizoc.com"
+      type: "string"
+    - variable: gitea_runmode
+      label: "Run Mode"
+      description: "Run in developer, production or test debug mode."
+      required: true
+      default: "prod"
+      type: enum
+      options: 
+        - dev
+        - prod
+        - test
+    - variable: gitea_secret
+      label: "Gitea Secret Token"
+      description: "Token for encrypting data ('#' and ';' is not allowed). Change this to keep user data safe!"
+      required: true
+      default: "ChangeMeChangeMe"
+      type: "password"
+    - variable: gitea_lfs_secret
+      label: "LFS Secret Token"
+      description: "Git LFS authentication secret ('#' and ';' is not allowed). Change this to something unique!"
+      required: true
+      default: "ChangeMeChangeMe2"
+      type: "password"
+    - variable: gitea_loglevel
+      label: "Gitea Log Level"
+      description: "Controls how verbose Gitea generate logs."
+      required: true
+      default: "Warn"
+      type: enum
+      options: # List of options if using type of `enum`
+        - Trace
+        - Debug
+        - Info
+        - Warn
+        - Error
+        - Critical
+    - variable: "gitea_image"
+      label: "Gitea Image"
+      description: "Image to use. Be sure to fill in the 'Private Registry' field too if the image is not available publically."
+      required: true
+      default: "gitea/gitea:1.4"
+      type: enum
+      options: # List of options if using type of `enum`
+        - gitea/gitea:1.4
+        - gitea/gitea:latest
+        - dockerguys/gitea:1.4.0
+    - variable: "db_vendor"
+      description: "Database backend for Gitea. The default is sqlite3, which should not be used for production purposes."
+      label: "DB Vendor"
+      default: "sqlite3"
+      required: true
+      type: "enum"
+      options:
+        - sqlite3
+        - mysql
+        - postgres
+        - mssql
+    - variable: "db_service"
+      description: "External DB service to use. You can reference the service as 'db' by setting this. Ignore this if using sqlite3."
+      label: "DB Service"
+      default: ""
+      required: false
+      type: "service"
+    - variable: "db_name"
+      description: "Name of database. Ignore this if using sqlite3."
+      label: "Database Name"
+      required: true
+      type: "string"
+      default: "gitea"
+    - variable: "db_username"
+      description: "Database user with full access to the database. Ignore this if using sqlite3."
+      label: "Database User Name"
+      required: true
+      type: "string"
+      default: "gitapp"
+    - variable: "db_password"
+      description: "Password for database user with full access to the database ('#' and ';' is not allowed). Ignore this if using sqlite3."
+      label: "Database Password"
+      required: true
+      type: "password"
+      default: "DatabasePassword"
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
+    - variable: datavolume_name
+      label: Volume Name
+      description: |
+        To store the application data in a volume, enter the volume name that should be used.
+        By default this will be a (host scoped) named Docker volume. Set "Storage Driver" other storage options.
+      required: false
+      type: string
+    - variable: storage_driver
+      label: Volume Storage Driver
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. rancher-nfs). This also requires "Volume Name" to be set.
+      required: false
+      type: string
+    - variable: storage_driver_opts
+      label: Storage Driver Option
+      description: |
+        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
+        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
+      required: false
+      type: string
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+services:
+  gitea:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

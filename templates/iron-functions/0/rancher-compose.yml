@@ -40,7 +40,7 @@ catalog:
       options: # List of options if using type of `enum`
         - redis:latest
     - variable: postgres_db_password
-      description: "Password for database user 'postgres'."
+      description: "Password for database user 'postgres'. Alphanumeric only!"
       label: "Admin Password"
       type: "password"
       required: true

@@ -9,11 +9,7 @@ services:
     labels:
       io.rancher.container.start_once: true
     volumes:
-{{- if (.Values.datavolume_name) }}
-    - ${datavolume}:/opt/jboss/keycloak/standalone/data
-{{- else }}
     - /opt/jboss/keycloak/standalone/data
-{{- end }}
     command: chown -R 1000 /opt/jboss/keycloak/standalone/data
   keycloak:
 {{- if (.Values.docker_registry_name) }}
@@ -65,14 +61,3 @@ services:
       POSTGRES_USER: ${keycloak_dbuser}
       POSTGRES_PASSWORD: ${keycloak_dbpassword}
 {{- end}}
-{{- if (.Values.datavolume_name) }}
-volumes:
-  {{.Values.datavolume_name}}:
-  {{- if (.Values.storage_driver) }}
-    driver: ${storage_driver}
-  {{-   if (.Values.storage_driver_opts) }}
-    driver_opts: 
-      ${storage_driver_opts}
-  {{-   end }}
-  {{- end }}
-{{- end }}

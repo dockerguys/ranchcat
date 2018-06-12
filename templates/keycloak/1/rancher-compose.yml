@@ -68,27 +68,6 @@ catalog:
       type: "string"
       required: true
       default: "-b=0.0.0.0 -Dkeycloak.profile.feature.docker=enabled --server-config=standalone-ha.xml"
-    - variable: datavolume_name
-      label: Volume Name
-      description: |
-        To store the application data in a volume, enter the volume name that should be used.
-        By default this will be a (host scoped) named Docker volume. Set "Storage Driver" other storage options.
-      required: false
-      type: string
-    - variable: storage_driver
-      label: Volume Storage Driver
-      description: |
-        To use a stack scoped volume backed by a persistent storage service, enter the name
-        of an existing storage driver (e.g. rancher-nfs). This also requires "Volume Name" to be set.
-      required: false
-      type: string
-    - variable: storage_driver_opts
-      label: Storage Driver Option
-      description: |
-        Specify a single "driver_opts" key/value pair in the format "optionName: optionValue".
-        E.g. for the `rancher-ebs` driver you should specify the required 'size' option like this: "size: 1".
-      required: false
-      type: string
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"

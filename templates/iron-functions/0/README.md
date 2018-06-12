@@ -16,6 +16,6 @@ What's not included:
 Usage
 -----
 1. Run this.
-2. Update your load balancer to point 443 to 8080 (UI/https) of the functions-ui service.
-3. Update your load balancer to point 443 to 4000 (UI/https) of the functions-worker service.
+2. Update your load balancer to point 443 to 4000 (UI/https) of the functions-ui service.
+3. Update your load balancer to point 443 to 8080 (UI/https) of the functions-worker service.
 4. Go to the web UI and perform setup.

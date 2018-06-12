@@ -10,7 +10,7 @@ services:
       io.rancher.container.start_once: true
     volumes:
 {{- if (.Values.datavolume_name) }}
-    - ${datavolume}:/app/data
+    - ${datavolume_name}:/app/data
 {{- else }}
     - /app/data
 {{- end }}
@@ -24,7 +24,7 @@ services:
       io.rancher.container.start_once: true
     volumes:
 {{- if (.Values.datavolume_name) }}
-    - ${datavolume}_db:/var/lib/postgresql/data
+    - ${datavolume_name}_db:/var/lib/postgresql/data
 {{- else }}
     - /var/lib/postgresql/data
 {{- end }}

@@ -10,7 +10,11 @@ services:
       io.rancher.container.start_once: true
       io.rancher.container.hostname_override: container_name
     volumes:
+{{- if (.Values.datavolume_name) }}
+      - ${volume_name}:/var/www/html
+{{- else }}
       - /var/www/html
+{{- end }}
   redis:
 {{- if (.Values.docker_registry_name) }}
     image: "${docker_registry_name}/${redis_image}"
@@ -63,3 +67,15 @@ services:
       POSTGRES_PASSWORD: ${nextcloud_dbpassword}
       POSTGRES_HOST: db
 {{- end}}
+{{- if (.Values.datavolume_name) }}
+volumes:
+  {{.Values.datavolume_name}}:
+  {{- if eq .Values.storage_driver "rancher-nfs" }}
+    driver: ${storage_driver}
+  {{-   if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts: 
+      host: ${storage_driver_nfsopts_host}
+      export: ${storage_driver_nfsopts_export}/${datavolume_name}
+  {{-   end }}
+  {{- end }}
+{{- end }}

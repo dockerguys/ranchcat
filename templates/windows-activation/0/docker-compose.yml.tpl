@@ -7,7 +7,6 @@ services:
     image: ${winkms_image}
 {{- end }}
     labels:
-      io.rancher.sidekicks: gitea-data
 {{- if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
 {{- end }}

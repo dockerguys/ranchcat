@@ -11,7 +11,7 @@ services:
       io.rancher.container.hostname_override: container_name
     volumes:
 {{- if (.Values.datavolume_name) }}
-      - ${volume_name}:/var/www/html
+      - ${datavolume_name}:/var/www/html
 {{- else }}
       - /var/www/html
 {{- end }}

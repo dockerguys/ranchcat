@@ -7,11 +7,7 @@ services:
     image: ${winkms_image}
 {{- end }}
     labels:
-{{- if eq .Values.repull_image "always" }}
-      io.rancher.container.pull_image: always
-{{- else }}
-      io.rancher.container.pull_image: never
-{{- end }}
+	    io.rancher.container.pull_image: ${repull_image}
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

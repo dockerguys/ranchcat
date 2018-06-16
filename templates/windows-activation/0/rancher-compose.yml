@@ -1,0 +1,43 @@
+version: '2'
+catalog:
+  name: "WindowsKMS"
+  version: "v0.1111"
+  description: "A Windows activation server"
+  minimum_rancher_version: v0.51.0
+  maintainer: dockerguys <dockerguys@lizoc.com>
+  questions:
+    - variable: "winkms_image"
+      label: "Windows KMS Image"
+      description: "Image to use. Be sure to fill in the 'Private Registry' field too if the image is not available publically."
+      required: true
+      default: "dockerguys/windowskms:0.1111"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/windowskms:0.1111
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+services:
+  winkms:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 1688
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

@@ -62,11 +62,11 @@ catalog:
       label: "Redis Image"
       description: "Redis database required. Choose the desired version."
       required: true
-      default: "dockerguys/redis:4.0"
+      default: "dockerguys/redis:4.0.9"
       type: enum
       options:
         - redis
-        - dockerguys/redis:4.0
+        - dockerguys/redis:4.0.9
     - variable: datavolume_name
       label: Volume Name
       description: |

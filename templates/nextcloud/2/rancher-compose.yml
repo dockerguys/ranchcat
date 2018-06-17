@@ -103,12 +103,6 @@ catalog:
     - variable: repull_image
       description: "Pull from registry source even if the host already have a local image with the same tag."
       label: "Reload Images"
-      type: boolean
-      required: true
-      default: false
-    - variable: repull_image
-      description: "Pull from registry source even if the host already have a local image with the same tag."
-      label: "Reload Images"
       type: enum
       options:
         - always

@@ -50,11 +50,8 @@ services:
       - redis
     environment:
       ENABLE_REDIS: true
-      NEXTCLOUD_ADMIN_USER: ${nextcloud_user}
-      NEXTCLOUD_ADMIN_PASSWORD: ${nextcloud_password}
-{{- if eq .Values.db_vendor "sqlite"}}
-      SQLITE_DATABASE: nextclouddb
-{{- end}}
+      DEFAULT_ADMIN: ${nextcloud_user}
+      DEFAULT_ADMIN_PASSWORD: ${nextcloud_password}
 {{- if eq .Values.db_vendor "mysql"}}
       MYSQL_DATABASE: ${nextcloud_dbname}
       MYSQL_USER: ${nextcloud_dbuser}

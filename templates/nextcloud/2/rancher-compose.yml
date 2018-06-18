@@ -54,9 +54,10 @@ catalog:
       label: "NextCloud Image"
       description: "Image to use"
       required: true
-      default: "dockerguys/nextcloud:13.0.2"
+      default: "dockerguys/nextcloud:13.0.1"
       type: enum
       options: # List of options if using type of `enum`
+        - dockerguys/nextcloud:13.0.1
         - dockerguys/nextcloud:13.0.2    
         - dockerguys/nextcloud:13.0.4
     - variable: "redis_image"

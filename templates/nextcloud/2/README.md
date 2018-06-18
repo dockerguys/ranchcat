@@ -6,7 +6,7 @@ Services
 --------
 Includes the following services:
 - NextCloud server (Nginx included)
-- Redis
+- Redis (use `redis-cli monitor` to verify its working)
 
 What's not included:
 - Load balancer

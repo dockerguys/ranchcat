@@ -58,6 +58,12 @@ catalog:
       required: true
       default: "ChangeMeChangeMe2"
       type: "password"
+    - variable: gitea_oauth_whitelist
+      label: "Single SignOn Whitelist"
+      description: "A list of domains that can register new users. Separate with space."
+      required: false
+      default: ""
+      type: "string"
     - variable: gitea_loglevel
       label: "Gitea Log Level"
       description: "Controls how verbose Gitea generate logs."
@@ -81,6 +87,7 @@ catalog:
         - gitea/gitea:1.4
         - gitea/gitea:latest
         - dockerguys/gitea:1.4.0
+        - dockerguys/gitea:1.4.2
     - variable: "db_vendor"
       description: "Database backend for Gitea. The default is sqlite3, which should not be used for production purposes."
       label: "DB Vendor"

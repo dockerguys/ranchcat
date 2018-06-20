@@ -41,6 +41,9 @@ services:
       APP_ID: ${gitea_appid}
       APP_NAME: ${gitea_appname}
       RUN_MODE: ${gitea_runmode}
+      NOREPLY_ADDRESS: "noreply.example.org"
+      OPENID_REGISTRATION_WHITELIST: ${gitea_oauth_whitelist}
+      SSH_DOMAIN: ${gitea_domain}
       DISABLE_SSH: ${gitea_disable_ssh}
       INSTALL_LOCK: ${gitea_install_lock}
       DB_TYPE: ${db_vendor}

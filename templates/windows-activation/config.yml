@@ -2,7 +2,7 @@ name: Windows Activation
 description: |
   Windows activation server
 version: v0.1111
-category: Git
+category: Windows
 maintainer: Dockerguys <dockerguys@lizoc.com>
 license: Proprietary ULA
 projectURL: https://code.lizoc.com/dockerguys/alpines

@@ -6,6 +6,18 @@ catalog:
   minimum_rancher_version: v0.51.0
   maintainer: dockerguys <dockerguys@lizoc.com>
   questions:
+    - variable: admin_name
+      label: "Default Administrator"
+      description: "The default administrative user account. This account will always have administrative privileges."
+      required: true
+      default: "supergit"
+      type: "string"
+    - variable: admin_password
+      label: "Default Administrator Password"
+      description: "The default administrator will be initially created with this password."
+      required: true
+      default: "ChangeMeChangeMe"
+      type: "password"
     - variable: gitea_appid
       label: "Gitea Branding ID"
       description: "Rebranding application ID for Gitea. Use lower-case letters. This value is used to prefix cookie names."

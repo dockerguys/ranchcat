@@ -33,6 +33,8 @@ services:
     volumes_from:
       - gitea-data
     environment:
+      ADMIN_USER: "${admin_user}"
+      ADMIN_PASSWORD: "${admin_password}"
       GITEA_DOMAIN: ${gitea_domain}
       ROOT_URL: "https://${gitea_domain}"
       SECRET_KEY: ${gitea_secret}

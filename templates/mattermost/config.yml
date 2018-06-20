@@ -3,7 +3,6 @@ description: |
   Mattermost is an open source, self-hosted Slack-alternative.
 category: Chat
 version: v4.8.0
-category: Git
 maintainer: Dockerguys <dockerguys@lizoc.com>
 license: Proprietary ULA
 projectURL: https://code.lizoc.com/dockerguys/alpines

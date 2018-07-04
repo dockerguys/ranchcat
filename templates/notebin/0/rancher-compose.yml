@@ -1,0 +1,144 @@
+version: '2'
+catalog:
+  name: "NoteBin"
+  version: "v1.0.0"
+  description: "A self-hosted alternative to pastebin"
+  minimum_rancher_version: v0.51.0
+  maintainer: lizoc <info@lizoc.com>
+  questions:
+    - variable: "notebin_image"
+      label: "NoteBin Server Image"
+      description: "Image to use. Be sure to fill in the 'Private Registry' field too if the image is not available publically."
+      required: true
+      default: "lizoc/notebin:1.0.0"
+      type: enum
+      options: # List of options if using type of `enum`
+        - lizoc/notebin:1.0.0
+    - variable: "notebin_backend"
+      label: "NoteBin Data Store"
+      description: "Backend to use for storing notes."
+      required: true
+      default: "file"
+      type: enum
+      options: # List of options if using type of `enum`
+        - file
+        - redis
+        - postgres
+    - variable: "notebin_max_age"
+      label: "Notes Max Age"
+      description: "Maximum age for notes (in seconds). Notes will be deleted past its maximum age."
+      required: true
+      default: "never"
+      type: string
+    - variable: "notebin_static_maxage"
+      label: "Static Content Max Age"
+      description: "Maximum age for static files. Static content files will be deleted past its maximum age."
+      required: true
+      default: 86400
+      type: int
+    - variable: "notebin_recompress_static"
+      label: "Recompress Static Files"
+      description: "Automatically recompress static files on startup."
+      required: true
+      default: true
+      type: boolean
+    - variable: "notebin_keylength"
+      label: "Maximum Key Length"
+      description: "Maximum length of note name."
+      required: true
+      default: 10
+      type: int
+    - variable: "notebin_maxlength"
+      label: "Note Maximum Length"
+      description: "Maximum size for notes."
+      required: true
+      default: 128000
+      type: int
+    - variable: db_password
+      description: "Password for database user 'postgres'. Alphanumeric only! This field is only used if you have selected postgres as the backend."
+      label: "Database Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: "redis_image"
+      label: "Redis Database Image"
+      description: "Image to use for Redis database server. This field is only used if you have selected redis as the backend."
+      required: true
+      default: "dockerguys/redis:4.0.9"
+      type: enum
+      options: # List of options if using type of `enum`
+        - redis
+        - dockerguys/redis:4.0.9
+    - variable: "postgres_image"
+      label: "PostgresDB Image"
+      description: "Image to use for PostGres database. This database is used exclusively for this stack. This field is only used if you have selected redis as the backend."
+      required: true
+      default: "postgres:11-alpine"
+      type: enum
+      options: # List of options if using type of `enum`
+        - postgres:11-alpine
+    - variable: datavolume_name
+      label: Volume Name
+      description: |
+        To store the application data in a volume, enter the volume name that should be used.
+        By default this will be a (host scoped) named Docker volume. Set "Storage Driver" other storage options.
+      required: false
+      type: string
+    - variable: storage_driver
+      label: Volume Storage Driver
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. rancher-nfs). This also requires "Volume Name" to be set.
+      required: true
+      type: "enum"
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    - variable: storage_driver_nfsopts_host
+      label: NFS Driver Host
+      description: |
+        Specify a NFS hostname instead of the default NFS server. Only use this option if "Volume Storage Driver" is 
+        set to "rancher-nfs".
+      required: false
+      type: string
+    - variable: storage_driver_nfsopts_export
+      label: NFS Driver Volume Path
+      description: |
+        Specify the path on the NFS server that will be mounted (e.g. "/storage/nfsvol"). The full directory created 
+        on the NFS server will be this path and the volume name. Do not append the "/" at the end. The full path must 
+        already exist on the NFS server. Only use this option if "Volume Storage Driver" is set to "rancher-nfs".
+      required: false
+      type: string
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+services:
+  notebin:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

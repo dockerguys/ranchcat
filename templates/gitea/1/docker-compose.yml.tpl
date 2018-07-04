@@ -10,7 +10,7 @@ services:
       io.rancher.container.start_once: true
     volumes:
 {{- if (.Values.datavolume_name) }}
-    - ${datavolume_name}:/data
+      - ${datavolume_name}:/data
 {{- else }}
       - /data
 {{- end }}

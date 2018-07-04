@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   notebin-data:
 {{- if (.Values.docker_registry_name) }}

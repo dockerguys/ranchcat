@@ -14,7 +14,7 @@ services:
 {{- else }}
       - /data
 {{- end }}
-    command: mkdir -p /data/notes /data/docs
+    command: mkdir -p /data/notes /data/docs /data/logs
 {{- if eq .Values.notebin_backend "postgres" }}
   notebin-dbdata:
 {{-   if (.Values.docker_registry_name) }}
@@ -40,14 +40,15 @@ services:
 {{-   end }}
     stdin_open: true
     tty: true
-    volumes_from:
-      - notebin-data
     labels:
-      io.rancher.sidekicks: notebin-data
       io.rancher.container.pull_image: ${repull_image}
 {{-   if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{-   end }}
+    deploy:
+      resources:
+        limits:
+          memory: ${storage_hard_limit}
 {{- end }}
 {{- if eq .Values.notebin_backend "postgres" }}
   postgres:
@@ -66,7 +67,7 @@ services:
       - notebin-dbdata
     labels:
       io.rancher.container.pull_image: ${repull_image}
-      io.rancher.sidekicks: notebin-data
+      io.rancher.sidekicks: notebin-dbdata
 {{-   if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{-   end }}
@@ -93,6 +94,10 @@ services:
       NOTEBIN_MAX_LENGTH: ${notebin_maxlength}
       NOTEBIN_STATIC_MAX_AGE: ${notebin_static_maxage}
       NOTEBIN_RECOMPRESS_STATIC_ASSETS: ${notebin_recompress_static}
+      NOTEBIN_LOGGING_LEVEL: ${notebin_loglevel}
+      NOTEBIN_LOGGING_TYPE: ${notebin_logtype}
+      NOTEBIN_LOGGING_FILENAME: "/data/logs/notebin.log"
+      NOTEBIN_DOCUMENTS: "/data/docs"
 {{- if eq .Values.notebin_backend "postgres" }}
       NOTEBIN_STORAGE_CONNECTION_URL: "postgres://postgres:${db_password}@postgres/notebin?sslmode=disable"
 {{- end }}
@@ -101,7 +106,6 @@ services:
 {{- end }}
 {{- if eq .Values.notebin_backend "file" }}
       NOTEBIN_STORAGE_PATH: "/data/notes"
-      NOTEBIN_DOCUMENTS: "/data/docs"
 {{- end }}
 {{- if (.Values.datavolume_name) }}
 volumes:

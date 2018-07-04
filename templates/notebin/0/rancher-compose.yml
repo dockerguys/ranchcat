@@ -28,11 +28,11 @@ catalog:
       label: "Notes Max Age"
       description: "Maximum age for notes (in seconds). Notes will be deleted past its maximum age."
       required: true
-      default: "never"
-      type: string
+      default: 259200
+      type: int
     - variable: "notebin_static_maxage"
       label: "Static Content Max Age"
-      description: "Maximum age for static files. Static content files will be deleted past its maximum age."
+      description: "Maximum age for static files. Static content files will be refreshed past its maximum age."
       required: true
       default: 86400
       type: int
@@ -54,6 +54,30 @@ catalog:
       required: true
       default: 128000
       type: int
+    - variable: notebin_loglevel
+      label: "Log Level"
+      description: "Server log level."
+      required: true
+      default: "warn"
+      type: enum
+      options:
+        - warn
+        - info
+    - variable: notebin_logtype
+      label: "Log Transport"
+      description: "Send log to console or file."
+      required: true
+      default: "File"
+      type: enum
+      options:
+        - Console
+        - File
+    - variable: storage_hard_limit
+      label: "Storage Limit"
+      description: "Number of bytes that the backend storage should be allocated to store notes. When storage runs out, things gets deleted on a FIFO basis."
+      type: string
+      required: true
+      default: 50M
     - variable: db_password
       description: "Password for database user 'postgres'. Alphanumeric only! This field is only used if you have selected postgres as the backend."
       label: "Database Password"

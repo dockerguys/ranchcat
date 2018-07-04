@@ -77,7 +77,7 @@ catalog:
       description: "Number of bytes that the backend storage should be allocated to store notes. When storage runs out, things gets deleted on a FIFO basis."
       type: string
       required: true
-      default: 50M
+      default: 50m
     - variable: db_password
       description: "Password for database user 'postgres'. Alphanumeric only! This field is only used if you have selected postgres as the backend."
       label: "Database Password"

@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   notebin-data:
 {{- if (.Values.docker_registry_name) }}
@@ -40,15 +40,12 @@ services:
 {{-   end }}
     stdin_open: true
     tty: true
+    mem_limit: ${storage_hard_limit}
     labels:
       io.rancher.container.pull_image: ${repull_image}
 {{-   if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{-   end }}
-    deploy:
-      resources:
-        limits:
-          memory: ${storage_hard_limit}
 {{- end }}
 {{- if eq .Values.notebin_backend "postgres" }}
   postgres:

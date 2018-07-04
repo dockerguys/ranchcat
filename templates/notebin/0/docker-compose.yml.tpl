@@ -85,23 +85,23 @@ services:
 {{- end }}
     volumes_from:
       - notebin-data
-	env:
-	  NOTEBIN_HOST: 0.0.0.0
-	  NOTEBIN_STORAGE_TYPE: ${notebin_backend}
-	  NOTEBIN_STORAGE_EXPIRE: ${notebin_max_age}
-	  NOTEBIN_KEY_LENGTH: ${notebin_keylength}
-	  NOTEBIN_MAX_LENGTH: ${notebin_maxlength}
-	  NOTEBIN_STATIC_MAX_AGE: ${notebin_static_maxage}
-	  NOTEBIN_RECOMPRESS_STATIC_ASSETS: ${notebin_recompress_static}
+    environment:
+      NOTEBIN_HOST: 0.0.0.0
+      NOTEBIN_STORAGE_TYPE: ${notebin_backend}
+      NOTEBIN_STORAGE_EXPIRE: ${notebin_max_age}
+      NOTEBIN_KEY_LENGTH: ${notebin_keylength}
+      NOTEBIN_MAX_LENGTH: ${notebin_maxlength}
+      NOTEBIN_STATIC_MAX_AGE: ${notebin_static_maxage}
+      NOTEBIN_RECOMPRESS_STATIC_ASSETS: ${notebin_recompress_static}
 {{- if eq .Values.notebin_backend "postgres" }}
-	  NOTEBIN_STORAGE_CONNECTION_URL: "postgres://postgres:${db_password}@postgres/notebin?sslmode=disable"
+      NOTEBIN_STORAGE_CONNECTION_URL: "postgres://postgres:${db_password}@postgres/notebin?sslmode=disable"
 {{- end }}
 {{- if eq .Values.notebin_backend "redis" }}
-	  NOTEBIN_STORAGE_HOST: redis
+      NOTEBIN_STORAGE_HOST: redis
 {{- end }}
 {{- if eq .Values.notebin_backend "file" }}
-	  NOTEBIN_STORAGE_PATH: "/data/notes"
-    NOTEBIN_DOCUMENTS: "/data/docs"
+      NOTEBIN_STORAGE_PATH: "/data/notes"
+      NOTEBIN_DOCUMENTS: "/data/docs"
 {{- end }}
 {{- if (.Values.datavolume_name) }}
 volumes:

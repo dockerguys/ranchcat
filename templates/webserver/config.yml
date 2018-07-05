@@ -1,0 +1,8 @@
+name: Webserver
+description: |
+  A static page webserver powered by NginX
+version: v1.0.0
+category: Web
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

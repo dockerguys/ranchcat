@@ -15,18 +15,16 @@ services:
       - /var/www/html
 {{- end }}
 {{- if (.Values.datavolume_name) }}
-{{-   if eq .Values.nextcloud_web_volume true }}
   nextcloud-web-data:
-{{-     if (.Values.docker_registry_name) }}
+{{-   if (.Values.docker_registry_name) }}
     image: "${docker_registry_name}/busybox"
-{{-     else }}
+{{-   else }}
     image: busybox
-{{-     end }}
+{{-   end }}
     labels:
       io.rancher.container.start_once: true
     volumes:
       - ${datavolume_name}_web:/var/www/webserver
-{{-   end }}
 {{- end }}
   redis:
 {{- if (.Values.docker_registry_name) }}
@@ -49,20 +47,14 @@ services:
     external_links:
       - ${db_service}:db
     labels:
-{{- if eq .Values.nextcloud_web_volume true }}
       io.rancher.sidekicks: nextcloud-data, nextcloud-web-data
-{{- else }}
-      io.rancher.sidekicks: nextcloud-data
-{{- end }}
       io.rancher.container.pull_image: ${repull_image}
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
     volumes_from:
       - nextcloud-data
-{{-   if eq .Values.nextcloud_web_volume true }}
       - nextcloud-web-data
-{{-   end }}
     tty: true
     stdin_open: true
     restart: always
@@ -95,15 +87,13 @@ volumes:
       export: ${storage_driver_nfsopts_export}/${datavolume_name}
 {{-     end }}
 {{-   end }}
-{{-   if eq .Values.nextcloud_web_volume true }}
   {{.Values.datavolume_name}}_web:
-  {{-   if eq .Values.storage_driver "rancher-nfs" }}
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
     driver: ${storage_driver}
-  {{-     if (.Values.storage_driver_nfsopts_host) }}
+{{-     if (.Values.storage_driver_nfsopts_host) }}
     driver_opts: 
       host: ${storage_driver_nfsopts_host}
       export: ${storage_driver_nfsopts_export}/${datavolume_name}_web
-  {{-     end }}
-  {{-   end }}
+{{-     end }}
 {{-   end }}
 {{- end }}

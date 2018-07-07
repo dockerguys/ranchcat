@@ -16,12 +16,6 @@ catalog:
       type: "password"
       required: true
       default: ChangeMeChangeMe
-    - variable: nextcloud_web_volume
-      description: "Creates a storage volume for static web content. Volume name is required. You need to run the webserver stack after this."
-      label: "Enable Web Volume"
-      type: boolean
-      required: true
-      default: true
     - variable: db_vendor
       description: "Use embedded sqlite for testing purposes only. Otherwise you need to set up postgres and mysql/mariadb first."
       label: "Database Vendor"

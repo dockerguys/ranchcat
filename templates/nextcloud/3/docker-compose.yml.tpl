@@ -8,7 +8,6 @@ services:
 {{- end }}
     labels:
       io.rancher.container.start_once: true
-      io.rancher.container.hostname_override: container_name
     volumes:
 {{- if (.Values.datavolume_name) }}
       - ${datavolume_name}:/var/www/html
@@ -25,7 +24,6 @@ services:
 {{-     end }}
     labels:
       io.rancher.container.start_once: true
-      io.rancher.container.hostname_override: container_name
     volumes:
       - ${datavolume_name}_web:/var/www/webserver
 {{-   end }}

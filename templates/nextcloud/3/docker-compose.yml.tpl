@@ -51,7 +51,11 @@ services:
     external_links:
       - ${db_service}:db
     labels:
+{{- if eq .Values.nextcloud_web_volume true }}
+      io.rancher.sidekicks: nextcloud-data, nextcloud-web-data
+{{- else }}
       io.rancher.sidekicks: nextcloud-data
+{{- end }}
       io.rancher.container.pull_image: ${repull_image}
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}

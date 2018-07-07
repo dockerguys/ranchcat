@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "NextCloud"
-  version: "v1.2"
+  version: "v1.2.0"
   description: "Web storage and more!"
   questions:
     - variable: nextcloud_user

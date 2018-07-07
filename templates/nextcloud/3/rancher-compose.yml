@@ -1,0 +1,143 @@
+version: '2'
+catalog:
+  name: "NextCloud"
+  version: "v1.3"
+  description: "Web storage and more!"
+  questions:
+    - variable: nextcloud_user
+      description: "Primary administrative user"
+      label: "Admin User"
+      type: "string"
+      required: true
+      default: cloudmaster
+    - variable: nextcloud_password
+      description: "Password for primary administrative user"
+      label: "Admin Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: nextcloud_web_volume
+      description: "Creates a storage volume for static web content. Volume name is required. You need to run the webserver stack after this."
+      label: "Enable Web Volume"
+      type: boolean
+      required: true
+      default: true
+    - variable: db_vendor
+      description: "Use embedded sqlite for testing purposes only. Otherwise you need to set up postgres and mysql/mariadb first."
+      label: "Database Vendor"
+      type: enum
+      options:
+        - postgres
+        - mysql
+        - sqlite
+      required: true
+      default: sqlite
+    - variable: "db_service"
+      description: "External DB service to use (if 'Database Vendor' is not 'sqlite'). You can reference the service as 'db' by setting this."
+      label: "DB Service"
+      default: ""
+      required: false
+      type: "service"
+    - variable: nextcloud_dbname
+      description: "Name of database to use. Ignore this if 'Database Vendor' is sqlite."
+      label: "Database Name"
+      type: "string"
+      required: true
+      default: "nextcloud"
+    - variable: nextcloud_dbuser
+      description: "Username to login to the database. Ignore this if 'Database Vendor' is sqlite."
+      label: "Database Username"
+      type: "string"
+      required: true
+      default: "nextcloudapp"
+    - variable: nextcloud_dbpassword
+      description: "User password to login to the database. Ignore this if 'Database Vendor' is sqlite."
+      label: "Database Password"
+      type: "password"
+      required: true
+      default: "DatabasePassword"
+    - variable: "nextcloud_image"
+      label: "NextCloud Image"
+      description: "Image to use"
+      required: true
+      default: "dockerguys/nextcloud:13.0.4"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/nextcloud:13.0.1
+        - dockerguys/nextcloud:13.0.2    
+        - dockerguys/nextcloud:13.0.4
+    - variable: "redis_image"
+      label: "Redis Image"
+      description: "Redis database required. Choose the desired version."
+      required: true
+      default: "dockerguys/redis:4.0.9"
+      type: enum
+      options:
+        - redis
+        - dockerguys/redis:4.0.9
+    - variable: datavolume_name
+      label: Volume Name
+      description: |
+        To store the application data in a volume, enter the volume name that should be used.
+        By default this will be a (host scoped) named Docker volume. Set "Storage Driver" other storage options.
+      required: false
+      type: string
+    - variable: storage_driver
+      label: Volume Storage Driver
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. rancher-nfs). This also requires "Volume Name" to be set.
+      required: true
+      type: "enum"
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    - variable: storage_driver_nfsopts_host
+      label: NFS Driver Host
+      description: |
+        Specify a NFS hostname instead of the default NFS server. Only use this option if "Volume Storage Driver" is 
+        set to "rancher-nfs".
+      required: false
+      type: string
+    - variable: storage_driver_nfsopts_export
+      label: NFS Driver Volume Path
+      description: |
+        Specify the path on the NFS server that will be mounted (e.g. "/storage/nfsvol"). The full directory created 
+        on the NFS server will be this path and the volume name. Do not append the "/" at the end. The full path must 
+        already exist on the NFS server. Only use this option if "Volume Storage Driver" is set to "rancher-nfs".
+      required: false
+      type: string
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+    - variable: host_affinity_label
+      description: "The container will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
+services:
+  nextcloud:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000
+      request_line: GET "/" "HTTP/1.0"

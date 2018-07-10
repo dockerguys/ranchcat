@@ -10,9 +10,9 @@ services:
       io.rancher.container.start_once: true
     volumes:
 {{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}:/wwwroot
+      - ${datavolume_name}:/inetpub
 {{- else }}
-      - /wwwroot
+      - /inetpub
 {{- end }}
   nginx:
 {{- if (.Values.docker_registry_name) }}

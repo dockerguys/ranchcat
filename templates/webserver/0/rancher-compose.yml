@@ -10,10 +10,10 @@ catalog:
       label: "NginX Image"
       description: "Image to use. Be sure to fill in the 'Private Registry' field too if the image is not available publically."
       required: true
-      default: "dockerguys/nginx:1.14.0-confd"
+      default: "dockerguys/nginx:1.14.0"
       type: enum
       options: # List of options if using type of `enum`
-        - dockerguys/nginx:1.14.0-confd
+        - dockerguys/nginx:1.14.0
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"

@@ -33,6 +33,9 @@ volumes:
   {{.Values.datavolume_name}}:
   {{- if eq .Values.storage_driver "rancher-nfs" }}
     driver: ${storage_driver}
+{{-     if eq .Values.storage_exists "true" }}
+    external: true
+{{-     end }}
   {{-   if (.Values.storage_driver_nfsopts_host) }}
     driver_opts: 
       host: ${storage_driver_nfsopts_host}

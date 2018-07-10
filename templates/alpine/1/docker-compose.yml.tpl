@@ -1,6 +1,6 @@
 version: '2'
 volumes:
-  ${volume_name}:
+  {{.Values.volume_name}}:
     external: true
     driver: ${volume_driver}
 services:

@@ -88,6 +88,7 @@ volumes:
 {{-     end }}
 {{-   end }}
   {{.Values.datavolume_name}}_web:
+    external: true
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
     driver: ${storage_driver}
 {{-     if (.Values.storage_driver_nfsopts_host) }}

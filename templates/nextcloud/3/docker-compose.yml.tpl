@@ -10,7 +10,7 @@ services:
       io.rancher.container.start_once: true
     volumes:
 {{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}:/var/www/html
+      - ${datavolume_name}_data:/var/www/html
 {{- else }}
       - /var/www/html
 {{- end }}
@@ -78,7 +78,7 @@ services:
 {{- end}}
 {{- if (.Values.datavolume_name) }}
 volumes:
-  {{.Values.datavolume_name}}:
+  {{.Values.datavolume_name}}_data:
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
 {{-     if eq .Values.storage_exists true }}
     external: true

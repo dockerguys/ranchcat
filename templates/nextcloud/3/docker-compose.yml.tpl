@@ -80,7 +80,9 @@ services:
 volumes:
   {{.Values.datavolume_name}}:
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
-    external: ${storage_exists}
+{{-     if eq .Values.storage_exists true }}
+    external: true
+{{-     end }}
     driver: ${storage_driver}
 {{-     if (.Values.storage_driver_nfsopts_host) }}
     driver_opts: 
@@ -90,7 +92,9 @@ volumes:
 {{-   end }}
   {{.Values.datavolume_name}}_web:
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
-    external: ${storage_exists}
+{{-     if eq .Values.storage_exists true }}
+    external: true
+{{-     end }}
     driver: ${storage_driver}
 {{-     if (.Values.storage_driver_nfsopts_host) }}
     driver_opts: 

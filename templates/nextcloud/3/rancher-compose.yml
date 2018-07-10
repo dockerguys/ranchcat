@@ -87,6 +87,14 @@ catalog:
       options:
         - local
         - rancher-nfs
+    - variable: storage_exists
+      label: Volume Exists
+      description: |
+        Check this if you have already created the volumes (both 'volume-name' and 'volume-name'_web). Do not 
+        fill in 'NFS Driver Host' and 'NFS Driver Volume Path'.
+      required: true
+      type: boolean
+      default: false
     - variable: storage_driver_nfsopts_host
       label: NFS Driver Host
       description: |

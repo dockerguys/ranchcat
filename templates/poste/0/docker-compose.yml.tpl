@@ -34,11 +34,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
 {{- if eq .Values.disable_antivirus true }}
-      DISABLE_CLAMAV: TRUE
+      DISABLE_CLAMAV: "TRUE"
 {{- else }}
-      DISABLE_CLAMAV: FALSE
+      DISABLE_CLAMAV: "FALSE"
 {{- end }}
-      HTTPS=OFF
+      HTTPS: "OFF"
 {{- if (.Values.datavolume_name) }}
 volumes:
   {{.Values.datavolume_name}}:

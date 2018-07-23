@@ -33,7 +33,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:
-{{- if eq .Values.disable_antivirus true }}
+{{- if eq .Values.disable_antivirus "true" }}
       DISABLE_CLAMAV: "TRUE"
 {{- else }}
       DISABLE_CLAMAV: "FALSE"

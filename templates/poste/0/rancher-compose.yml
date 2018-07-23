@@ -72,7 +72,7 @@ catalog:
       type: "string"
       required: false
 services:
-  mailadmin:
+  mailserver:
     scale: 1
     retain_ip: true
     health_check:

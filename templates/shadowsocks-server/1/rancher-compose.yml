@@ -1,0 +1,173 @@
+version: '2'
+catalog:
+  name: "Shadowsocks Server"
+  version: "3.2.0"
+  description: "Active traffic obfuscation using SOCKS5 proxy"
+  questions:
+    - variable: shadowsocks_image
+      description: "Shadowsocks server image"
+      label: "Shadowsocks Image"
+      type: enum
+      options:
+        - dockerguys/shadowsocks-server:3.2.0
+      required: true
+      default: "dockerguys/shadowsocks-server:3.2.0"
+    - variable: ss_crypto
+      description: "Cryptographic algorithm for traffic encryption"
+      label: "Encryption Algorithm"
+      type: enum
+      options:
+        - rc4-md5
+        - aes-128-gcm
+        - aes-192-gcm
+        - aes-256-gcm
+        - aes-128-cfb
+        - aes-192-cfb
+        - aes-256-cfb
+        - aes-128-ctr
+        - aes-192-ctr
+        - aes-256-ctr
+        - camellia-128-cfb
+        - camellia-192-cfb
+        - camellia-256-cfb
+        - bf-cfb
+        - chacha20-poly1305
+        - chacha20-ietf-poly1305
+        - salsa20
+        - chacha20
+        - chacha20-ietf
+      required: true
+      default: aes-256-cfb
+    - variable: ss_key
+      description: "Connection password for default user at port 53000"
+      label: "Default Account Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: ss_mode
+      description: "Support for TCP and UDP protocol"
+      label: "TCP/UDP Support"
+      type: enum
+      options:
+        - tcp_only
+        - udp_only
+        - tcp_and_udp
+      required: true
+      default: tcp_and_udp
+    - variable: ss_reuse_port
+      description: "Enables port reuse. Only available with Linux kernel > 3.9.0."
+      label: "Reuse Ports"
+      default: true
+      type: boolean
+      required: true
+    - variable: ss_fastopen
+      description: "Enables fast open. Only available with Linux kernel > 3.7.0."
+      label: "Reuse Ports"
+      default: true
+      type: boolean
+      required: true
+    - variable: ss_timeout
+      description: "Set the socket timeout in seconds."
+      label: "Socket Timeout"
+      default: 60
+      type: int
+    - variable: ss_external_dns
+      description: "Setup name servers for internal DNS resolver (libudns). The default server is fetched from /etc/resolv.conf."
+      label: "External DNS"
+      default: "8.8.8.8"
+      type: string
+    - variable: kcptun_crypto
+      description: "Cryptographic algorithm for KCPTun connections"
+      label: "KCPTun Encryption"
+      default: "aes"
+      type: enum
+      options:
+        - aes
+        - aes-128
+        - aes-192
+        - salsa20
+        - blowfish
+        - twofish
+        - cast5
+        - 3des
+        - tea
+        - xtea
+        - xor
+        - none
+    - variable: kcptun_key
+      description: "Connection password for default KCPTun user at port 34567"
+      label: "KCPTun Account Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: kcptun_datashard
+      description: "Reed-solomon erasure coding - datashard"
+      label: "KCPTun Datashard"
+      default: 10
+      type: int
+    - variable: kcptun_parityshard
+      description: "Reed-solomon erasure coding - parityshard"
+      label: "KCPTun Parityshard"
+      default: 3
+      type: int
+    - variable: kcptun_nocomp
+      description: "Do not compress data."
+      label: "KCPTun Disable Compression"
+      default: false
+      type: boolean
+    - variable: kcptun_mode
+      description: "Default aggresiveness on retransmission for embeded modes"
+      label: "KCPTun Mode"
+      default: "fast2"
+      type: enum
+      options:
+        - fast3
+        - fast2
+        - fast
+        - normal
+    - variable: kcptun_mtu
+      description: "Default maximum transmission unit for UDP packets."
+      label: "KCPTun MTU"
+      default: 1350
+      type: int
+    - variable: kcptun_sndwnd
+      description: "Default send window size (number of packets)."
+      label: "KCPTun SNDWND"
+      default: 1024
+      type: int
+    - variable: kcptun_rcvwnd
+      description: "Default receive window size (number of packets)."
+      label: "KCPTun RCVWND"
+      default: 1024
+      type: int
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+services:
+  shadowsocks-server:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 53000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

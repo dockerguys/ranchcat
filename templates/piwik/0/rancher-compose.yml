@@ -1,0 +1,93 @@
+version: '2'
+catalog:
+  name: "Piwik"
+  version: "3.6.0"
+  description: "A self hosted solution for web traffic analytics"
+  questions:
+    - variable: piwik_admin
+      description: "Primary administrative user"
+      label: "Admin User"
+      type: "string"
+      required: true
+      default: administrator
+    - variable: piwik_password
+      description: "Default password for primary administrative user"
+      label: "Admin Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: db_vendor
+      description: "Use embedded sqlite for testing purposes only. Otherwise you need to set up postgres and mysql/mariadb first."
+      label: "Database Vendor"
+      type: enum
+      options:
+        - postgres
+        - mariadb
+        - sqlite
+      required: true
+      default: sqlite
+    - variable: "piwik_image"
+      label: "Piwik Server Image"
+      description: "Image to use"
+      required: true
+      default: "dockerguys/piwik:3.6.0"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/piwik:3.6.0
+    - variable: "db_service"
+      description: "External DB service to use (if 'Database Vendor' is not 'sqlite'). You can reference the service as 'db' by setting this."
+      label: "DB Service"
+      default: ""
+      required: false
+      type: "service"
+    - variable: piwik_dbname
+      description: "Name of database to use. Ignore this if 'Database Vendor' is sqlite."
+      label: "Database Name"
+      type: "string"
+      required: true
+      default: "piwik"
+    - variable: piwik_dbuser
+      description: "Username to login to the database. Ignore this if 'Database Vendor' is sqlite."
+      label: "Database Username"
+      type: "string"
+      required: true
+      default: "piwikapp"
+    - variable: piwik_dbpassword
+      description: "User password to login to the database. Ignore this if 'Database Vendor' is sqlite."
+      label: "Database Password"
+      type: "password"
+      required: true
+      default: "DatabasePassword"
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: "string"
+      required: false
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: "string"
+      required: false
+services:
+  piwik:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

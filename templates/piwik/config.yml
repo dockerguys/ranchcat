@@ -1,0 +1,8 @@
+name: Piwik
+description: |
+  A self-hosted alternative to google analytics
+version: v1.0.0
+category: Productivity
+maintainer: Lizoc <info@lizoc.com>
+license: Proprietary ULA
+projectURL: https://github.com/matomo-org/matomo

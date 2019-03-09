@@ -124,7 +124,7 @@ catalog:
       required: false
     - variable: docker_memory_limit
       label: "Limit Memory"
-      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than "4"."
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
       type: int
       required: false
     - variable: docker_memory_kernel_limit

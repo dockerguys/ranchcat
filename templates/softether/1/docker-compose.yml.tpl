@@ -66,7 +66,8 @@ services:
     # [host port maps]
     # direct map to ports on host
     ports: # haproxy doesn't support udp
-      - 1194:1194/udp
+      - 1194:1194
+      - 5555:5555
     # [scheduler labels]
     labels:
       io.rancher.sidekicks: softether-config, softether-logs

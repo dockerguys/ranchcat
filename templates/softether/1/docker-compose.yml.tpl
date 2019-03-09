@@ -63,6 +63,18 @@ services:
     # [tty/stdin]
     tty: true
     stdin_open: true
+    # [env]
+    environment:
+{{- if (.Values.softether_password) }}
+      VPN_SERVER_DEFAULT_PASSWORD: ${softether_password}
+{{- end }}
+      VPN_SERVER_DISABLE_DDNS: ${softether_disable_ddns}
+      VPN_SERVER_DISABLE_NAT_TRAVERSAL: ${softether_disable_natt}
+      VPN_CLIENT_DISABLE_KEEPALIVE: ${softether_disable_client_keepalive}
+      VPN_CLIENT_KEEPALIVE_HOST: ${softether_client_keepalive_host}
+      VPN_CLIENT_KEEPALIVE_PROTOCOL: ${softether_client_keepalive_protocol}
+      VPN_CLIENT_KEEPALIVE_INTERVAL: ${softether_client_keepalive_interval}
+      VPN_CLIENT_DISABLE_UPDATE_NOTIFICATION: ${softether_disable_client_notify}
     # [host port maps]
     # direct map to ports on host
     ports: # haproxy doesn't support udp

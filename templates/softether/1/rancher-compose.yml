@@ -9,10 +9,62 @@ catalog:
       label: "Softether Image"
       type: enum
       options:
-        - dockerguys/softether:4.27.9666
         - dockerguys/softether:4.29.9680
       required: true
       default: "dockerguys/softether:4.29.9680"
+    - variable: softether_password
+      description: "Default administrator password."
+      label: "Administrator Password"
+      type: password
+      required: false
+    - variable: softether_disable_ddns
+      description: "Disables Dynamic DNS, which requires a connection to Softether website."
+      label: "Disable DDNS"
+      type: bool
+      required: true
+      default: true
+    - variable: softether_disable_natt
+      description: "Disables NAT traversal, which requires a connection to Softether website."
+      label: "Disable NAT Traversal"
+      type: bool
+      required: true
+      default: true
+    - variable: softether_disable_client_notify
+      description: "Disables client update notification."
+      label: "Disable Client Update"
+      type: bool
+      required: true
+      default: true
+    - variable: softether_disable_client_keepalive
+      description: "Disables client keepalive. Client software keeps connected by sending packets the keepalive host."
+      label: "Disable Client KeepAlive"
+      type: bool
+      required: true
+      default: true
+    - variable: softether_client_keepalive_host
+      description: |
+        Sets the keepalive host, which client server will send packets to. No effect if "Disable Client KeepAlive" is set to true.
+      label: "Client KeepAlive Host"
+      type: bool
+      required: true
+      default: "keepalive.softether.org:80"
+    - variable: softether_client_keepalive_protocol
+      description: |
+        Sets the keepalive protocol. No effect if "Disable Client KeepAlive" is set to true.
+      label: "Client KeepAlive Protocol"
+      type: enum
+      options:
+        - tcp
+        - udp
+      required: true
+      default: "udp"
+    - variable: softether_client_keepalive_interval
+      description: |
+        Sets the keepalive interval (in seconds). No effect if "Disable Client KeepAlive" is set to true.
+      label: "Client KeepAlive Interval"
+      type: int
+      required: true
+      default: 50
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"
@@ -113,8 +165,8 @@ services:
       response_timeout: 2000
       healthy_threshold: 2
       port: 443
-      unhealthy_threshold: 3
-      initializing_timeout: 300000
+      unhealthy_threshold: 10
+      initializing_timeout: 500000
       interval: 2000
       strategy: recreate
       reinitializing_timeout: 120000

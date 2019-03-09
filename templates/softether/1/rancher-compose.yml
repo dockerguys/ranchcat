@@ -45,7 +45,7 @@ catalog:
       description: |
         Sets the keepalive host, which client server will send packets to. No effect if "Disable Client KeepAlive" is set to true.
       label: "Client KeepAlive Host"
-      type: boolean
+      type: string
       required: true
       default: "keepalive.softether.org:80"
     - variable: softether_client_keepalive_protocol

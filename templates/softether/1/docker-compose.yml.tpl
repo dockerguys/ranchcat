@@ -93,7 +93,7 @@ services:
     # TODO cpus isn't implemented in rancher 1.6, hacking it using the 
     # older `cpu-quota` instead
     #cpus: ${docker_cpu_limit}
-    cpu-quota: ${docker_cpu_quota_limit}
+    cpu_quota: ${docker_cpu_quota_limit}
 {{- end }}
     cpu_shares: ${docker_cpu_weight_limit}
     # [memory limits]

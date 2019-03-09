@@ -20,32 +20,32 @@ catalog:
     - variable: softether_disable_ddns
       description: "Disables Dynamic DNS, which requires a connection to Softether website."
       label: "Disable DDNS"
-      type: bool
+      type: boolean
       required: true
       default: true
     - variable: softether_disable_natt
       description: "Disables NAT traversal, which requires a connection to Softether website."
       label: "Disable NAT Traversal"
-      type: bool
+      type: boolean
       required: true
       default: true
     - variable: softether_disable_client_notify
       description: "Disables client update notification."
       label: "Disable Client Update"
-      type: bool
+      type: boolean
       required: true
       default: true
     - variable: softether_disable_client_keepalive
       description: "Disables client keepalive. Client software keeps connected by sending packets the keepalive host."
       label: "Disable Client KeepAlive"
-      type: bool
+      type: boolean
       required: true
       default: true
     - variable: softether_client_keepalive_host
       description: |
         Sets the keepalive host, which client server will send packets to. No effect if "Disable Client KeepAlive" is set to true.
       label: "Client KeepAlive Host"
-      type: bool
+      type: boolean
       required: true
       default: "keepalive.softether.org:80"
     - variable: softether_client_keepalive_protocol
@@ -74,7 +74,7 @@ catalog:
       label: "Volume Name"
       description: |
         To store the application data in a volume, enter the volume name that should be used.
-        By default this will be a (host scoped) named Docker volume. See `Storage Driver` for other storage options.
+        By default this will be a (host scoped) named Docker volume. See "Storage Driver" for other storage options.
       required: false
       type: string
     #- variable: storage_size
@@ -86,7 +86,7 @@ catalog:
       label: "Volume Storage Driver"
       description: |
         To use a stack scoped volume backed by a persistent storage service, enter the name
-        of an existing storage driver (e.g. `rancher-nfs`). This also requires `Volume Name` to be set.
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
       required: true
       type: enum
       default: "local"
@@ -96,16 +96,16 @@ catalog:
     - variable: storage_driver_nfsopts_host
       label: "NFS Driver Host"
       description: |
-        Specify a NFS hostname instead of the default NFS server. Only use this option if `Volume Storage Driver` is 
-        set to `rancher-nfs`.
+        Specify a NFS hostname instead of the default NFS server. Only use this option if "Volume Storage Driver" is 
+        set to "rancher-nfs".
       required: false
       type: string
     - variable: storage_driver_nfsopts_export
       label: "NFS Driver Volume Path"
       description: |
-        Specify the path on the NFS server that will be mounted (e.g. `/storage/nfsvol`). The full directory created 
-        on the NFS server will be this path and the volume name. Do not append the `/` at the end. The full path must 
-        already exist on the NFS server. Only use this option if `Volume Storage Driver` is set to `rancher-nfs`.
+        Specify the path on the NFS server that will be mounted (e.g. "/storage/nfsvol"). The full directory created 
+        on the NFS server will be this path and the volume name. Do not append the "/" at the end. The full path must 
+        already exist on the NFS server. Only use this option if "Volume Storage Driver" is set to "rancher-nfs".
       required: false
       type: string
     - variable: repull_image
@@ -124,7 +124,7 @@ catalog:
       required: false
     - variable: docker_memory_limit
       label: "Limit Memory"
-      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than `4`."
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than "4"."
       type: int
       required: false
     - variable: docker_memory_kernel_limit
@@ -138,7 +138,7 @@ catalog:
     - variable: docker_memory_swap_limit
       label: "Limit Swap Memory"
       description: |
-        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to `-1` to allow unlimited, 
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
         or the same value as Limit Memory to disable swap.
       type: int
       required: true
@@ -146,8 +146,8 @@ catalog:
     - variable: docker_cpu_quota_limit
       label: "Limit CPUs"
       description: |
-        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, `150000` limits the container 
-        to `1.5` CPUs.
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
       type: int
       required: false
     - variable: docker_cpu_weight_limit

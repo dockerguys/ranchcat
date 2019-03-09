@@ -37,16 +37,16 @@ services:
       - softether-data
 {{- if (.Values.storage_size) }}
     storage_opt:
-      size: ${storage_size}G
+      size: "${storage_size}g"
 {{- end }}
 {{- if (.Values.docker_cpu_limit) }}
     cpus: ${docker_cpu_limit}
 {{- end }}
     cpu_shares: ${docker_cpu_weight_limit}
 {{- if (.Values.docker_memory_limit) }}
-    mem_limit: ${docker_memory_limit}m
+    mem_limit: "${docker_memory_limit}m"
 {{- end }}
-    memswap_limit: ${docker_memory_swap_limit}
+    memswap_limit: "${docker_memory_swap_limit}m"
 {{- if (.Values.datavolume_name) }}
 volumes:
   {{.Values.datavolume_name}}:
@@ -57,5 +57,7 @@ volumes:
       host: ${storage_driver_nfsopts_host}
       export: ${storage_driver_nfsopts_export}/${datavolume_name}
   {{-   end }}
+  {{- else }}
+    driver: local
   {{- end }}
 {{- end }}

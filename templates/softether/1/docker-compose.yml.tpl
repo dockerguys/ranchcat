@@ -78,8 +78,7 @@ services:
     # [host port maps]
     # direct map to ports on host
     ports: # haproxy doesn't support udp
-      - 1194:1194
-      - 5555:5555
+      - ${softether_openvpn_udp_port}:1194/udp
     # [scheduler labels]
     labels:
       io.rancher.sidekicks: softether-config, softether-logs

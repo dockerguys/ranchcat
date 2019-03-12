@@ -65,6 +65,13 @@ catalog:
       type: int
       required: true
       default: 50
+    - variable: softether_openvpn_udp_port
+      description: |
+        A UDP port map will be made from worker host to the SoftEther server container. Make sure it is not occupied on worker.
+      label: "OpenVPN UDP Port"
+      type: int
+      required: true
+      default: 1194
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"

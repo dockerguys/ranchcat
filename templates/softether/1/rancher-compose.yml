@@ -5,7 +5,8 @@ catalog:
   description: "All-in-one VPN solution featuring various protocols."
   questions:
     - variable: softether_image
-      description: "Image to use. Be sure to fill in the 'Private Registry' field too if the image is not available publically."
+      description: |
+        Image to use. Be sure to fill in the "Private Registry" field too if the image is not available publically.
       label: "Softether Image"
       type: enum
       options:
@@ -24,7 +25,7 @@ catalog:
       required: true
       default: true
     - variable: softether_disable_natt
-      description: "Disables NAT traversal, which requires a connection to Softether website."
+      description: "Disables NAT traversal, which requires a connection to SoftEther website."
       label: "Disable NAT Traversal"
       type: boolean
       required: true
@@ -46,7 +47,14 @@ catalog:
       label: "Enable Kernel-Mode NAT"
       type: boolean
       required: true
-      default: true
+      default: false
+    - variable: softether_enable_tun
+      description: |
+        Allow creating virtual TUN/TAP interface on host. Make sure you check "Enable Kernel-Mode NAT" as well.
+      label: "Allow TUN/TAP Interface"
+      type: boolean
+      required: true
+      default: false
     - variable: softether_client_keepalive_host
       description: |
         Sets the keepalive host, which client server will send packets to. No effect if "Disable Client KeepAlive" is set to true.

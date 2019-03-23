@@ -39,3 +39,13 @@ Usage
 2. If you have an external firewall before the host, make sure you adjust the rules on your firewall to allow access to the ports listed in step 1.
 
 3. Download a compatible [management client](https://www.softether-download.com/files/softether/v4.29-9680-rtm-2019.02.28-tree/Windows/Admin_Tools/VPN_Server_Manager_and_Command-line_Utility_Package/softether-vpn_admin_tools-v4.29-9680-rtm-2019.02.28-win32.zip) to perform administration tasks. 
+
+Tricks and Tips
+---------------
+Except for port 443 (which is required for HTTPS), there are many internet providers that try to block outgoing VPN connections, which means you won't be able to 
+connect to your VPN server ports when you are behind their firewalls.
+
+One solution is to make your VPN server listen on other ports that tends to be unblocked:
+- 443: this is always never blocked
+- 5000: used by WeChat
+- 5223: Apple Push Notification

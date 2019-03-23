@@ -98,11 +98,11 @@ catalog:
         By default this will be a (host scoped) named Docker volume. See "Storage Driver" for other storage options.
       required: false
       type: string
-    - variable: storage_size
-      label: "Volume Storage Size"
-      description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
-      required: false
-      type: int
+    #- variable: storage_size
+    #  label: "Volume Storage Size"
+    #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
+    #  required: false
+    #  type: int
     - variable: storage_driver
       label: "Volume Storage Driver"
       description: |

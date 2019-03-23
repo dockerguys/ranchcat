@@ -186,10 +186,6 @@ volumes:
 {{-     end }}
 {{-   else }}
     driver: local
-{{-     if (.Values.storage_size) }}
-    driver_opts:
-      o: "size=100m"
-{{-     end }}
 {{-   end }}
 
   # ************************************
@@ -206,10 +202,6 @@ volumes:
 {{-     end }}
 {{-   else }}
     driver: local
-{{-     if (.Values.storage_size) }}
-    driver_opts:
-      o: "size=${storage_size}m"
-{{-     end }}
 {{-   end }}
 {{- end }}
 

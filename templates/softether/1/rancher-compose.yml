@@ -41,6 +41,12 @@ catalog:
       type: boolean
       required: true
       default: true
+    - variable: softether_enable_kernel_nat
+      description: "Run SecureNAT in kernel mode for better performance. This requires NET_ADMIN privileges."
+      label: "Enable Kernel-Mode NAT"
+      type: boolean
+      required: true
+      default: true
     - variable: softether_client_keepalive_host
       description: |
         Sets the keepalive host, which client server will send packets to. No effect if "Disable Client KeepAlive" is set to true.
@@ -84,11 +90,11 @@ catalog:
         By default this will be a (host scoped) named Docker volume. See "Storage Driver" for other storage options.
       required: false
       type: string
-    #- variable: storage_size
-    #  label: "Volume Storage Size"
-    #  description: "Limit the size of volume (in gigabytes). Defaults to unlimited."
-    #  required: false
-    #  type: int
+    - variable: storage_size
+      label: "Volume Storage Size"
+      description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
+      required: false
+      type: int
     - variable: storage_driver
       label: "Volume Storage Driver"
       description: |

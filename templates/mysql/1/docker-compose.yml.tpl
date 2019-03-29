@@ -66,25 +66,25 @@ services:
     # -----------------------------------
     environment:
       MYSQL_SERVER_ID: "1"
-{{- if (.Values.mysql_root_name)}}
+{{- if (.Values.mysql_root_name) }}
       MYSQL_ROOT_USER: ${mysql_root_name}
 {{- end}}
-{{- if (.Values.mysql_root_password)}}
+{{- if (.Values.mysql_root_password) }}
       MYSQL_ROOT_DEFAULT_PASSWORD: ${mysql_root_password}
 {{- end}}
-{{- if (.Values.mysql_database)}}
+{{- if (.Values.mysql_database) }}
       MYSQL_INITIAL_DB: ${mysql_database}
 {{- end}}
-{{- if (.Values.mysql_user)}}
+{{- if (.Values.mysql_user) }}
       MYSQL_INITIAL_DB_ADMIN: ${mysql_user}
 {{- end}}
-{{- if (.Values.mysql_password)}}
+{{- if (.Values.mysql_password) }}
       MYSQL_INITIAL_DB_ADMIN_DEFAULT_PASSWORD: ${mysql_password}
 {{- end}}
-{{- if eq .Values.mysql_auto_memory true }}
+{{- if eq .Values.mysql_auto_memory "true" }}
       MYSQL_INNODB_AUTO_MEMORY: "true"
 {{- end}}
-{{- if (.Values.mysql_extargs)}}
+{{- if (.Values.mysql_extargs) }}
       MYSQL_EXTARGS: ${mysql_extargs}
 {{- end}}
     # -----------------------------------

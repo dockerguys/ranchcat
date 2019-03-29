@@ -81,7 +81,7 @@ services:
 {{- if (.Values.mysql_password)}}
       MYSQL_INITIAL_DB_ADMIN_DEFAULT_PASSWORD: ${mysql_password}
 {{- end}}
-{{- if (.Values.mysql_auto_memory)}}
+{{- if eq .Values.mysql_auto_memory true }}
       MYSQL_INNODB_AUTO_MEMORY: "true"
 {{- end}}
 {{- if (.Values.mysql_extargs)}}

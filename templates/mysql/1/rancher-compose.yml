@@ -13,30 +13,40 @@
       default: "dockerguys/mariadb:10.3.13.0"
       required: true
     - variable: mysql_root_name
-      description: "The name of the root superuser account. The root superuser account will have full access to all databases."
+      description: |
+        The name of the root superuser account. The root superuser account will have full access to all databases. The root account name should be in 
+        lower case alphanumeric only, and must not start with a number.
       label: "MySQL Root User"
       required: true
       type: "string"
       default: "root"
     - variable: mysql_root_password
-      description: "The password that will be set for the MySQL root superuser account."
+      description: |
+        The password that will be set for the MySQL root superuser account. You are recommended to use alphanumeric characters only, and change the 
+        password after deployment via the web administration interface.
       label: "MySQL Root Password"
       required: true
       type: password
     - variable: mysql_database
-      description: "Specify the name of a database to be created on image startup."
+      description: 
+        Specify the name of a database to be created on image startup. The database name should be in alphanumeric only, and must not start with 
+        a number.
       label: "MySQL Database"
       required: true
       type: "string"
       default: "defaultdb"
     - variable: mysql_user
-      description: "Creates an additional MySQL (super)user. MySQL Password must also be set."
+      description: 
+        Creates an additional MySQL (super)user. The field "MySQL Password" must also be set. Naming constraints are similar to that 
+        of "MySQL Root User".
       label: "MySQL User"
       required: true
       type: "string"
       default: "dbadmin"
     - variable: mysql_password
-      description: "A password for the additional MySQL (super)user. MySQL User must also be set."
+      description: 
+        A password for the additional MySQL (super)user. The field "MySQL User" must also be set. You are recommended to use alphanumeric 
+        characters only, and change the password after deployment via the web administration interface.
       label: "MySQL Password"
       required: true
       type: password
@@ -49,7 +59,8 @@
       type: "boolean"
       default: false
     - variable: mysql_extargs
-      description: "Extra arguments for starting up 'mysqld'. Do not specify the 'user' or 'console' flags."
+      description: |
+        Extra arguments for starting up "mysqld". Do not specify the "user" or "console" flags.
       label: "MySQL Startup Arguments"
       type: "string"
       default: ""
@@ -68,7 +79,7 @@
       type: "string"
       required: false
     - variable: adminer_plugins
-      description: "Enable extra plugins for web administration interface. Separate with space."
+      description: "Enable extra plugins for web administration interface. Separate multiple plugin names with space."
       label: "Web Admin Plugins"
       type: "string"
       required: false

@@ -50,14 +50,13 @@
       label: "MySQL Password"
       required: true
       type: password
-    - variable: mysql_auto_memory
+    - variable: mysql_buffer_memory
       description: |
-        Enable automatic memory expansion. You should only use InnoDB after enabling this. Remember to set "Limit Memory", otherwise 
-        the database server container may consume up to 75% of the host memory and cause the host to crash.
-      label: "Automatic Memory"
-      required: true
-      type: "boolean"
-      default: false
+        Sets the InnoDB buffer memory size (in megabytes). You should only use InnoDB after enabling this. If you are limiting overall 
+        container memory using "Limit Memory", make sure this is about 75% of the overall memory limit.
+      label: "InnoDB Memory Buffer"
+      required: false
+      type: "int"
     - variable: mysql_extargs
       description: |
         Extra arguments for starting up "mysqld". Do not specify the "user" or "console" flags.

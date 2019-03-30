@@ -102,12 +102,6 @@ catalog:
       type: "string"
       required: true
       default: ""
-    - variable: host_affinity_label
-      description: "The stack will launch on one of the hosts that has this label."
-      label: "Host Affinity Label"
-      type: "string"
-      required: false
-    - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"
       type: string

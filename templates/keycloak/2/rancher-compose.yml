@@ -203,7 +203,7 @@ services:
       healthy_threshold: 2
       port: 8080
       unhealthy_threshold: 3
-      initializing_timeout: 300000
+      initializing_timeout: 600000
       interval: 2000
       strategy: recreate
       request_line: GET "/" "HTTP/1.0"

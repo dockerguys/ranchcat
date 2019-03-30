@@ -125,6 +125,7 @@ services:
     # -----------------------------------
     labels:
       io.rancher.sidekicks: keycloak-data
+      io.keycloak.role: server
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

@@ -52,9 +52,9 @@ services:
     # - support private registry
     # -----------------------------------
 {{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/${mysql_image}"
+    image: "${docker_registry_name}/${keycloak_image}"
 {{- else }}
-    image: ${mysql_image}
+    image: ${keycloak_image}
 {{- end }}
     # -----------------------------------
     # External link
@@ -90,7 +90,7 @@ services:
       DB_VENDOR: ${db_vendor}
       DB_USER: ${keycloak_dbuser}
       DB_PASSWORD: ${keycloak_dbpassword}
-      DB_DATABASE: ${keycloak_dbpassword}
+      DB_DATABASE: ${keycloak_dbname}
       DB_ADDR: db
 {{- if eq .Values.db_vendor "mysql" }}
       DB_PORT: 3306

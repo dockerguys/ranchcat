@@ -100,8 +100,7 @@ catalog:
         Additional startup arguments to "/opt/jboss/keycloak/bin/standalone.sh". Check official documentation at "https://docs.jboss.org/author/display/WFLY8/Command+line+parameters" for details.
       label: "Startup Arguments"
       type: "string"
-      required: true
-      default: ""
+      required: false
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"

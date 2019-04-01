@@ -26,7 +26,7 @@ catalog:
       label: "Log Timestamp"
       type: boolean
       required: true
-      default: false
+      default: true
     - variable: log_output
       description: "Record timestamp in log entries."
       label: "Log Timestamp"
@@ -64,12 +64,6 @@ catalog:
         - Ignore Unknown
         - Ignore Retail
       default: "Any"
-    - variable: quick_disconnect
-      description: "Non-standard feature! Disconnect client immediately after activation."
-      label: "Quick Disconnect"
-      type: boolean
-      required: true
-      default: false
     - variable: quick_disconnect
       description: "Non-standard feature! Disconnect client immediately after activation."
       label: "Quick Disconnect"

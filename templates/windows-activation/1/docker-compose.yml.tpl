@@ -22,31 +22,31 @@ services:
 {{- if (.Values.docker_registry_name) }}
     image: "${docker_registry_name}/${winkms_image}"
 {{- else }}
-    image: ${winkms_image}
+    image: "${winkms_image}"
 {{- end }}
     # -----------------------------------
     # ENV
     # -----------------------------------
     environment:
-      KMS_CLIENT_TIMEOUT: ${client_timeout}
+      KMS_CLIENT_TIMEOUT: "${client_timeout}"
       KMS_RENEW_INTERVAL: "${renew_interval}w"
       KMS_RETRY_INTERVAL: "${retry_interval}h"
       KMS_SERVER_LCID: "${server_lcid}"
       KMS_SERVER_BUILD_NUMBER: "${server_build_number}"
 {{- if eq .Values.verbose_logging "true" }}
-      KMS_VERBOSE_LOG: true
+      KMS_VERBOSE_LOG: "true"
 {{- else }}
-      KMS_VERBOSE_LOG: false
+      KMS_VERBOSE_LOG: "false"
 {{- end }}
 {{- if eq .Values.log_timestamp "true" }}
-      KMS_LOG_TIMESTAMP: true
+      KMS_LOG_TIMESTAMP: "true"
 {{- else }}
-      KMS_LOG_TIMESTAMP: false
+      KMS_LOG_TIMESTAMP: "false"
 {{- end }}
 {{- if eq .Values.log_timestamp "Console" }}
-      KMS_CONSOLE_LOG: true
+      KMS_CONSOLE_LOG: "true"
 {{- else }}
-      KMS_CONSOLE_LOG: false
+      KMS_CONSOLE_LOG: "false"
 {{- end }}
 {{- if eq .Values.debug_mode "true" }}
       KMS_RUN_MODE: "debug"
@@ -54,10 +54,10 @@ services:
       KMS_RUN_MODE: "production"
 {{- end }}
 {{- if (.Values.max_clients) }}
-      KMS_MAX_CLIENTS: ${max_clients}
+      KMS_MAX_CLIENTS: "${max_clients}"
 {{- end }}
 {{- if (.Values.max_clients) }}
-      KMS_MAX_CLIENTS: ${max_clients}
+      KMS_MAX_CLIENTS: "${max_clients}"
 {{- end }}
 {{- if eq .Values.quick_disconnect "true" }}
       KMS_CLIENT_QUICK_DISCONNECT: "true"
@@ -108,13 +108,13 @@ services:
       KMS_REFUSE_UNKNOWN_PRODUCT: "false"
 {{- end }}
 {{- if eq .Values.server_epid_rand "BuiltIn" }}
-      KMS_SERVER_EPID_RAND: 0
+      KMS_SERVER_EPID_RAND: "0"
 {{- end }}
 {{- if eq .Values.server_epid_rand "Random Per Instance" }}
-      KMS_SERVER_EPID_RAND: 1
+      KMS_SERVER_EPID_RAND: "1"
 {{- end }}
 {{- if eq .Values.server_epid_rand "Random Per Request" }}
-      KMS_SERVER_EPID_RAND: 2
+      KMS_SERVER_EPID_RAND: "2"
 {{- end }}
     # -----------------------------------
     # Scheduler labels

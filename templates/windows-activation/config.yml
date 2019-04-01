@@ -1,7 +1,7 @@
 name: Windows Activation
 description: |
   Windows activation server
-version: v0.1111
+version: v0.1112
 category: Windows
 maintainer: Dockerguys <dockerguys@lizoc.com>
 license: Proprietary ULA

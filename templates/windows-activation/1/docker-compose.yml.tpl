@@ -33,17 +33,15 @@ services:
       KMS_RETRY_INTERVAL: "${retry_interval}h"
       KMS_SERVER_LCID: "${server_lcid}"
       KMS_SERVER_BUILD_NUMBER: "${server_build_number}"
-{{- if eq .Values.verbose_logging "true" }}
-      KMS_VERBOSE_LOG: "true"
-{{- else }}
-      KMS_VERBOSE_LOG: "false"
-{{- end }}
-{{- if eq .Values.log_timestamp "true" }}
-      KMS_LOG_TIMESTAMP: "true"
-{{- else }}
-      KMS_LOG_TIMESTAMP: "false"
-{{- end }}
-{{- if eq .Values.log_timestamp "Console" }}
+      KMS_VERBOSE_LOG: "${verbose_logging}"
+      KMS_LOG_TIMESTAMP: "${log_timestamp}"
+      KMS_CLIENT_QUICK_DISCONNECT: "${quick_disconnect}"
+      KMS_ENABLE_CLIENT_TIME_CHECK: "${client_time_check}"
+      KMS_ENABLE_MAINTAIN_CLIENT: "${maintain_clients}"
+      KMS_EMPTY_CLIENT_LIST_ON_START: "${empty_clients_onstart}"
+      KMS_DISABLE_RPC_NDR64: "${disable_rpc_ndr64}"
+      KMS_DISABLE_RPC_BTFN: "${disable_rpc_btfn}"
+{{- if eq .Values.log_output "Console" }}
       KMS_CONSOLE_LOG: "true"
 {{- else }}
       KMS_CONSOLE_LOG: "false"
@@ -55,39 +53,6 @@ services:
 {{- end }}
 {{- if (.Values.max_clients) }}
       KMS_MAX_CLIENTS: "${max_clients}"
-{{- end }}
-{{- if (.Values.max_clients) }}
-      KMS_MAX_CLIENTS: "${max_clients}"
-{{- end }}
-{{- if eq .Values.quick_disconnect "true" }}
-      KMS_CLIENT_QUICK_DISCONNECT: "true"
-{{- else }}
-      KMS_CLIENT_QUICK_DISCONNECT: "false"
-{{- end }}
-{{- if eq .Values.client_time_check "true" }}
-      KMS_ENABLE_CLIENT_TIME_CHECK: "true"
-{{- else }}
-      KMS_ENABLE_CLIENT_TIME_CHECK: "false"
-{{- end }}
-{{- if eq .Values.maintain_clients "true" }}
-      KMS_ENABLE_MAINTAIN_CLIENT: "true"
-{{- else }}
-      KMS_ENABLE_MAINTAIN_CLIENT: "false"
-{{- end }}
-{{- if eq .Values.empty_clients_onstart "true" }}
-      KMS_EMPTY_CLIENT_LIST_ON_START: "true"
-{{- else }}
-      KMS_EMPTY_CLIENT_LIST_ON_START: "false"
-{{- end }}
-{{- if eq .Values.disable_rpc_ndr64 "true" }}
-      KMS_DISABLE_RPC_NDR64: "true"
-{{- else }}
-      KMS_DISABLE_RPC_NDR64: "false"
-{{- end }}
-{{- if eq .Values.disable_rpc_btfn "true" }}
-      KMS_DISABLE_RPC_BTFN: "true"
-{{- else }}
-      KMS_DISABLE_RPC_BTFN: "false"
 {{- end }}
 {{- if eq .Values.product_filter "Any" }}
       KMS_ENABLE_PRODUCT_FILTERING: "false"

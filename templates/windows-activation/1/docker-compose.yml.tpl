@@ -32,7 +32,7 @@ services:
       KMS_RENEW_INTERVAL: "${renew_interval}w"
       KMS_RETRY_INTERVAL: "${retry_interval}h"
       KMS_SERVER_LCID: "${server_lcid}"
-  	  KMS_SERVER_BUILD_NUMBER: "${server_build_number}"
+      KMS_SERVER_BUILD_NUMBER: "${server_build_number}"
 {{- if eq .Values.verbose_logging "true" }}
       KMS_VERBOSE_LOG: true
 {{- else }}

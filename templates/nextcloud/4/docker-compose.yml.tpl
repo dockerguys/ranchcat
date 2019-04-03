@@ -91,7 +91,7 @@ services:
     # Scheduler labels
     # -----------------------------------
     labels:
-      io.nextcloud.role="caching-server"
+      io.nextcloud.role: "caching-server"
 {{- if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
 {{- end }}
@@ -163,8 +163,12 @@ services:
     # Scheduler labels
     # -----------------------------------
     labels:
-      io.nextcloud.role="server"
-      io.rancher.sidekicks: nextcloud-src, nextcloud-www
+      io.nextcloud.role: "server"
+{{- if (.Values.extra_volume_a) }}
+      io.rancher.sidekicks: nextcloud-src, nextcloud-extvols
+{{- else }}
+      io.rancher.sidekicks: nextcloud-src
+{{- end }}
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

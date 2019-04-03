@@ -19,3 +19,8 @@ Usage
 1. Create your database first (user: keycloakapp, db keycloak - utf8_general_ci). We use MySQL here.
 2. Update your load balancer to point 443 to 8080 (UI/https) of the Keycloak service.
 3. Go to the web UI and perform setup.
+
+Caveats
+-------
+Set `-Djboss.as.management.blocking.timeout=600` or even 1200 to prevent timeout errors on low-end servers. Keycloak may timeout and 
+reinitialize before it can prepare the database.

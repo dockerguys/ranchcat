@@ -1,0 +1,204 @@
+version: '2'
+catalog:
+  name: "NextCloud"
+  version: "v2.1.0"
+  description: "Web storage and more!"
+  questions:
+    - variable: nextcloud_user
+      description: "Primary administrative user"
+      label: "Admin User"
+      type: "string"
+      required: true
+      default: cloudmaster
+    - variable: nextcloud_password
+      description: "Password for primary administrative user"
+      label: "Admin Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: db_vendor
+      description: "Use embedded sqlite for testing purposes only. Otherwise you need to set up postgres and mysql/mariadb first."
+      label: "Database Vendor"
+      type: enum
+      options:
+        - postgres
+        - mysql
+        - sqlite
+      required: true
+      default: sqlite
+    - variable: "db_service"
+      description: |
+        External DB service to use (if "Database Vendor" is not "sqlite"). You can reference the service as "db" by setting this.
+      label: "DB Service"
+      default: ""
+      required: false
+      type: "service"
+    - variable: nextcloud_dbname
+      description: |
+        Name of database to use. Ignore this if "Database Vendor" is sqlite.
+      label: "Database Name"
+      type: "string"
+      required: true
+      default: "nextcloud"
+    - variable: nextcloud_dbuser
+      description: |
+        Username to login to the database. Ignore this if "Database Vendor" is sqlite.
+      label: "Database Username"
+      type: "string"
+      required: true
+      default: "nextcloudapp"
+    - variable: nextcloud_dbpassword
+      description: |
+        User password to login to the database. Ignore this if "Database Vendor" is sqlite.
+      label: "Database Password"
+      type: "password"
+      required: true
+      default: "DatabasePassword"
+    - variable: "nextcloud_image"
+      label: "NextCloud Image"
+      description: "Image to use"
+      required: true
+      default: "dockerguys/nextcloud:15.0.5"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/nextcloud:15.0.5
+    - variable: "redis_image"
+      label: "Redis Image"
+      description: "Redis database required. Choose the desired version."
+      required: true
+      default: "dockerguys/redis:5.0.3"
+      type: enum
+      options:
+        - dockerguys/redis:5.0.3
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    - variable: datavolume_name
+      label: "Volume Name"
+      description: |
+        To store the application data in a volume, enter the volume name that should be used.
+        By default this will be a (host scoped) named Docker volume. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: volume_exists
+      label: "Volume Exists"
+      description: |
+        Check this if you have already created the volume ("Volume Name"_src). Do not fill in "NFS Driver Host" or "NFS Driver Volume Path".
+      required: true
+      type: boolean
+      default: false
+    - variable: extra_volume_a
+      label: "Extra Volume 1"
+      description: |
+        Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /var/www/(volume_name).
+      required: false
+      type: string
+    - variable: extra_volume_b
+      label: "Extra Volume 2"
+      description: |
+        Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /var/www/(volume_name).
+      required: false
+      type: string
+    - variable: extra_volume_c
+      label: "Extra Volume 3"
+      description: |
+        Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /var/www/(volume_name).
+      required: false
+      type: string
+    #- variable: storage_size
+    #  label: "Volume Storage Size"
+    #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
+    #  required: false
+    #  type: int
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    - variable: storage_driver_nfsopts_host
+      label: "NFS Driver Host"
+      description: |
+        Specify a NFS hostname instead of the default NFS server. Only use this option if "Volume Storage Driver" is 
+        set to "rancher-nfs".
+      required: false
+      type: string
+    - variable: storage_driver_nfsopts_export
+      label: "NFS Driver Volume Path"
+      description: |
+        Specify the path on the NFS server that will be mounted (e.g. "/storage/nfsvol"). The full directory created 
+        on the NFS server will be this path and the volume name. Do not append the "/" at the end. The full path must 
+        already exist on the NFS server. Only use this option if "Volume Storage Driver" is set to "rancher-nfs".
+      required: false
+      type: string
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    - variable: docker_memory_swap_limit
+      label: "Limit Swap Memory"
+      description: |
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
+        or the same value as Limit Memory to disable swap.
+      type: int
+      required: true
+      default: 0
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  nextcloud:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000
+      request_line: GET "/" "HTTP/1.0"

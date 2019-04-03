@@ -41,6 +41,37 @@ services:
       - /var/www/html
 {{- end }}
 
+{{- if (.Values.extra_volume_a) }}
+  # ************************************
+  # SERVICE
+  # - sidekick to nextcloud
+  # - mounts external volumes
+  # ************************************
+  nextcloud-extvols:
+    # -----------------------------------
+    # Image
+    # - support private registry
+    # -----------------------------------
+{{-   if (.Values.docker_registry_name) }}
+    image: "${docker_registry_name}/busybox"
+{{-   else }}
+    image: busybox
+{{-   end }}
+    # -----------------------------------
+    # Scheduler labels
+    # -----------------------------------
+    labels:
+      io.rancher.container.start_once: true
+    # -----------------------------------
+    # Volumes
+    # - supports data volumes
+    # -----------------------------------
+    volumes:
+{{-   if (.Values.extra_volume_a) }}
+      - ${extra_volume_a}:/var/www/${extra_volume_a}
+{{-   end }}
+{{- end }}
+
   # ************************************
   # SERVICE
   # - same host affinity as nextcloud
@@ -119,8 +150,8 @@ services:
       CACHING_BACKEND: "redis"
       CACHING_HOST: "redis"
       TRUSTED_DOMAINS: "localhost *"
-{{- if or (.Values.extra_volume_a) (.Values.extra_volume_b) (.Values.extra_volume_c) }}
-      EXTERNAL_MOUNTPOINTS: "${extra_volume_a} ${extra_volume_b} ${extra_volume_c}"
+{{- if (.Values.extra_volume_a) }}
+      EXTERNAL_MOUNTPOINTS: "${extra_volume_a}"
 {{- end }}
     # -----------------------------------
     # Links to other containers
@@ -147,13 +178,7 @@ services:
     volumes_from:
       - nextcloud-src
 {{- if (.Values.extra_volume_a) }}
-      - ${extra_volume_a}:/var/www/${extra_volume_a}
-{{- end }}
-{{- if (.Values.extra_volume_b) }}
-      - ${extra_volume_b}:/var/www/${extra_volume_b}
-{{- end }}
-{{- if (.Values.extra_volume_c) }}
-      - ${extra_volume_c}:/var/www/${extra_volume_c}
+      - nextcloud-extvols
 {{- end }}
     # -----------------------------------
     # DEPENDENCIES
@@ -190,8 +215,10 @@ services:
 # BEGIN VOLUMES
 # =======================
 
-{{- if (.Values.datavolume_name) }}
+{{- if or (.Values.datavolume_name) (.Values.extra_volume_a) }}
 volumes:
+{{- end }}
+{{- if (.Values.datavolume_name) }}
   # ************************************
   # VOLUME
   # - holds nextcloud server data
@@ -212,6 +239,25 @@ volumes:
 {{-     if eq .Values.volume_exists "true" }}
     external: true
 {{-     end }}
+{{-   end }}
+{{- end }}
+{{- if (.Values.extra_volume_a) }}
+  # ************************************
+  # VOLUME
+  # - external volume 1
+  # ************************************
+  {{.Values.extra_volume_a}}:
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: ${storage_driver}
+    external: true
+{{-     if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts: 
+      host: ${storage_driver_nfsopts_host}
+      export: ${storage_driver_nfsopts_export}/${extra_volume_a}
+{{-     end }}
+{{-   else }}
+    driver: local
+    external: true
 {{-   end }}
 {{- end }}
 

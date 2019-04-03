@@ -95,18 +95,18 @@ catalog:
         Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /var/www/(volume_name).
       required: false
       type: string
-    - variable: extra_volume_b
-      label: "Extra Volume 2"
-      description: |
-        Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /var/www/(volume_name).
-      required: false
-      type: string
-    - variable: extra_volume_c
-      label: "Extra Volume 3"
-      description: |
-        Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /var/www/(volume_name).
-      required: false
-      type: string
+    #- variable: extra_volume_b
+    #  label: "Extra Volume 2"
+    #  description: |
+    #    Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /var/www/(volume_name).
+    #  required: false
+    #  type: string
+    #- variable: extra_volume_c
+    #  label: "Extra Volume 3"
+    #  description: |
+    #    Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /var/www/(volume_name).
+    #  required: false
+    #  type: string
     #- variable: storage_size
     #  label: "Volume Storage Size"
     #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."

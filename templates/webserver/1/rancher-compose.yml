@@ -72,12 +72,12 @@ catalog:
       type: int
       required: true
       default: 65
-    - variable: nginx_keepalive_timeout
-      description: "Number of seconds before the client times out."
-      label: "KeepAlive Timeout"
-      type: int
+    - variable: nginx_keepalive_disable
+      description: "Do not use keepalive for browsers with specific useragents."
+      label: "Disable KeepAlive"
+      type: string
       required: true
-      default: 65
+      default: "msie6"
     - variable: nginx_keepalive_requests
       description: "Maximum keepalive requests."
       label: "KeepAlive Requests"

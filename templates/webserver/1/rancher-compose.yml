@@ -138,6 +138,13 @@ catalog:
         By default this will be a (host scoped) named Docker volume. See "Storage Driver" for other storage options.
       required: false
       type: string
+    - variable: volume_exists
+      label: "Volume Exists"
+      description: |
+        Check this if you have already created the volumes ("Volume Name"_www and "Volume Name"_conf). Do not fill in "NFS Driver Host" or "NFS Driver Volume Path".
+      required: true
+      type: boolean
+      default: false
     #- variable: storage_size
     #  label: "Volume Storage Size"
     #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."

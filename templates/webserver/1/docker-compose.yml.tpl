@@ -199,15 +199,21 @@ volumes:
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
     driver: ${storage_driver}
 {{-     if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts: 
+    driver_opts:
       host: ${storage_driver_nfsopts_host}
       exportBase: ${storage_driver_nfsopts_export}
 {{-       if eq .Values.storage_retain_volume "true" }}
       onRemove: retain
 {{-       end }}
 {{-     end }}
+{{-     if eq .Values.volume_exists "true" }}
+    external: true
+{{-     end }}
 {{-   else }}
     driver: local
+{{-     if eq .Values.volume_exists "true" }}
+    external: true
+{{-     end }}
 {{-   end }}
   # ************************************
   # VOLUME
@@ -224,8 +230,14 @@ volumes:
       onRemove: retain
 {{-       end }}
 {{-     end }}
+{{-     if eq .Values.volume_exists "true" }}
+    external: true
+{{-     end }}
 {{-   else }}
     driver: local
+{{-     if eq .Values.volume_exists "true" }}
+    external: true
+{{-     end }}
 {{-   end }}
 {{- end }}
 

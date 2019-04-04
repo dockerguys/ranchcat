@@ -169,6 +169,12 @@ catalog:
         already exist on the NFS server. Only use this option if "Volume Storage Driver" is set to "rancher-nfs".
       required: false
       type: string
+    - variable: storage_retain_volume
+      label: "Retain NFS Volume"
+      description: Keep the volumes created even after this stack gets deleted.
+      required: true
+      type: boolean
+      value: false
     - variable: repull_image
       description: "Pull from registry source even if the host already have a local image with the same tag."
       label: "Reload Images"

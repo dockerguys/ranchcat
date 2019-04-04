@@ -202,6 +202,9 @@ volumes:
     driver_opts: 
       host: ${storage_driver_nfsopts_host}
       exportBase: ${storage_driver_nfsopts_export}
+{{-       if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-       end }}
 {{-     end }}
 {{-   else }}
     driver: local
@@ -217,6 +220,9 @@ volumes:
     driver_opts: 
       host: ${storage_driver_nfsopts_host}
       exportBase: ${storage_driver_nfsopts_export}
+{{-       if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-       end }}
 {{-     end }}
 {{-   else }}
     driver: local

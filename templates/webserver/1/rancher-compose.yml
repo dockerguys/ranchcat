@@ -1,0 +1,235 @@
+version: '2'
+catalog:
+  name: "Webserver"
+  version: "v1.15.9"
+  description: "A webserver for static files"
+  minimum_rancher_version: v0.51.0
+  maintainer: dockerguys <dockerguys@lizoc.com>
+  questions:
+    - variable: "nginx_image"
+      label: "Webserver Image"
+      description: |
+        Webserver image. Be sure to fill in the "Private Registry" field too if the image is not available publically.
+      required: true
+      default: "dockerguys/nginx:1.15.9-lite"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/nginx:1.15.9-lite
+    - variable: nginx_console_log
+      description: "Output log information to console instead of file."
+      label: "Console Logging"
+      type: boolean
+      required: true
+      default: true
+    - variable: nginx_log_level
+      description: "Output log information to console instead of file."
+      label: "Log Level"
+      type: enum
+      required: true
+      default: "warn"
+      options:
+        - warn
+        - error
+    - variable: nginx_expose_server_version
+      description: "Expose the server version to clients."
+      label: "Expose Server Version"
+      type: boolean
+      required: true
+      default: false
+    - variable: nginx_max_connect
+      description: "The maximum number of concurrent client connections that the server should handle."
+      label: "Maximum Concurrent Connections"
+      type: int
+      required: true
+      default: 1024
+    - variable: nginx_upload_max_size
+      description: "The maximum upload size allowed by clients. In megabytes."
+      label: "Maximum Upload Size"
+      type: int
+      required: true
+      default: 5
+    - variable: nginx_send_file
+      description: "Allow the client to send files."
+      label: "Allow Send File"
+      type: boolean
+      required: true
+      default: true
+    - variable: nginx_tcp_no_push
+      description: "Disable push feature."
+      label: "Disable Push"
+      type: boolean
+      required: true
+      default: false
+    - variable: nginx_tcp_no_delay
+      description: "Enables TCP no-delay feature. This require kernel support."
+      label: "No Delay"
+      type: boolean
+      required: true
+      default: true
+    - variable: nginx_keepalive_timeout
+      description: "Number of seconds before the client times out."
+      label: "KeepAlive Timeout"
+      type: int
+      required: true
+      default: 65
+    - variable: nginx_keepalive_timeout
+      description: "Number of seconds before the client times out."
+      label: "KeepAlive Timeout"
+      type: int
+      required: true
+      default: 65
+    - variable: nginx_keepalive_requests
+      description: "Maximum keepalive requests."
+      label: "KeepAlive Requests"
+      type: int
+      required: true
+      default: 100
+    - variable: nginx_enable_gzip
+      description: "Compress data traffic. Compression reduce the traffic size at the expense of more CPU cycles."
+      label: "Enable GZIP"
+      type: boolean
+      required: true
+      default: true
+    - variable: nginx_enable_webapi_svc
+      description: "Enables the web API service."
+      label: "WebAPI Service"
+      type: boolean
+      required: true
+      default: true
+    - variable: nginx_webapi_svc_port
+      description: "Web API service port. Ignore if not enabling web API service."
+      label: "WebAPI Service Port"
+      type: int
+      required: true
+      default: 81
+    - variable: nginx_enable_cdn_svc
+      description: "Enables the CDN service."
+      label: "CDN Service"
+      type: boolean
+      required: true
+      default: true
+    - variable: nginx_cdn_svc_port
+      description: "CDN service port. Ignore if not enabling CDN service."
+      label: "CDN Service Port"
+      type: int
+      required: true
+      default: 88
+    - variable: nginx_enable_subsite_svc
+      description: "Enables the CDN service."
+      label: "Subsite Hosting Service"
+      type: boolean
+      required: true
+      default: true
+    - variable: nginx_subsite_svc_port
+      description: "Subsite hosting service port. Ignore if not enabling subsite hosting."
+      label: "Subsite Hosting Port"
+      type: int
+      required: true
+      default: 1080
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    - variable: datavolume_name
+      label: "Volume Name"
+      description: |
+        To store the application data in a volume, enter the volume name that should be used.
+        By default this will be a (host scoped) named Docker volume. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    #- variable: storage_size
+    #  label: "Volume Storage Size"
+    #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
+    #  required: false
+    #  type: int
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    - variable: storage_driver_nfsopts_host
+      label: "NFS Driver Host"
+      description: |
+        Specify a NFS hostname instead of the default NFS server. Only use this option if "Volume Storage Driver" is 
+        set to "rancher-nfs".
+      required: false
+      type: string
+    - variable: storage_driver_nfsopts_export
+      label: "NFS Driver Volume Path"
+      description: |
+        Specify the path on the NFS server that will be mounted (e.g. "/storage/nfsvol"). The full directory created 
+        on the NFS server will be this path and the volume name. Do not append the "/" at the end. The full path must 
+        already exist on the NFS server. Only use this option if "Volume Storage Driver" is set to "rancher-nfs".
+      required: false
+      type: string
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    - variable: docker_memory_swap_limit
+      label: "Limit Swap Memory"
+      description: |
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
+        or the same value as Limit Memory to disable swap.
+      type: int
+      required: true
+      default: 0
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  nginx:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 80
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

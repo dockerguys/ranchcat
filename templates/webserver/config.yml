@@ -1,7 +1,7 @@
 name: Webserver
 description: |
   A static page webserver powered by NginX
-version: v1.0.0
+version: v1.15.9
 category: Web
 maintainer: Dockerguys <dockerguys@lizoc.com>
 license: Proprietary ULA

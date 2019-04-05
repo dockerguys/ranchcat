@@ -115,7 +115,7 @@ catalog:
       required: true
       default: 88
     - variable: nginx_enable_subsite_svc
-      description: "Enables the CDN service."
+      description: "Enables the subsite hosting service."
       label: "Subsite Hosting Service"
       type: boolean
       required: true

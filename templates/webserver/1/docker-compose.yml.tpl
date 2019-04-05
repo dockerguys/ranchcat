@@ -76,7 +76,7 @@ services:
 {{- else }}
       NGINX_ENABLE_CDN_HOSTING: "false"
 {{- end }}
-{{- if eq .Values.nginx_cdn_svc_port "true" }}
+{{- if eq .Values.nginx_enable_subsite_svc "true" }}
       NGINX_ENABLE_SUBSITE_HOSTING: "true"
       NGINX_SUBSITE_HOSTING_PORT: "${nginx_subsite_svc_port}"
 {{- else }}

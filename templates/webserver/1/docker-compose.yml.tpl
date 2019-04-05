@@ -70,7 +70,7 @@ services:
 {{- else }}
       NGINX_ENABLE_WEBAPI_PUBLIC_SERVICES: "false"
 {{- end }}
-{{- if eq .Values.nginx_cdn_svc_port "true" }}
+{{- if eq .Values.nginx_enable_cdn_svc "true" }}
       NGINX_ENABLE_CDN_HOSTING: "true"
       NGINX_CDN_HOSTING_PORT: "${nginx_cdn_svc_port}"
 {{- else }}

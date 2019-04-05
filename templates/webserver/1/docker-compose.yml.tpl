@@ -1,14 +1,14 @@
-# =====================================================================
+# #####################################################################
 # This is a rancher template for generating `docker-compose` files.
 # Refer to Rancher docs on syntax:
 # - https://rancher.com/docs/rancher/v1.6/en/cli/variable-interpolation/#templating
 # - https://docs.docker.com/compose/compose-file/compose-file-v2/
-# =====================================================================
+# #####################################################################
 version: '2'
 
-# =======================
+# +++++++++++++++++++++++
 # BEGIN SERVICES
-# =======================
+# +++++++++++++++++++++++
 services:
   # ************************************
   # SERVICE
@@ -125,15 +125,15 @@ services:
     memswap_limit: "${docker_memory_limit}m"
 {{- end }}
 
-# =======================
+# +++++++++++++++++++++++
 # END SERVICES
-# =======================
+# +++++++++++++++++++++++
 
-# =======================
+# +++++++++++++++++++++++
 # BEGIN VOLUMES
 # - stores the static files to serve
 # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volume-configuration-reference
-# =======================
+# +++++++++++++++++++++++
 
 {{- if (.Values.datavolume_name) }}
 volumes:
@@ -186,7 +186,8 @@ volumes:
 {{-   else }}
     driver: local
 {{-   end }}
+{{- end }}
 
-# =======================
+# +++++++++++++++++++++++
 # END VOLUMES
-# =======================
+# +++++++++++++++++++++++

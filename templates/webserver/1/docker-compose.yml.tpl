@@ -34,7 +34,7 @@ services:
       NGINX_HTTP_KEEPALIVE_TIMEOUT: "${nginx_keepalive_timeout}"
       NGINX_HTTP_KEEPALIVE_DISABLE: "${nginx_keepalive_disable}"
       NGINX_HTTP_KEEPALIVE_REQUESTS: "${nginx_keepalive_requests}"
-{{- if eq .Values.keycloak_enable_feature_docker "true" }}
+{{- if eq .Values.nginx_console_log "true" }}
       NGINX_CONSOLE_LOG: "true"
 {{- else }}
       NGINX_CONSOLE_LOG: "false"

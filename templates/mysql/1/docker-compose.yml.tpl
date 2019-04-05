@@ -1,47 +1,16 @@
-# =====================================================================
+# #####################################################################
 # This is a rancher template for generating `docker-compose` files.
 # Refer to Rancher docs on syntax:
 # - https://rancher.com/docs/rancher/v1.6/en/cli/variable-interpolation/#templating
 # - https://docs.docker.com/compose/compose-file/compose-file-v2/
-# =====================================================================
+# #####################################################################
 version: '2'
 
-# =======================
+# +++++++++++++++++++++++
 # BEGIN SERVICES
-# =======================
+# +++++++++++++++++++++++
 
 services:
-  # ************************************
-  # SERVICE
-  # - sidekick to mysql-server
-  # - init persist volume that stores the database
-  # ************************************
-  mysql-data:
-    # -----------------------------------
-    # Image
-    # - support private registry
-    # -----------------------------------
-{{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/busybox"
-{{- else }}
-    image: busybox
-{{- end }}
-    # -----------------------------------
-    # Scheduler labels
-    # -----------------------------------
-    labels:
-      io.rancher.container.start_once: true
-    # -----------------------------------
-    # Volumes
-    # - supports data volumes
-    # -----------------------------------
-    volumes:
-{{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}_db:/var/lib/mysql
-{{- else }}
-      - /var/lib/mysql
-{{- end }}
-
   # ************************************
   # SERVICE
   # - main database server
@@ -91,8 +60,7 @@ services:
     # Scheduler labels
     # -----------------------------------
     labels:
-      io.rancher.sidekicks: mysql-data
-      io.mysqldb.role: server
+      io.mysqldb.role: "{{ .Stack.Name }}/server"
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
@@ -101,12 +69,17 @@ services:
 {{- end }}
     # -----------------------------------
     # VOLUMES
-    # - use vols from sidekick
+    # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes
+    # - specify vol name to use the specified volume
+    # - just write path to create dynamic named volume
     # -----------------------------------
-    volumes_from:
-      - mysql-data
     volumes:
       - /etc/timezone:/etc/timezone:ro
+{{- if (.Values.datavolume_name) }}
+      - ${datavolume_name}_db:/var/lib/mysql
+{{- else }}
+      - /var/lib/mysql
+{{- end }}
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`
@@ -151,9 +124,10 @@ services:
       ADMINER_PLUGINS: "${adminer_plugins}"
     # -----------------------------------
     # Scheduler labels
+    # - no host affinity
     # -----------------------------------
     labels:
-      io.mysqldb.role: webadmin
+      io.mysqldb.role: "{{ .Stack.Name }}/webadmin"
 {{- if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
 {{- end }}
@@ -165,18 +139,21 @@ services:
     cpu_shares: 950
     # -----------------------------------
     # LIMIT RAM
+    # - hard code memory limits
     # -----------------------------------
     mem_limit: "512m"
     memswap_limit: "1024m"
 
-# =======================
+# +++++++++++++++++++++++
 # END SERVICES
-# =======================
+# +++++++++++++++++++++++
 
 
-# =======================
+# +++++++++++++++++++++++
 # BEGIN VOLUMES
-# =======================
+# - stores database files
+# - https://docs.docker.com/compose/compose-file/compose-file-v2/#volume-configuration-reference
+# +++++++++++++++++++++++
 
 {{- if (.Values.datavolume_name) }}
 volumes:
@@ -185,18 +162,28 @@ volumes:
   # - holds the database
   # ************************************
   {{.Values.datavolume_name}}_db:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
-    driver: ${storage_driver}
-{{-     if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts: 
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
       host: ${storage_driver_nfsopts_host}
-      export: ${storage_driver_nfsopts_export}/${datavolume_name}_db
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
 {{-     end }}
 {{-   else }}
     driver: local
 {{-   end }}
 {{- end }}
 
-# =======================
+# +++++++++++++++++++++++
 # END VOLUMES
-# =======================
+# +++++++++++++++++++++++

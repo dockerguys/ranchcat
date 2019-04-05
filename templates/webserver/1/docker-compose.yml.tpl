@@ -95,7 +95,6 @@ services:
 {{- end }}
     # -----------------------------------
     # VOLUMES
-    # - use vols from sidekick
     # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes
     # - specify vol name to use the specified volume
     # - just write path to create dynamic named volume

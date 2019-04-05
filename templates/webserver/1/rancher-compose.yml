@@ -126,11 +126,13 @@ catalog:
       type: int
       required: true
       default: 1080
+    # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"
       type: string
       required: false
+    # --- common param: storage
     - variable: datavolume_name
       label: "Volume Base Name"
       description: |
@@ -184,6 +186,7 @@ catalog:
       required: true
       type: boolean
       value: false
+    # --- common param: repull
     - variable: repull_image
       description: "Pull from registry source even if the host already have a local image with the same tag."
       label: "Reload Images"
@@ -193,11 +196,13 @@ catalog:
         - never
       required: true
       default: "never"
+    # --- common param: custom registry
     - variable: docker_registry_name
       description: "Pull from private registry. Leave blank to pull from public Docker Hub."
       label: "Private Registry"
       type: string
       required: false
+    # --- common param: limit memory
     - variable: docker_memory_limit
       label: "Limit Memory"
       description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
@@ -219,6 +224,7 @@ catalog:
       type: int
       required: true
       default: 0
+    # --- common param: limit cpu
     - variable: docker_cpu_quota_limit
       label: "Limit CPUs"
       description: |

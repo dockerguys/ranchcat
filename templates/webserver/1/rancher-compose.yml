@@ -132,16 +132,17 @@ catalog:
       type: string
       required: false
     - variable: datavolume_name
-      label: "Volume Name"
+      label: "Volume Base Name"
       description: |
-        To store the application data in a volume, enter the volume name that should be used.
-        By default this will be a (host scoped) named Docker volume. See "Storage Driver" for other storage options.
+        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes will be created with this value as the prefix. 
+        By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
       required: false
       type: string
     - variable: volume_exists
       label: "Volume Exists"
       description: |
-        Check this if you have already created the volumes ("Volume Name"_www and "Volume Name"_conf). Do not fill in "NFS Driver Host" or "NFS Driver Volume Path".
+        Check this if you have already created the volumes ("Volume Name"_www and "Volume Name"_conf). Remember to set the "Volume Storage Driver" too. Do not fill 
+        in "NFS Driver Host" or "NFS Driver Volume Path".
       required: true
       type: boolean
       default: false
@@ -245,5 +246,5 @@ services:
       initializing_timeout: 300000
       interval: 2000
       strategy: recreate
-      request_line: GET "/" "HTTP/1.0"
+      request_line: GET "/heartbeat" "HTTP/1.0"
       reinitializing_timeout: 120000

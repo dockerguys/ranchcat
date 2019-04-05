@@ -12,69 +12,6 @@ version: '2'
 services:
   # ************************************
   # SERVICE
-  # - sidekick to nginx
-  # - init persist volume that stores the static files to serve
-  # ************************************
-  nginx-www:
-    # -----------------------------------
-    # Image
-    # - support private registry
-    # -----------------------------------
-{{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/busybox"
-{{- else }}
-    image: busybox
-{{- end }}
-    # -----------------------------------
-    # Scheduler labels
-    # -----------------------------------
-    labels:
-      io.rancher.container.start_once: true
-    # -----------------------------------
-    # Volumes
-    # - supports data volumes
-    # -----------------------------------
-    volumes:
-{{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}_www:/usr/html
-{{- else }}
-      - /usr/html
-{{- end }}
-    command: mkdir -p /usr/html/errors /usr/html/sites/default
-
-  # ************************************
-  # SERVICE
-  # - sidekick to nginx
-  # - init persist volume that stores nginx configs
-  # ************************************
-  nginx-conf:
-    # -----------------------------------
-    # Image
-    # - support private registry
-    # -----------------------------------
-{{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/busybox"
-{{- else }}
-    image: busybox
-{{- end }}
-    # -----------------------------------
-    # Scheduler labels
-    # -----------------------------------
-    labels:
-      io.rancher.container.start_once: true
-    # -----------------------------------
-    # Volumes
-    # - supports data volumes
-    # -----------------------------------
-    volumes:
-{{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}_conf:/etc/nginx/conf.d
-{{- else }}
-      - /etc/nginx/conf.d
-{{- end }}
-
-  # ************************************
-  # SERVICE
   # - main application server
   # ************************************
   nginx:
@@ -149,7 +86,6 @@ services:
     # Scheduler labels
     # -----------------------------------
     labels:
-      io.rancher.sidekicks: nginx-www, nginx-conf
       io.webserver.role: "{{ .Stack.Name }}/server"
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
@@ -160,10 +96,18 @@ services:
     # -----------------------------------
     # VOLUMES
     # - use vols from sidekick
+    # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes
+    # - specify vol name to use the specified volume
+    # - just write path to create dynamic named volume
     # -----------------------------------
-    volumes_from:
-      - nginx-www
-      - nginx-conf
+    volumes:
+{{- if (.Values.datavolume_name) }}
+      - ${datavolume_name}_conf:/etc/nginx/conf.d
+      - ${datavolume_name}_www:/usr/html
+{{- else }}
+      - /etc/nginx/conf.d
+      - /usr/html
+{{- end }}
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`
@@ -187,59 +131,61 @@ services:
 
 # =======================
 # BEGIN VOLUMES
+# - stores the static files to serve
+# - https://docs.docker.com/compose/compose-file/compose-file-v2/#volume-configuration-reference
 # =======================
 
 {{- if (.Values.datavolume_name) }}
 volumes:
   # ************************************
   # VOLUME
-  # - stores the static files to serve
   # ************************************
   {{.Values.datavolume_name}}_www:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
-    driver: ${storage_driver}
-{{-     if (.Values.storage_driver_nfsopts_host) }}
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
     driver_opts:
       host: ${storage_driver_nfsopts_host}
       exportBase: ${storage_driver_nfsopts_export}
-{{-       if eq .Values.storage_retain_volume "true" }}
+{{-         if eq .Values.storage_retain_volume "true" }}
       onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
 {{-       end }}
-{{-     end }}
-{{-     if eq .Values.volume_exists "true" }}
-    external: true
 {{-     end }}
 {{-   else }}
     driver: local
-{{-     if eq .Values.volume_exists "true" }}
-    external: true
-{{-     end }}
 {{-   end }}
+
   # ************************************
   # VOLUME
-  # - stores the static files to serve
   # ************************************
   {{.Values.datavolume_name}}_conf:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
-    driver: ${storage_driver}
-{{-     if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts: 
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
       host: ${storage_driver_nfsopts_host}
       exportBase: ${storage_driver_nfsopts_export}
-{{-       if eq .Values.storage_retain_volume "true" }}
+{{-         if eq .Values.storage_retain_volume "true" }}
       onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
 {{-       end }}
-{{-     end }}
-{{-     if eq .Values.volume_exists "true" }}
-    external: true
 {{-     end }}
 {{-   else }}
     driver: local
-{{-     if eq .Values.volume_exists "true" }}
-    external: true
-{{-     end }}
 {{-   end }}
-{{- end }}
 
 # =======================
 # END VOLUMES

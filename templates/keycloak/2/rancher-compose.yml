@@ -80,6 +80,12 @@ catalog:
         - INFO
         - DEBUG
       default: "INFO"
+    - variable: debug_mode
+      description: "Runs Keycloak in debug mode. This disables theme caching."
+      label: "Enable Debug Mode"
+      type: boolean
+      required: true
+      default: false
     - variable: keycloak_theme
       description: "Sets the global and default theme."
       label: "Theme"
@@ -200,9 +206,9 @@ services:
     retain_ip: true
     health_check:
       response_timeout: 2000
-      healthy_threshold: 2
+      healthy_threshold: 5
       port: 8080
-      unhealthy_threshold: 3
+      unhealthy_threshold: 30
       initializing_timeout: 600000
       interval: 2000
       strategy: recreate

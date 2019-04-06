@@ -82,6 +82,9 @@ services:
       KEYCLOAK_WELCOME_THEME: ${keycloak_theme}
       KEYCLOAK_DEFAULT_THEME: ${keycloak_theme}
       KEYCLOAK_OPERATING_MODE_CONFIG: "${keycloak_opmode_config}.xml"
+{{- if eq .Values.debug_mode "true" }}
+      KEYCLOAK_DEBUG_MODE: "true"
+{{- end }}
 {{- if eq .Values.keycloak_enable_feature_docker "true" }}
       KEYCLOAK_STARTUP_EXTARGS: "-Dkeycloak.profile.feature.docker=enabled ${keycloak_extarg}"
 {{- else }}

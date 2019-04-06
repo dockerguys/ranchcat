@@ -15,6 +15,6 @@ What's not included:
 
 Usage
 -----
-1. Create your database first (user: nextcloudapp, db nextcloud - utf8mb4_general_ci). We use MySQL here.
+1. Create your database first (user: nextcloudapp, db nextcloud - utf8mb4_bin). We use MySQL here.
 2. Update your load balancer to point 80/443 to 80 of the NextCloud service.
 3. Go to the web UI and perform setup.

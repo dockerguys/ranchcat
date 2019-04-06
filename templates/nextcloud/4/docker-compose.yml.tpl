@@ -127,7 +127,7 @@ services:
       - /var/www/html/themes
 {{- end }}
 {{- if (.Values.extra_volume_a) }}
-      - ${extra_volume_a}:/friendvols/${extra_volume_a}
+      - ${extra_volume_a}:/var/www/${extra_volume_a}
 {{- end }}
     # -----------------------------------
     # DEPENDENCIES

@@ -73,7 +73,7 @@ catalog:
     - variable: extra_volume_a
       label: "Extra Volume 1"
       description: |
-        Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /friendvols/(volume_name).
+        Additional volume to be mounted (if required). The volume must already exist. It will be mounted under /var/www/(volume_name).
       required: false
       type: string
     # --- common param: host affinity

@@ -132,7 +132,7 @@ catalog:
       label: "Host Affinity Label"
       type: string
       required: false
-    # --- common param: storage
+    # --- common param: storage; subst vols_required = `volumes ("Volume Name"_[www,conf])`
     - variable: datavolume_name
       label: "Volume Base Name"
       description: |
@@ -143,7 +143,7 @@ catalog:
     - variable: volume_exists
       label: "Volume Exists"
       description: |
-        Check this if you have already created the volumes ("Volume Name"_www and "Volume Name"_conf). Remember to set the "Volume Storage Driver" too. Do not fill 
+        Check this if you have already created the volumes ("Volume Name"_[www,conf]). Remember to set the "Volume Storage Driver" too. Do not fill 
         in "NFS Driver Host" or "NFS Driver Volume Path".
       required: true
       type: boolean

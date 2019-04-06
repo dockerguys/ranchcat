@@ -1,77 +1,15 @@
-# =====================================================================
+# #####################################################################
 # This is a rancher template for generating `docker-compose` files.
 # Refer to Rancher docs on syntax:
 # - https://rancher.com/docs/rancher/v1.6/en/cli/variable-interpolation/#templating
 # - https://docs.docker.com/compose/compose-file/compose-file-v2/
-# =====================================================================
+# #####################################################################
 version: '2'
 
-# =======================
+# +++++++++++++++++++++++
 # BEGIN SERVICES
-# =======================
+# +++++++++++++++++++++++
 services:
-  # ************************************
-  # SERVICE
-  # - sidekick to nextcloud
-  # - init persist volume that stores /var/www/html
-  # ************************************
-  nextcloud-src:
-    # -----------------------------------
-    # Image
-    # - support private registry
-    # -----------------------------------
-{{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/busybox"
-{{- else }}
-    image: busybox
-{{- end }}
-    # -----------------------------------
-    # Scheduler labels
-    # -----------------------------------
-    labels:
-      io.rancher.container.start_once: true
-    # -----------------------------------
-    # Volumes
-    # - supports data volumes
-    # -----------------------------------
-    volumes:
-{{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}_src:/var/www/html
-{{- else }}
-      - /var/www/html
-{{- end }}
-
-{{- if (.Values.extra_volume_a) }}
-  # ************************************
-  # SERVICE
-  # - sidekick to nextcloud
-  # - mounts external volumes
-  # ************************************
-  nextcloud-extvols:
-    # -----------------------------------
-    # Image
-    # - support private registry
-    # -----------------------------------
-{{-   if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/busybox"
-{{-   else }}
-    image: busybox
-{{-   end }}
-    # -----------------------------------
-    # Scheduler labels
-    # -----------------------------------
-    labels:
-      io.rancher.container.start_once: true
-    # -----------------------------------
-    # Volumes
-    # - supports data volumes
-    # -----------------------------------
-    volumes:
-{{-   if (.Values.extra_volume_a) }}
-      - ${extra_volume_a}:/var/www/${extra_volume_a}
-{{-   end }}
-{{- end }}
-
   # ************************************
   # SERVICE
   # - same host affinity as nextcloud
@@ -163,12 +101,7 @@ services:
     # Scheduler labels
     # -----------------------------------
     labels:
-      io.nextcloud.role: "server"
-{{- if (.Values.extra_volume_a) }}
-      io.rancher.sidekicks: nextcloud-src, nextcloud-extvols
-{{- else }}
-      io.rancher.sidekicks: nextcloud-src
-{{- end }}
+      io.nextcloud.role: "{{ .Stack.Name }}/server"
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
@@ -177,12 +110,24 @@ services:
 {{- end }}
     # -----------------------------------
     # VOLUMES
-    # - use vols from sidekick
+    # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes
+    # - specify vol name to use the specified volume
+    # - just write path to create dynamic named volume
     # -----------------------------------
-    volumes_from:
-      - nextcloud-src
+    volumes:
+{{- if (.Values.datavolume_name) }}
+      - ${datavolume_name}_conf:/var/www/html/config
+      - ${datavolume_name}_data:/var/www/html/data
+      - ${datavolume_name}_apps:/var/www/html/custom_apps
+      - ${datavolume_name}_themes:/var/www/html/themes
+{{- else }}
+      - /var/www/html/config
+      - /var/www/html/data
+      - /var/www/html/custom_apps
+      - /var/www/html/themes
+{{- end }}
 {{- if (.Values.extra_volume_a) }}
-      - nextcloud-extvols
+      - ${extra_volume_a}:/friendvols/${extra_volume_a}
 {{- end }}
     # -----------------------------------
     # DEPENDENCIES
@@ -211,13 +156,13 @@ services:
 {{- end }}
     memswap_limit: "${docker_memory_swap_limit}m"
 
-# =======================
+# +++++++++++++++++++++++
 # END SERVICES
-# =======================
+# +++++++++++++++++++++++
 
-# =======================
+# +++++++++++++++++++++++
 # BEGIN VOLUMES
-# =======================
+# +++++++++++++++++++++++
 
 {{- if or (.Values.datavolume_name) (.Values.extra_volume_a) }}
 volumes:
@@ -225,46 +170,124 @@ volumes:
 {{- if (.Values.datavolume_name) }}
   # ************************************
   # VOLUME
-  # - holds nextcloud server data
+  # - holds nextcloud server config
   # ************************************
-  {{.Values.datavolume_name}}_src:
-{{-   if eq .Values.storage_driver "rancher-nfs" }}
-    driver: ${storage_driver}
-{{-     if eq .Values.volume_exists "true" }}
+  {{.Values.datavolume_name}}_conf:
+{{-   if eq .Values.volume_exists "true" }}
     external: true
-{{-     end }}
-{{-     if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts: 
+{{-   end }}
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
       host: ${storage_driver_nfsopts_host}
-      export: ${storage_driver_nfsopts_export}/${datavolume_name}_src
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
 {{-     end }}
 {{-   else }}
     driver: local
-{{-     if eq .Values.volume_exists "true" }}
+{{-   end }}
+
+  # ************************************
+  # VOLUME
+  # - holds nextcloud user data
+  # ************************************
+  {{.Values.datavolume_name}}_data:
+{{-   if eq .Values.volume_exists "true" }}
     external: true
+{{-   end }}
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
+      host: ${storage_driver_nfsopts_host}
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
 {{-     end }}
+{{-   else }}
+    driver: local
+{{-   end }}
+
+  # ************************************
+  # VOLUME
+  # - holds nextcloud custom apps
+  # ************************************
+  {{.Values.datavolume_name}}_apps:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
+      host: ${storage_driver_nfsopts_host}
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
+{{-     end }}
+{{-   else }}
+    driver: local
+{{-   end }}
+
+  # ************************************
+  # VOLUME
+  # - holds nextcloud themes
+  # ************************************
+  {{.Values.datavolume_name}}_themes:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
+      host: ${storage_driver_nfsopts_host}
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
+{{-     end }}
+{{-   else }}
+    driver: local
 {{-   end }}
 {{- end }}
+
 {{- if (.Values.extra_volume_a) }}
   # ************************************
   # VOLUME
   # - external volume 1
   # ************************************
   {{.Values.extra_volume_a}}:
+    external: true
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
     driver: ${storage_driver}
-    external: true
-{{-     if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts: 
-      host: ${storage_driver_nfsopts_host}
-      export: ${storage_driver_nfsopts_export}/${extra_volume_a}
-{{-     end }}
 {{-   else }}
     driver: local
-    external: true
 {{-   end }}
+
 {{- end }}
 
-# =======================
+# +++++++++++++++++++++++
 # END VOLUMES
-# =======================
+# +++++++++++++++++++++++

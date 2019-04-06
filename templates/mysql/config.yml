@@ -1,5 +1,5 @@
 name: MySQL
 description: |
-    Single instance MySQL server.
-version: v10.1.26.0
+    Single instance MariaDB server.
+version: v10.3.13.0
 category: Databases

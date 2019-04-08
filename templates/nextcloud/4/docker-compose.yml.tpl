@@ -91,12 +91,14 @@ services:
 {{- if (.Values.extra_volume_a) }}
       EXTERNAL_MOUNTPOINTS: "${extra_volume_a}"
 {{- end }}
+{{- if ne .Values.db_vendor "sqlite" }}
     # -----------------------------------
     # Links to other containers
     # - database service as "db"
     # -----------------------------------
     external_links:
       - ${db_service}:db
+{{- end }}
     # -----------------------------------
     # Scheduler labels
     # -----------------------------------

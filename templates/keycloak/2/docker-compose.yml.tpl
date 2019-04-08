@@ -56,12 +56,14 @@ services:
 {{- else }}
     image: ${keycloak_image}
 {{- end }}
+{{- if ne .Values.db_vendor "h2" }}
     # -----------------------------------
     # External link
     # - link to db server
     # -----------------------------------
     external_links:
       - ${db_service}:db
+{{- end }}
     # -----------------------------------
     # TTY/STDIN
     # -----------------------------------

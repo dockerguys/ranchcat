@@ -33,7 +33,7 @@ services:
       GITEA_SESSION_ENGINE: "file"
       GITEA_SESSION_ENGINE_CONNECTOR: "/data/gitea/sessions"
       UPDATE_CERT_CA_ON_START: "${renew_ca_onstart}"
-      ADMIN_NAME: "${admin_user}"
+      ADMIN_NAME: "${admin_name}"
       ADMIN_DEFAULT_PASSWORD: "${admin_password}"
       GITEA_DOMAIN: ${gitea_domain}
       ROOT_URL: "${gitea_public_url}"
@@ -73,7 +73,7 @@ services:
     # Scheduler labels
     # -----------------------------------
     labels:
-      io.nextcloud.role: "{{ .Stack.Name }}/server"
+      io.githost.role: "{{ .Stack.Name }}/server"
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

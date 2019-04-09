@@ -82,8 +82,8 @@ catalog:
       label: "Disable SSH"
       description: "Disables git operation using the SSH protocol"
       required: true
-      default: false
       type: boolean
+      default: false
     - variable: gitea_runmode
       label: "Run Mode"
       description: "Run in developer, production or test debug mode."

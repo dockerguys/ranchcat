@@ -1,7 +1,7 @@
 name: Gitea
 description: |
   Lightweight alternative to GitHub
-version: v1.3
+version: v1.7.5
 category: Git
 maintainer: Dockerguys <dockerguys@lizoc.com>
 license: Proprietary ULA

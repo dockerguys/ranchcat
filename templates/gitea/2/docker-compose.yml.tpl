@@ -28,6 +28,7 @@ services:
     # ENV
     # -----------------------------------
     environment:
+      GITEA_SETUP_SKIP_DATABASE_INIT: "${skip_db_init}"
       DISABLE_REGISTRATION: "${disable_registration}"
       REQUIRE_SIGNIN_VIEW: "${view_require_signin}"
       GITEA_SESSION_ENGINE: "file"

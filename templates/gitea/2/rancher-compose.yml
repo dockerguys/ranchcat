@@ -159,6 +159,13 @@ catalog:
       required: true
       type: "password"
       default: "DatabasePassword"
+    - variable: "skip_db_init"
+      description: |
+        Force the setup procedure to skip database initialization. Use this if you are recovering from a previous instance and the database is already provisioned.
+      label: "Skip Database Setup"
+      required: true
+      type: boolean
+      default: false
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

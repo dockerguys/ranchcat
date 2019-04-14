@@ -86,18 +86,28 @@ catalog:
       type: int
       required: true
       default: 1194
+    # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"
       type: string
       required: false
+    # --- common param: storage; subst vols_required = `volumes ("Volume Name"_[conf,logs])`
     - variable: datavolume_name
-      label: "Volume Name"
+      label: "Volume Base Name"
       description: |
-        To store the application data in a volume, enter the volume name that should be used.
-        By default this will be a (host scoped) named Docker volume. See "Storage Driver" for other storage options.
+        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes will be created with this value as the prefix. 
+        By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
       required: false
       type: string
+    - variable: volume_exists
+      label: "Volume Exists"
+      description: |
+        Check this if you have already created the volumes ("Volume Name"_[conf,logs]). Remember to set the "Volume Storage Driver" too. Do not fill 
+        in "NFS Driver Host" or "NFS Driver Volume Path".
+      required: true
+      type: boolean
+      default: false
     #- variable: storage_size
     #  label: "Volume Storage Size"
     #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
@@ -117,18 +127,26 @@ catalog:
     - variable: storage_driver_nfsopts_host
       label: "NFS Driver Host"
       description: |
-        Specify a NFS hostname instead of the default NFS server. Only use this option if "Volume Storage Driver" is 
-        set to "rancher-nfs".
+        Specify a NFS hostname instead of the default NFS server. Only fill in this option if "Volume Storage Driver" is 
+        set to "rancher-nfs", and the volume does not already exist.
       required: false
       type: string
     - variable: storage_driver_nfsopts_export
       label: "NFS Driver Volume Path"
       description: |
-        Specify the path on the NFS server that will be mounted (e.g. "/storage/nfsvol"). The full directory created 
-        on the NFS server will be this path and the volume name. Do not append the "/" at the end. The full path must 
-        already exist on the NFS server. Only use this option if "Volume Storage Driver" is set to "rancher-nfs".
+        Specify the exported base path on the NFS server (e.g. "/storage/nfsvol"). The full directory(ies) created 
+        on the NFS server will be this path and the volume name(s). Do not append the "/" at the end. This exported base path 
+        must already exist on the NFS server. Only fill in this option if "Volume Storage Driver" is set to "rancher-nfs", and 
+        the volume does not already exist.
       required: false
       type: string
+    - variable: storage_retain_volume
+      label: "Retain NFS Volume"
+      description: Keep the volumes created even after this stack gets deleted. This option has no effect if the volume(s) already exists.
+      required: true
+      type: boolean
+      value: false
+    # --- common param: repull
     - variable: repull_image
       description: "Pull from registry source even if the host already have a local image with the same tag."
       label: "Reload Images"
@@ -138,11 +156,13 @@ catalog:
         - never
       required: true
       default: "never"
+    # --- common param: custom registry
     - variable: docker_registry_name
       description: "Pull from private registry. Leave blank to pull from public Docker Hub."
       label: "Private Registry"
       type: string
       required: false
+    # --- common param: limit memory
     - variable: docker_memory_limit
       label: "Limit Memory"
       description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
@@ -162,8 +182,8 @@ catalog:
         Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
         or the same value as Limit Memory to disable swap.
       type: int
-      required: true
-      default: 0
+      required: false
+    # --- common param: limit cpu
     - variable: docker_cpu_quota_limit
       label: "Limit CPUs"
       description: |
@@ -180,7 +200,7 @@ catalog:
       default: 1024
 
 services:
-  softether-server:
+  softether:
     scale: 1
     health_check:
       response_timeout: 2000

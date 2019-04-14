@@ -1,83 +1,20 @@
-# =====================================================================
+# #####################################################################
 # This is a rancher template for generating `docker-compose` files.
 # Refer to Rancher docs on syntax:
 # - https://rancher.com/docs/rancher/v1.6/en/cli/variable-interpolation/#templating
 # - https://docs.docker.com/compose/compose-file/compose-file-v2/
-# =====================================================================
+# #####################################################################
 version: '2'
 
-# =======================
+# +++++++++++++++++++++++
 # BEGIN SERVICES
-# =======================
-
+# +++++++++++++++++++++++
 services:
   # ************************************
   # SERVICE
-  # - sidekick to softether-server
-  # - init persist volume that stores the server config
+  # - primary application
   # ************************************
-  softether-config:
-    # -----------------------------------
-    # Image
-    # - support private registry
-    # -----------------------------------
-{{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/busybox"
-{{- else }}
-    image: busybox
-{{- end }}
-    # -----------------------------------
-    # Scheduler labels
-    # -----------------------------------
-    labels:
-      io.rancher.container.start_once: true
-    # -----------------------------------
-    # Volumes
-    # - supports data volumes
-    # -----------------------------------
-    volumes:
-{{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}_config:/etc/vpnserver
-{{- else }}
-      - /etc/vpnserver
-{{- end }}
-
-  # ************************************
-  # SERVICE
-  # - sidekick to softether-server
-  # - init persist volume that stores the server logs
-  # ************************************
-  softether-logs:
-    # -----------------------------------
-    # Image
-    # - support private registry
-    # -----------------------------------
-{{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/busybox"
-{{- else }}
-    image: busybox
-{{- end }}
-    # -----------------------------------
-    # Scheduler labels
-    # -----------------------------------
-    labels:
-      io.rancher.container.start_once: true
-    # -----------------------------------
-    # Volumes
-    # - supports data volumes
-    # -----------------------------------
-    volumes:
-{{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}_logs:/var/log/vpnserver
-{{- else }}
-      - /var/log/vpnserver
-{{- end }}
-
-  # ************************************
-  # SERVICE
-  # - the main application
-  # ************************************
-  softether-server:
+  softether:
     # -----------------------------------
     # Image
     # - support private registry
@@ -87,11 +24,6 @@ services:
 {{- else }}
     image: ${softether_image}
 {{- end }}
-    # -----------------------------------
-    # TTY/STDIN
-    # -----------------------------------
-    tty: true
-    stdin_open: true
     # -----------------------------------
     # ENV
     # -----------------------------------
@@ -130,8 +62,7 @@ services:
     # Scheduler labels
     # -----------------------------------
     labels:
-      io.rancher.sidekicks: softether-config, softether-logs
-      io.softether.role: server
+      io.softether.role: "{{ .Stack.Name }}/server"
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
@@ -140,11 +71,18 @@ services:
 {{- end }}
     # -----------------------------------
     # VOLUMES
-    # - use vols from sidekick
+    # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes
+    # - specify vol name to use the specified volume
+    # - just write path to create dynamic named volume
     # -----------------------------------
-    volumes_from:
-      - softether-config
-      - softether-logs
+    volumes:
+{{- if (.Values.datavolume_name) }}
+      - ${datavolume_name}_conf:/etc/vpnserver
+      - ${datavolume_name}_logs:/var/www/html/config
+{{- else }}
+      - /etc/vpnserver
+      - /var/www/html/config
+{{- end }}
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`
@@ -160,29 +98,41 @@ services:
 {{- if (.Values.docker_memory_limit) }}
     mem_limit: "${docker_memory_limit}m"
 {{- end }}
+{{- if (.Values.docker_memory_swap_limit) }}
     memswap_limit: "${docker_memory_swap_limit}m"
+{{- end }}
 
-# =======================
+# +++++++++++++++++++++++
 # END SERVICES
-# =======================
+# +++++++++++++++++++++++
 
-# =======================
+# +++++++++++++++++++++++
 # BEGIN VOLUMES
-# =======================
+# +++++++++++++++++++++++
 
 {{- if (.Values.datavolume_name) }}
 volumes:
   # ************************************
   # VOLUME
-  # - holds vpn server configs
+  # - holds server config
   # ************************************
-  {{.Values.datavolume_name}}_config:
+  {{.Values.datavolume_name}}_conf:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
-    driver: ${storage_driver}
-{{-     if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts: 
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
       host: ${storage_driver_nfsopts_host}
-      export: ${storage_driver_nfsopts_export}/${datavolume_name}_config
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
 {{-     end }}
 {{-   else }}
     driver: local
@@ -193,18 +143,27 @@ volumes:
   # - holds vpn server logs
   # ************************************
   {{.Values.datavolume_name}}_logs:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
 {{-   if eq .Values.storage_driver "rancher-nfs" }}
-    driver: ${storage_driver}
-{{-     if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts: 
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
       host: ${storage_driver_nfsopts_host}
-      export: ${storage_driver_nfsopts_export}/${datavolume_name}_logs
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
 {{-     end }}
 {{-   else }}
     driver: local
 {{-   end }}
-{{- end }}
 
-# =======================
+# +++++++++++++++++++++++
 # END VOLUMES
-# =======================
+# +++++++++++++++++++++++

@@ -28,7 +28,7 @@ services:
     # Scheduler labels
     # -----------------------------------
     labels:
-      io.githost.role: "{{ .Stack.Name }}/ide"
+      io.theia.role: "{{ .Stack.Name }}/ide"
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

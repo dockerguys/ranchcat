@@ -66,21 +66,23 @@ services:
 {{- end }}
 {{- if eq .Values.nginx_enable_webapi_svc "true" }}
       NGINX_ENABLE_WEBAPI_PUBLIC_SERVICES: "true"
-      NGINX_WEBAPI_PUBLIC_SERVICES_PORT: "${nginx_webapi_svc_port}"
 {{- else }}
       NGINX_ENABLE_WEBAPI_PUBLIC_SERVICES: "false"
 {{- end }}
 {{- if eq .Values.nginx_enable_cdn_svc "true" }}
       NGINX_ENABLE_CDN_HOSTING: "true"
-      NGINX_CDN_HOSTING_PORT: "${nginx_cdn_svc_port}"
 {{- else }}
       NGINX_ENABLE_CDN_HOSTING: "false"
 {{- end }}
 {{- if eq .Values.nginx_enable_subsite_svc "true" }}
       NGINX_ENABLE_SUBSITE_HOSTING: "true"
-      NGINX_SUBSITE_HOSTING_PORT: "${nginx_subsite_svc_port}"
 {{- else }}
       NGINX_ENABLE_SUBSITE_HOSTING: "false"
+{{- end }}
+{{- if eq .Values.nginx_enable_httpsify_svc "true" }}
+      NGINX_HTTPS_REDIRECTOR_PORT: "true"
+{{- else }}
+      NGINX_HTTPS_REDIRECTOR_PORT: "false"
 {{- end }}
     # -----------------------------------
     # Scheduler labels

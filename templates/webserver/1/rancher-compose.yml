@@ -96,36 +96,24 @@ catalog:
       type: boolean
       required: true
       default: true
-    - variable: nginx_webapi_svc_port
-      description: "Web API service port. Ignore if not enabling web API service."
-      label: "WebAPI Service Port"
-      type: int
-      required: true
-      default: 81
     - variable: nginx_enable_cdn_svc
       description: "Enables the CDN service."
       label: "CDN Service"
       type: boolean
       required: true
       default: true
-    - variable: nginx_cdn_svc_port
-      description: "CDN service port. Ignore if not enabling CDN service."
-      label: "CDN Service Port"
-      type: int
-      required: true
-      default: 88
     - variable: nginx_enable_subsite_svc
       description: "Enables the subsite hosting service."
       label: "Subsite Hosting Service"
       type: boolean
       required: true
       default: true
-    - variable: nginx_subsite_svc_port
-      description: "Subsite hosting service port. Ignore if not enabling subsite hosting."
-      label: "Subsite Hosting Port"
-      type: int
+    - variable: nginx_enable_httpsify_svc
+      description: "Enables HTTP to HTTPS redirection service."
+      label: "HTTP Redirector Service"
+      type: boolean
       required: true
-      default: 1080
+      default: true
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
@@ -202,7 +190,7 @@ catalog:
       label: "Private Registry"
       type: string
       required: false
-    # --- common param: limit memory
+    # --- common param: limit memory, remove docker_memory_swap_limit
     - variable: docker_memory_limit
       label: "Limit Memory"
       description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
@@ -216,14 +204,6 @@ catalog:
         for memory released.
       type: int
       required: false
-    - variable: docker_memory_swap_limit
-      label: "Limit Swap Memory"
-      description: |
-        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
-        or the same value as Limit Memory to disable swap.
-      type: int
-      required: true
-      default: 0
     # --- common param: limit cpu
     - variable: docker_cpu_quota_limit
       label: "Limit CPUs"

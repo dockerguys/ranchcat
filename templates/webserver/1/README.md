@@ -13,12 +13,24 @@ What's not included:
 Usage
 -----
 1. Start this stack
-2. Update your load balancer to point 80/443 to 80 of the nginx service.
+2. Update your load balancer to point 80/443 to 80 of `io.webserver.role={stack_name}/server`.
 
 Advanced Usage
 --------------
-You can mount the volumes used by this container on another stack (like NextCloud) that can modify the files. The webserver 
-will then be able to serve the modified files.
+This image offers a variety of services on different ports. You can create multiple rules on your load balancer to forward to these ports:
+
+1. **Port 8008**: HTTP to HTTPS redirection service. Anyone who visits HTTP/80 gets redirected to HTTPS/443 version of the same URL.
+
+2. **Port 8042**: Basic web API services. Out-of-box includes `/generate_204` and `/ip`.
+
+3. **Port 591**: CDN hosting service. CORs is allowed and cache max-age is set to a long time (so client browsers will cache the content).
+
+4. **Port 8080**: Subsite service. Visitors are served files from `/usr/html/sites/www/{domain}/html`, so you can show different content based on the domain accessed. Also designed for HTML5 push-state, meaning that if you visit `www.mydomain.com/foobar`, the server will search inside `/usr/html/sites/www/www.mydomain.com/html` for `/foobar/index.html`, and if not found, `/index.html`. But if the URL has a file extension like `www.mydomain.com/foobar.js`, it'll just search for `/foobar.js` and 404 when not found.
+
+
+Modifying Content
+-----------------
+This image serves static web content, meaning that it serves whatever is on its disk as-is without modification. You can mount the volumes used by this container on another stack (like NextCloud) that can modify the files. The webserver will then be able to serve the dynamically modified files immediately.
 
 
 Storage Options

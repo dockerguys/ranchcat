@@ -1,0 +1,8 @@
+name: Theia IDE
+description: |
+  Full IDE inside your web browser
+version: v0.5.0
+category: IDE
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

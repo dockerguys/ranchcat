@@ -62,7 +62,9 @@ services:
 {{- if (.Values.docker_memory_limit) }}
     mem_limit: "${docker_memory_limit}m"
 {{- end }}
+{{- if (.Values.docker_memory_swap_limit) }}
     memswap_limit: "${docker_memory_swap_limit}m"
+{{- end }}
 
 # +++++++++++++++++++++++
 # END SERVICES

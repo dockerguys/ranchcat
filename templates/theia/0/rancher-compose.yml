@@ -111,8 +111,7 @@ catalog:
         Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
         or the same value as Limit Memory to disable swap.
       type: int
-      required: true
-      default: 0
+      required: false
     # --- common param: limit cpu
     - variable: docker_cpu_quota_limit
       label: "Limit CPUs"

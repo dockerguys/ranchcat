@@ -1,14 +1,14 @@
-# =====================================================================
+# #####################################################################
 # This is a rancher template for generating `docker-compose` files.
 # Refer to Rancher docs on syntax:
 # - https://rancher.com/docs/rancher/v1.6/en/cli/variable-interpolation/#templating
 # - https://docs.docker.com/compose/compose-file/compose-file-v2/
-# =====================================================================
+# #####################################################################
 version: '2'
 
-# =======================
+# +++++++++++++++++++++++
 # BEGIN SERVICES
-# =======================
+# +++++++++++++++++++++++
 services:
   # ************************************
   # SERVICE
@@ -22,7 +22,7 @@ services:
 {{- if (.Values.docker_registry_name) }}
     image: "${docker_registry_name}/${winkms_image}"
 {{- else }}
-    image: "${winkms_image}"
+    image: ${winkms_image}
 {{- end }}
     # -----------------------------------
     # ENV
@@ -85,7 +85,7 @@ services:
     # Scheduler labels
     # -----------------------------------
     labels:
-      io.windowskms.role: server
+      io.windowskms.role: "{{ .Stack.Name }}/server"
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
@@ -109,6 +109,6 @@ services:
     memswap_limit: "${docker_memory_limit}m"
 {{- end }}
 
-# =======================
+# +++++++++++++++++++++++
 # END SERVICES
-# =======================
+# +++++++++++++++++++++++

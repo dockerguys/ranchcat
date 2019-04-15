@@ -78,10 +78,10 @@ services:
     volumes:
 {{- if (.Values.datavolume_name) }}
       - ${datavolume_name}_conf:/etc/vpnserver
-      - ${datavolume_name}_logs:/var/www/html/config
+      - ${datavolume_name}_logs:/var/log/vpnserver
 {{- else }}
       - /etc/vpnserver
-      - /var/www/html/config
+      - /var/log/vpnserver
 {{- end }}
     # -----------------------------------
     # LIMIT CPU
@@ -163,6 +163,7 @@ volumes:
 {{-   else }}
     driver: local
 {{-   end }}
+{{- end }}
 
 # +++++++++++++++++++++++
 # END VOLUMES

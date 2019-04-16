@@ -80,9 +80,9 @@ services:
       NGINX_ENABLE_SUBSITE_HOSTING: "false"
 {{- end }}
 {{- if eq .Values.nginx_enable_httpsify_svc "true" }}
-      NGINX_HTTPS_REDIRECTOR_PORT: "true"
+      NGINX_ENABLE_HTTPS_REDIRECTOR: "true"
 {{- else }}
-      NGINX_HTTPS_REDIRECTOR_PORT: "false"
+      NGINX_ENABLE_HTTPS_REDIRECTOR: "false"
 {{- end }}
     # -----------------------------------
     # Scheduler labels

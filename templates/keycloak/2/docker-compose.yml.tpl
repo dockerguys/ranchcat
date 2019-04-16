@@ -115,13 +115,6 @@ services:
 {{- else }}
       - /opt/jboss/keycloak/standalone/data
 {{- end }}
-
-    # -----------------------------------
-    # VOLUMES
-    # - use vols from sidekick
-    # -----------------------------------
-    volumes_from:
-      - keycloak-data
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`

@@ -81,6 +81,7 @@ services:
       DATABASE_USER: "${nextcloud_dbuser}"
       DATABASE_PASSWORD: "${nextcloud_dbpassword}"
       DATABASE_ALREADY_EXISTS: "${database_exists}"
+      ENABLE_LOCAL_CACHING: "false"
       CACHING_BACKEND: "redis"
       CACHING_HOST: "redis"
       TRUSTED_DOMAINS: "localhost *"

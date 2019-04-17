@@ -80,6 +80,7 @@ services:
       DATABASE_NAME: "${nextcloud_dbname}"
       DATABASE_USER: "${nextcloud_dbuser}"
       DATABASE_PASSWORD: "${nextcloud_dbpassword}"
+      DATABASE_ALREADY_EXISTS: "${database_exists}"
       CACHING_BACKEND: "redis"
       CACHING_HOST: "redis"
       TRUSTED_DOMAINS: "localhost *"

@@ -54,6 +54,13 @@ catalog:
       type: "password"
       required: true
       default: "DatabasePassword"
+    - variable: database_exists
+      description: |
+        Skip database initialization on first run. Only enable this if you have manually imported the database from a previous instance.
+      label: "Database Already Exists"
+      type: boolean
+      required: true
+      default: false
     - variable: "nextcloud_image"
       label: "NextCloud Image"
       description: "Image to use"

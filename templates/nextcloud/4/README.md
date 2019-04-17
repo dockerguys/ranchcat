@@ -15,6 +15,15 @@ What's not included:
 
 Usage
 -----
-1. Create your database first (user: nextcloudapp, db nextcloud - utf8mb4_bin). We use MySQL here.
+1. Create your database first (user: nextcloudapp, db nextcloud - utf8mb4_general_ci). We use MySQL here.
 2. Update your load balancer to point 80/443 to 80 of the NextCloud service.
 3. Go to the web UI and perform setup.
+
+Migration Gotchas
+-----------------
+If you are migrating from a previous instance, there are a couple of important things to mind:
+1. The `Install from Scratch` routine is triggered if `/var/www/html/version.php` wasn't found
+2. The following folders are mounted volumes inside `/var/www/html`: `config`, `custom_apps`, `themes`, and `data`
+3. If these mounted volumes contains data, they will be untouched by the installation procedure.
+4. The `config` folder will contain the database server connection credentials. Therefore, you need to ensure that the database 
+password is the same as the previous instance for things to work.

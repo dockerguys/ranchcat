@@ -9,8 +9,8 @@
       label: "MySQL Docker Image"
       type: "enum"
       options:
-        - "dockerguys/mariadb:10.3.13.0"
-      default: "dockerguys/mariadb:10.3.13.0"
+        - "dockerguys/mariadb:10.3.13-r0"
+      default: "dockerguys/mariadb:10.3.13-r0"
       required: true
     - variable: mysql_root_name
       description: |

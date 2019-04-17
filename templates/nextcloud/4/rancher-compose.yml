@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "NextCloud"
-  version: "v15.0.5.0"
+  version: "v15.0.7.0"
   description: "Web storage and more!"
   questions:
     - variable: nextcloud_user
@@ -58,18 +58,18 @@ catalog:
       label: "NextCloud Image"
       description: "Image to use"
       required: true
-      default: "dockerguys/nextcloud:15.0.5"
+      default: "dockerguys/nextcloud:15.0.7"
       type: enum
       options: # List of options if using type of `enum`
-        - dockerguys/nextcloud:15.0.5
+        - dockerguys/nextcloud:15.0.7
     - variable: "redis_image"
       label: "Redis Image"
       description: "Redis database required. Choose the desired version."
       required: true
-      default: "dockerguys/redis:5.0.3"
+      default: "dockerguys/redis:5.0.4"
       type: enum
       options:
-        - dockerguys/redis:5.0.3
+        - dockerguys/redis:5.0.4
     - variable: extra_volume_a
       label: "Extra Volume 1"
       description: |

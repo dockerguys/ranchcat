@@ -1,0 +1,235 @@
+version: '2'
+catalog:
+  name: "Keycloak"
+  version: "6.0.0"
+  description: "Self-hosted single sign-on solution"
+  questions:
+    - variable: keycloak_user
+      description: "Primary administrative user"
+      label: "Admin User"
+      type: "string"
+      required: true
+      default: administrator
+    - variable: keycloak_password
+      description: "Password for primary administrative user"
+      label: "Admin Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: db_vendor
+      description: "Use embedded h2 for testing purposes only. Otherwise you need to set up postgres and mysql/mariadb first."
+      label: "Database Vendor"
+      type: enum
+      options:
+        - postgres
+        - mysql
+        - mariadb
+        - h2
+      required: true
+      default: h2
+    - variable: "keycloak_image"
+      label: "Keycloak Image"
+      description: "Image to use"
+      required: true
+      default: "dockerguys/keycloak:6.0.1"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/keycloak:6.0.1
+    - variable: "db_service"
+      description: "External DB service to use (if 'Database Vendor' is not 'h2'). You can reference the service as 'db' by setting this."
+      label: "DB Service"
+      default: ""
+      required: false
+      type: "service"
+    - variable: keycloak_dbname
+      description: "Name of database to use. Ignore this if 'Database Vendor' is h2."
+      label: "Database Name"
+      type: "string"
+      required: true
+      default: "keycloak"
+    - variable: keycloak_dbuser
+      description: "Username to login to the database. Ignore this if 'Database Vendor' is h2."
+      label: "Database Username"
+      type: "string"
+      required: true
+      default: "keycloakapp"
+    - variable: keycloak_dbpassword
+      description: "User password to login to the database. Ignore this if 'Database Vendor' is h2."
+      label: "Database Password"
+      type: "password"
+      required: true
+      default: "DatabasePassword"
+    - variable: keycloak_dbschema
+      description: "Database schema. Applicable only to Postgres Database."
+      label: "Database Schema"
+      type: "string"
+      required: true
+      default: "public"
+    - variable: keycloak_enable_feature_docker
+      description: "Allows this server to authenticate private Docker registry access."
+      label: "Enable Docker Registry Protocol"
+      type: boolean
+      required: true
+      default: true
+    - variable: keycloak_enable_feature_js
+      description: "Enable JavaScript custom authenticator module."
+      label: "Enable JavaScript Authenticator"
+      type: boolean
+      required: true
+      default: true
+    - variable: keycloak_loglevel
+      description: "Controls the verbosity of logs generated."
+      label: "Log Level"
+      type: enum
+      required: true
+      options:
+        - INFO
+        - DEBUG
+      default: "INFO"
+    - variable: debug_mode
+      description: "Runs Keycloak in debug mode. This disables theme caching."
+      label: "Enable Debug Mode"
+      type: boolean
+      required: true
+      default: false
+    - variable: keycloak_theme
+      description: "Sets the global and default theme."
+      label: "Theme"
+      type: "string"
+      required: true
+      default: "keycloak"
+    - variable: keycloak_opmode_config
+      description: "Sets the operation mode profile."
+      label: "Operating Mode"
+      type: enum
+      required: true
+      options:
+        - standalone
+        - standalone-ha
+      default: "standalone"
+    - variable: keycloak_extarg
+      description: |
+        Additional startup arguments to "/opt/jboss/keycloak/bin/standalone.sh". Check official documentation at "https://docs.jboss.org/author/display/WFLY8/Command+line+parameters" for details.
+      label: "Startup Arguments"
+      type: "string"
+      required: false
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: storage; subst vols_required = `volumes ("Volume Name"_[data,theme])`
+    - variable: datavolume_name
+      label: "Volume Base Name"
+      description: |
+        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes will be created with this value as the prefix. 
+        By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: volume_exists
+      label: "Volume Exists"
+      description: |
+        Check this if you have already created the volumes ("Volume Name"_[data,theme]). Remember to set the "Volume Storage Driver" too. Do not fill 
+        in "NFS Driver Host" or "NFS Driver Volume Path".
+      required: true
+      type: boolean
+      default: false
+    #- variable: storage_size
+    #  label: "Volume Storage Size"
+    #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
+    #  required: false
+    #  type: int
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    - variable: storage_driver_nfsopts_host
+      label: "NFS Driver Host"
+      description: |
+        Specify a NFS hostname instead of the default NFS server. Only fill in this option if "Volume Storage Driver" is 
+        set to "rancher-nfs", and the volume does not already exist.
+      required: false
+      type: string
+    - variable: storage_driver_nfsopts_export
+      label: "NFS Driver Volume Path"
+      description: |
+        Specify the exported base path on the NFS server (e.g. "/storage/nfsvol"). The full directory(ies) created 
+        on the NFS server will be this path and the volume name(s). Do not append the "/" at the end. This exported base path 
+        must already exist on the NFS server. Only fill in this option if "Volume Storage Driver" is set to "rancher-nfs", and 
+        the volume does not already exist.
+      required: false
+      type: string
+    - variable: storage_retain_volume
+      label: "Retain NFS Volume"
+      description: Keep the volumes created even after this stack gets deleted. This option has no effect if the volume(s) already exists.
+      required: true
+      type: boolean
+      value: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory, remove docker_memory_swap_limit
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  keycloak:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 5
+      port: 8080
+      unhealthy_threshold: 30
+      initializing_timeout: 600000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

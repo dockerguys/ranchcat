@@ -111,10 +111,14 @@ services:
     # -----------------------------------
     volumes:
 {{- if (.Values.datavolume_name) }}
+{{-   if eq .Values.db_vendor "h2" }}
       - ${datavolume_name}_data:/opt/jboss/keycloak/standalone/data
+{{-   end }}
       - ${datavolume_name}_theme:/opt/jboss/keycloak/themes
 {{- else }}
+{{-   if eq .Values.db_vendor "h2" }}
       - /opt/jboss/keycloak/standalone/data
+{{-   end }}
       - /opt/jboss/keycloak/themes
 {{- end }}
     # -----------------------------------
@@ -160,28 +164,11 @@ services:
 
 {{- if (.Values.datavolume_name) }}
 volumes:
+{{-   if eq .Values.db_vendor "h2" }}
   # -----------------------------------
   # Data volume
   # -----------------------------------
   {{.Values.datavolume_name}}_data:
-{{-   if eq .Values.volume_exists "true" }}
-    external: true
-{{-   end }}
-{{-   if eq .Values.storage_driver "rancher-nfs" }}
-    driver: rancher-nfs
-{{-     if eq .Values.volume_exists "false" }}
-{{-       if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts:
-      host: ${storage_driver_nfsopts_host}
-      exportBase: ${storage_driver_nfsopts_export}
-{{-         if eq .Values.storage_retain_volume "true" }}
-      onRemove: retain
-{{-         else }}
-      onRemove: purge
-{{-         end }}
-{{-       end }}
-{{-     end }}
-{{-   else }}
     driver: local
 {{-   end }}
   # -----------------------------------

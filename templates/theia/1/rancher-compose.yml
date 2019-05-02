@@ -15,12 +15,12 @@ catalog:
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/theia:0.5.0
-    - variable: "runas_uid"
-      label: "User UID"
-      description: |
-        Sets the unix user UID number for running the server. Leave blank for default.
-      required: false
-      type: string
+    - variable: "runas_root"
+      label: "Root Access"
+      description: Runs the IDE as root user.
+      required: true
+      type: boolean
+      default: false
     - variable: "exist_datavolume_name"
       label: "Volume Name"
       description: |

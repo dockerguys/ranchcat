@@ -28,7 +28,7 @@ services:
     # ENV
     # -----------------------------------
     environment:
-      THEIA_IDE_UID: "${runas_uid}"
+      THEIA_RUNAS_ROOT: "{{ .Values.runas_root }}"
     # -----------------------------------
     # Scheduler labels
     # -----------------------------------

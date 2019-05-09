@@ -32,7 +32,8 @@ catalog:
       type: "password"
     - variable: gitea_oauth_whitelist
       label: "Single SignOn Whitelist"
-      description: "A list of domains that can register new users. Separate with space."
+      description: |
+        List of OpenID domains for federated sign in and registration. Separate by space. Supports posix regular expression.
       required: false
       default: ""
       type: "string"
@@ -68,7 +69,13 @@ catalog:
       default: false   
     - variable: disable_registration
       label: "Disable Registration"
-      description: "Users cannot register on their own."
+      description: "Users cannot register on their own. Enabling this automatically disables OpenID registration too."
+      required: true
+      type: boolean
+      default: false
+    - variable: disable_local_registration
+      label: "Disable Local Registration"
+      description: "User can only register using OpenID. Ignore this if you have disabled registration."
       required: true
       type: boolean
       default: false
@@ -122,6 +129,7 @@ catalog:
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/gitea:1.7.5
+        - dockerguys/gitea:1.8.1
     - variable: "db_vendor"
       description: "Database backend for Gitea. The default is sqlite3, which should not be used for production purposes."
       label: "DB Vendor"

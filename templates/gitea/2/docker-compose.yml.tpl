@@ -46,6 +46,7 @@ services:
       RUN_MODE: ${gitea_runmode}
       NOREPLY_ADDRESS: "noreply.${gitea_domain}"
       OPENID_REGISTRATION_WHITELIST: ${gitea_oauth_whitelist}
+      DISABLE_LOCAL_REGISTRATION: ${disable_local_registration}
       SSH_DOMAIN: ${gitea_domain}
       DISABLE_SSH: ${gitea_disable_ssh}
       INSTALL_LOCK: ${gitea_install_lock}

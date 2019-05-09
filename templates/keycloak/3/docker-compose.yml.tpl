@@ -44,8 +44,10 @@ services:
       KEYCLOAK_PASSWORD: ${keycloak_password}
       KEYCLOAK_LOGLEVEL: ${keycloak_loglevel}
       ROOT_LOGLEVEL: ${keycloak_loglevel}
+{{- if (.Values.keycloak_theme) }}
       KEYCLOAK_WELCOME_THEME: ${keycloak_theme}
       KEYCLOAK_DEFAULT_THEME: ${keycloak_theme}
+{{- end }}
       KEYCLOAK_OPERATING_MODE_CONFIG: "${keycloak_opmode_config}.xml"
 {{- if eq .Values.debug_mode "true" }}
       KEYCLOAK_DEBUG_MODE: "true"

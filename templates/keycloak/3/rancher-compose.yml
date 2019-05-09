@@ -35,6 +35,7 @@ catalog:
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/keycloak:6.0.1
+        - dockerguys/keycloak:6.0.1-charlen
     - variable: "db_service"
       description: "External DB service to use (if 'Database Vendor' is not 'h2'). You can reference the service as 'db' by setting this."
       label: "DB Service"
@@ -96,8 +97,7 @@ catalog:
       description: "Sets the global and default theme."
       label: "Theme"
       type: "string"
-      required: true
-      default: "keycloak"
+      required: false
     - variable: keycloak_opmode_config
       description: "Sets the operation mode profile."
       label: "Operating Mode"

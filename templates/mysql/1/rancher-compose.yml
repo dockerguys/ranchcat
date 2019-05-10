@@ -64,6 +64,12 @@
       type: "string"
       default: ""
       required: false
+    - variable: host_database_mountpoint
+      label: "Direct Mountpoint"
+      description: |
+        Absolute path to a directory on the host that will store the database. Ignore this if you are using volumes.
+      required: false
+      type: string
     - variable: adminer_image
       description: "The docker image to use for web administration."
       label: "Web Admin Docker Image"

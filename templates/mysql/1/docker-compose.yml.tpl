@@ -73,6 +73,9 @@ services:
 {{- if (.Values.datavolume_name) }}
       - ${datavolume_name}_db:/var/lib/mysql
 {{- else }}
+{{-   if (.Values.host_database_mountpoint) }}
+      - ${host_database_mountpoint}:/var/lib/mysql
+{{-   else }}
       - /var/lib/mysql
 {{- end }}
     # -----------------------------------

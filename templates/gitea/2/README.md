@@ -10,6 +10,7 @@ Services
 --------
 Includes the following services:
 - Gitea server
+- Redis caching (optional)
 
 What's not included:
 - Load balancer
@@ -20,12 +21,13 @@ What's not included:
 Usage
 -----
 1. Create your database first (user: gitapp, db name: gitea - utf8_general_ci). We use MySQL here.
-2. Update your load balancer to point 443 to 3000 (UI/https) and 2222 to 22 (SSH/tcp) of the Gitea service.
-3. If the default admin user is not found (under the `/data/git/repositories/{ADMIN_NAME}` path inside the container), setup will be triggered.
-4. The setup process will try to initialize the database and create the default admin user. You can force skip the database initialization step by setting 
-"Skip Database Setup" to `false`.
+2. Update your load balancer to point 443 to 3000 (UI/https) and 2222 to 22 (SSH/tcp) of the Gitea service:
+   - Service rule: `io.githost.role={name_of_this_stack}/server`
+3. To persist your data, create a volume called `{name_of_this_stack}_data`. This volume will be mounted to `/data` of the git server container.
+4. The setup process is triggered if `/data/setup_complete.flag` file cannot be found. Setup will try to initialize the database and create the default admin user. You can force skip the database initialization step by setting "Skip Database Setup" to `false`.
 5. For OAuth2 based users, you need to setup the password for the user, otherwise that user cannot logon.
-6. You can create a special organization called `system`, who needs to create a repo called `theme`. This repo is symlinked to Gitea customization directories. You need to restart the Gitea server container manually after creating the `system/theme` repo. Read more about the `system/theme` repo below.
+6. Enable redis below for faster performance. You can use `redis-cli monitor` in the redis container to verify that things are working correctly.
+7. You can create a special organization called `system`, who needs to create a repo called `theme`. This repo is symlinked to Gitea customization directories. You need to restart the Gitea server container manually after creating the `system/theme` repo. Read more about the `system/theme` repo below.
 
 
 Gitea Customization Repo

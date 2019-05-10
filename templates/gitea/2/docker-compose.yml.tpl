@@ -115,6 +115,11 @@ services:
       DB_NAME: ${db_name}
       DB_USER: ${db_username}
       DB_PASSWD: ${db_password}
+{{- if eq .Values.gitea_runmode "prod" }}
+      DB_ENABLE_LOG: "false"
+{{- else }}
+      DB_ENABLE_LOG: "true"
+{{- end }}
 {{- if ne .Values.db_vendor "sqlite3" }}
     # -----------------------------------
     # Links to other containers

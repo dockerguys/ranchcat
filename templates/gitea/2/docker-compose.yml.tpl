@@ -10,6 +10,51 @@ version: '2'
 # BEGIN SERVICES
 # +++++++++++++++++++++++
 services:
+{{- if eq .Values.enable_redis "true" }}
+  # ************************************
+  # SERVICE
+  # - same host affinity as nextcloud
+  # - caching service for nextcloud
+  # ************************************
+  redis:
+    # -----------------------------------
+    # Image
+    # - support private registry
+    # -----------------------------------
+{{-   if (.Values.docker_registry_name) }}
+    image: "${docker_registry_name}/${redis_image}"
+{{-   else }}
+    image: ${redis_image}
+{{-   end }}
+    # -----------------------------------
+    # Scheduler labels
+    # -----------------------------------
+    labels:
+      io.nextcloud.role: "caching-server"
+{{-   if eq .Values.repull_image "always" }}
+      io.rancher.container.pull_image: always
+{{-   end }}
+{{-   if (.Values.host_affinity_label) }}
+      io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
+{{-   end }}
+    # -----------------------------------
+    # Misc behavior
+    # -----------------------------------
+    restart: always
+    # -----------------------------------
+    # LIMIT CPU
+    # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`
+    # - hardcode redis container cpu quota to 1 cpu.
+    # -----------------------------------
+    cpu_quota: 100000
+    cpu_shares: ${docker_cpu_weight_limit}
+    # -----------------------------------
+    # LIMIT RAM
+    # - hardcode redis container memory limit to 256m and disable swap
+    # -----------------------------------
+    mem_limit: "${redis_cache_size_mb}m"
+    memswap_limit: "${redis_cache_size_mb}m"
+{{- end }}
   # ************************************
   # SERVICE
   # - primary application
@@ -31,8 +76,15 @@ services:
       GITEA_SETUP_SKIP_DATABASE_INIT: "${skip_db_init}"
       DISABLE_REGISTRATION: "${disable_registration}"
       REQUIRE_SIGNIN_VIEW: "${view_require_signin}"
+{{- if eq .Values.enable_redis "true" }}
+      GITEA_CACHE_ADAPTER: "redis"
+      GITEA_CACHE_HOST: "network=tcp,addr=redis:6379,password=,db=0,pool_size=100,idle_timeout=180"
+      GITEA_SESSION_ENGINE: "redis"
+      GITEA_SESSION_ENGINE_CONNECTOR: "network=tcp,addr=redis:6379,password=,db=0,pool_size=100,idle_timeout=180"
+{{- else }}
       GITEA_SESSION_ENGINE: "file"
       GITEA_SESSION_ENGINE_CONNECTOR: "/data/gitea/sessions"
+{{- end }}
       UPDATE_CERT_CA_ON_START: "${renew_ca_onstart}"
       ADMIN_NAME: "${admin_name}"
       ADMIN_DEFAULT_PASSWORD: "${admin_password}"
@@ -81,6 +133,14 @@ services:
 {{- end }}
 {{- if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
+{{- end }}
+{{- if eq .Values.enable_redis "true" }}
+    # -----------------------------------
+    # DEPENDENCIES
+    # - redis for caching
+    # -----------------------------------
+    depends_on:
+      - redis
 {{- end }}
     # -----------------------------------
     # VOLUMES

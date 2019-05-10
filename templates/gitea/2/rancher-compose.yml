@@ -120,16 +120,38 @@ catalog:
       required: true
       type: boolean
       default: true
+    - variable: enable_redis
+      label: "Enable Redis"
+      description: "Use Redis for optimized in-memory caching, session storage and issue indexing."
+      required: true
+      type: boolean
+      default: true
+    - variable: redis_cache_size_mb
+      label: "Redis Cache Size"
+      description: |
+        Limit the amount of memory Redis can use (in mb). Ignore if "Enable Redis" is set to false.
+      required: true
+      type: int
+      default: 256
     - variable: "gitea_image"
       label: "Gitea Image"
       description: |
         Image to use. Be sure to fill in "Private Registry" field too if the image is not available publically.
       required: true
-      default: "gitea/gitea:1.7.5"
+      default: "dockerguys/gitea:1.7.5"
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/gitea:1.7.5
         - dockerguys/gitea:1.8.1
+    - variable: "redis_image"
+      label: "Redis Image"
+      description: |
+        Redis is used for caching, session engine storage, and issue indexing. Ignore this option if "Enable Redis" is set to false.
+      required: true
+      default: "dockerguys/redis:5.0.4"
+      type: enum
+      options:
+        - dockerguys/redis:5.0.4
     - variable: "db_vendor"
       description: "Database backend for Gitea. The default is sqlite3, which should not be used for production purposes."
       label: "DB Vendor"

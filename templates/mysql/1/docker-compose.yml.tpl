@@ -77,6 +77,7 @@ services:
       - ${host_database_mountpoint}:/var/lib/mysql
 {{-   else }}
       - /var/lib/mysql
+{{-   end }}
 {{- end }}
     # -----------------------------------
     # LIMIT CPU

@@ -1,0 +1,193 @@
+version: '2'
+catalog:
+  name: "Vault"
+  version: "v1.1.0"
+  description: "Vault security for your containers"
+  minimum_rancher_version: v0.51.0
+  maintainer: dockerguys <dockerguys@lizoc.com>
+  questions:
+    - variable: cluster_name
+      label: "Vault Cluster Name"
+      description: A unique name for this Vault cluster.
+      type: string
+      default: myCluster
+      required: true
+    - variable: cluster_scale
+      label: "Vault Cluster Scale"
+      description: The number of Vault servers you want to set up in your cluster
+      default: 1
+      type: int
+      required: true
+    - variable: storage_backend
+      label: "Storage Backend"
+      description: |
+        Vault supports several different backend storage engines. Select the one to use.
+      default: file
+      type: enum
+      required: true
+      options:
+        - azure
+        - cockroachdb
+        - consul
+        - couchdb
+        - dynamodb
+        - etcd
+        - file
+        - gcs
+        - inmem
+        - manta
+        - mysql
+        - postgresql
+        - spanner
+        - cassandra
+        - s3
+        - swift
+        - zookeeper
+    - variable: storage_backend_service
+      label: Storage Service
+      description: |
+        Storage backend service. Ignore if storage backend is "file".
+      type: service
+    - variable: vault_backend_config
+      label: "Storage Configuration"
+      default: '"path":"/vault/file"'
+      required: true
+      description: |
+        Configure the storage backend using JSON syntax. You do not need the opening/closing curly brackets. Refer to Vault documentation for configuration options. 
+      type: string
+    - variable: "vault_image"
+      label: "Vault Image"
+      description: |
+        Image to use. Be sure to fill in "Private Registry" field too if the image is not available publically.
+      required: true
+      default: "dockerguys/vault:1.1.2"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/vault:1.1.2
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: storage; subst vols_required = `volume ("Volume Name"_data)`
+    - variable: datavolume_name
+      label: "Volume Base Name"
+      description: |
+        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes will be created with this value as the prefix. 
+        By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: volume_exists
+      label: "Volume Exists"
+      description: |
+        Check this if you have already created the volume ("Volume Name"_data). Remember to set the "Volume Storage Driver" too. Do not fill 
+        in "NFS Driver Host" or "NFS Driver Volume Path".
+      required: true
+      type: boolean
+      default: false
+    #- variable: storage_size
+    #  label: "Volume Storage Size"
+    #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
+    #  required: false
+    #  type: int
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    - variable: storage_driver_nfsopts_host
+      label: "NFS Driver Host"
+      description: |
+        Specify a NFS hostname instead of the default NFS server. Only fill in this option if "Volume Storage Driver" is 
+        set to "rancher-nfs", and the volume does not already exist.
+      required: false
+      type: string
+    - variable: storage_driver_nfsopts_export
+      label: "NFS Driver Volume Path"
+      description: |
+        Specify the exported base path on the NFS server (e.g. "/storage/nfsvol"). The full directory(ies) created 
+        on the NFS server will be this path and the volume name(s). Do not append the "/" at the end. This exported base path 
+        must already exist on the NFS server. Only fill in this option if "Volume Storage Driver" is set to "rancher-nfs", and 
+        the volume does not already exist.
+      required: false
+      type: string
+    - variable: storage_retain_volume
+      label: "Retain NFS Volume"
+      description: Keep the volumes created even after this stack gets deleted. This option has no effect if the volume(s) already exists.
+      required: true
+      type: boolean
+      value: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    - variable: docker_memory_swap_limit
+      label: "Limit Swap Memory"
+      description: |
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
+        or the same value as Limit Memory to disable swap.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  vault:
+    scale: ${cluster_scale}
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 8200
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

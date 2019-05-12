@@ -1,0 +1,8 @@
+name: Vault
+description: |
+  Security for containers
+version: v0.10.0
+category: IDE
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

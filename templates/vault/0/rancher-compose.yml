@@ -48,7 +48,7 @@ catalog:
       description: |
         Storage backend service. Ignore if storage backend is "file".
       type: service
-    - variable: vault_backend_config
+    - variable: storage_backend_config
       label: "Storage Configuration"
       default: '"path":"/vault/file"'
       required: true

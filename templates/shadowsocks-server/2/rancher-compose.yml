@@ -9,9 +9,9 @@ catalog:
       label: "Shadowsocks Image"
       type: enum
       options:
-        - dockerguys/shadowsocks-server:3.2.5
+        - dockerguys/shadowsocks:3.2.5-server
       required: true
-      default: "dockerguys/shadowsocks-server:3.2.5"
+      default: "dockerguys/shadowsocks:3.2.5-server"
     - variable: ss_crypto
       description: "Cryptographic algorithm for traffic encryption"
       label: "Encryption Algorithm"

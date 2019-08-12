@@ -10,7 +10,8 @@
       type: "enum"
       options:
         - "dockerguys/mariadb:10.3.13-r0"
-      default: "dockerguys/mariadb:10.3.13-r0"
+        - "dockerguys/mariadb:10.3.17-r0"
+      default: "dockerguys/mariadb:10.3.17-r0"
       required: true
     - variable: mysql_root_name
       description: |
@@ -76,7 +77,8 @@
       type: "enum"
       options:
         - "dockerguys/adminer:4.7.1"
-      default: "dockerguys/adminer:4.7.1"
+        - "dockerguys/adminer:4.7.2"
+      default: "dockerguys/adminer:4.7.2"
       required: true
     - variable: adminer_css
       description: "CSS theme file for web administration interface."

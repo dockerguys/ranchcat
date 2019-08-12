@@ -60,10 +60,11 @@ catalog:
       description: |
         Image to use. Be sure to fill in "Private Registry" field too if the image is not available publically.
       required: true
-      default: "dockerguys/vault:1.1.2"
+      default: "dockerguys/vault:1.1.5"
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/vault:1.1.2
+        - dockerguys/vault:1.1.5
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

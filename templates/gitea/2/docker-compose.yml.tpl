@@ -76,6 +76,8 @@ services:
       GITEA_SETUP_SKIP_DATABASE_INIT: "${skip_db_init}"
       DISABLE_REGISTRATION: "${disable_registration}"
       REQUIRE_SIGNIN_VIEW: "${view_require_signin}"
+      GITEA_ATTACHMENT_MAX_SIZE: "${gitea_attachment_max_size}"
+      GITEA_ATTACHMENT_MAX_FILES: "${gitea_attachment_max_files}"
 {{- if eq .Values.enable_redis "true" }}
       GITEA_CACHE_ADAPTER: "redis"
       GITEA_CACHE_HOST: "network=tcp,addr=redis:6379,password=,db=0,pool_size=100,idle_timeout=180"

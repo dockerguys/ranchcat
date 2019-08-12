@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Gitea"
-  version: "v1.7.5"
+  version: "v1.8.1"
   description: "A lightweight GitHub clone"
   minimum_rancher_version: v0.51.0
   maintainer: dockerguys <dockerguys@lizoc.com>
@@ -49,6 +49,18 @@ catalog:
       required: true
       default: "Gitea: Git with a cup of tea"
       type: "string"
+    - variable: gitea_attachment_max_size
+      label: "Max Attachment Size"
+      description: "Maximum size of attachments for releases, in megabytes."
+      required: true
+      default: 4
+      type: int
+    - variable: gitea_attachment_max_files
+      label: "Max Number of Attachments"
+      description: "Maximum number of attachment files for releases."
+      required: true
+      default: 5
+      type: int
     - variable: gitea_domain
       label: "SSH Domain"
       description: "Domain to access Gitea. The SSH domain will also be set to this FQDN."
@@ -66,7 +78,7 @@ catalog:
       description: "Disable anonymous browsing of repos."
       required: true
       type: boolean
-      default: false   
+      default: false
     - variable: disable_registration
       label: "Disable Registration"
       description: "Users cannot register on their own. Enabling this automatically disables OpenID registration too."
@@ -138,7 +150,7 @@ catalog:
       description: |
         Image to use. Be sure to fill in "Private Registry" field too if the image is not available publically.
       required: true
-      default: "dockerguys/gitea:1.7.5"
+      default: "dockerguys/gitea:1.8.1"
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/gitea:1.7.5

@@ -233,7 +233,7 @@ services:
     health_check:
       healthy_threshold: 2
       response_timeout: 2000
-      port: 3306
+      port: 8080
       unhealthy_threshold: 3
       interval: 2000
       strategy: recreate

@@ -9,9 +9,8 @@
       label: "MySQL Docker Image"
       type: "enum"
       options:
-        - "dockerguys/mariadb:10.3.13-r0"
-        - "dockerguys/mariadb:10.3.17-r0"
-      default: "dockerguys/mariadb:10.3.17-r0"
+        - "dockerguys/mariadb:10.3.17.0"
+      default: "dockerguys/mariadb:10.3.17.0"
       required: true
     - variable: mysql_root_name
       description: |
@@ -76,9 +75,9 @@
       label: "Web Admin Docker Image"
       type: "enum"
       options:
-        - "dockerguys/adminer:4.7.1"
         - "dockerguys/adminer:4.7.2"
-      default: "dockerguys/adminer:4.7.2"
+        - "dockerguys/adminer:4.7.3"
+      default: "dockerguys/adminer:4.7.3"
       required: true
     - variable: adminer_css
       description: "CSS theme file for web administration interface."
@@ -96,7 +95,10 @@
       label: "Host Affinity Label"
       type: string
       required: false
-    # --- common param: storage; subst vols_required = `volume ("Volume Name"_db)`
+    # --- common param: 
+    # --- - storage
+    # --- -- subst vols_required = `volume ("Volume Name"_db)`
+    # --- -- subst vol_driver_local_only = `true`
     - variable: datavolume_name
       label: "Volume Base Name"
       description: |
@@ -107,8 +109,7 @@
     - variable: volume_exists
       label: "Volume Exists"
       description: |
-        Check this if you have already created the volume ("Volume Name"_db). Remember to set the "Volume Storage Driver" too. Do not fill 
-        in "NFS Driver Host" or "NFS Driver Volume Path".
+        Check this if you have already created the volume ("Volume Name"_db). Remember to set the "Volume Storage Driver" too.
       required: true
       type: boolean
       default: false
@@ -127,29 +128,6 @@
       default: "local"
       options:
         - local
-        - rancher-nfs
-    - variable: storage_driver_nfsopts_host
-      label: "NFS Driver Host"
-      description: |
-        Specify a NFS hostname instead of the default NFS server. Only fill in this option if "Volume Storage Driver" is 
-        set to "rancher-nfs", and the volume does not already exist.
-      required: false
-      type: string
-    - variable: storage_driver_nfsopts_export
-      label: "NFS Driver Volume Path"
-      description: |
-        Specify the exported base path on the NFS server (e.g. "/storage/nfsvol"). The full directory(ies) created 
-        on the NFS server will be this path and the volume name(s). Do not append the "/" at the end. This exported base path 
-        must already exist on the NFS server. Only fill in this option if "Volume Storage Driver" is set to "rancher-nfs", and 
-        the volume does not already exist.
-      required: false
-      type: string
-    - variable: storage_retain_volume
-      label: "Retain NFS Volume"
-      description: Keep the volumes created even after this stack gets deleted. This option has no effect if the volume(s) already exists.
-      required: true
-      type: boolean
-      value: false
     # --- common param: repull
     - variable: repull_image
       description: "Pull from registry source even if the host already have a local image with the same tag."

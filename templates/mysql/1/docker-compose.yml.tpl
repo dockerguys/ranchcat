@@ -116,6 +116,7 @@ services:
     environment:
       ADMINER_CSS_NAME: "${adminer_css}"
       ADMINER_PLUGINS: "${adminer_plugins}"
+      ADMINER_DEFAULT_SERVER: "mysql-server"
     # -----------------------------------
     # Scheduler labels
     # - no host affinity
@@ -159,23 +160,7 @@ volumes:
 {{-   if eq .Values.volume_exists "true" }}
     external: true
 {{-   end }}
-{{-   if eq .Values.storage_driver "rancher-nfs" }}
-    driver: rancher-nfs
-{{-     if eq .Values.volume_exists "false" }}
-{{-       if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts:
-      host: ${storage_driver_nfsopts_host}
-      exportBase: ${storage_driver_nfsopts_export}
-{{-         if eq .Values.storage_retain_volume "true" }}
-      onRemove: retain
-{{-         else }}
-      onRemove: purge
-{{-         end }}
-{{-       end }}
-{{-     end }}
-{{-   else }}
     driver: local
-{{-   end }}
 {{- end }}
 
 # +++++++++++++++++++++++

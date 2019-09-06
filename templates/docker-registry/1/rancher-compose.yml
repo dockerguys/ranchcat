@@ -39,7 +39,7 @@ catalog:
       description: "FQDN of oauth2 url that will provides the token realm. Corresponds to 'REGISTRY_AUTH_TOKEN_REALM' registry setting."
       required: true
       type: "string"
-      default: "https://signin.lizoc.com/auth/realms/lizoc.com/protocol/docker-v2/auth"
+      default: "https://signin.mydomain.com/auth/realms/mydomain.com/protocol/docker-v2/auth"
     - variable: oauth_token_service_name
       label: "OAuth Token Service Name"
       description: "Unique service name provided by the authentication service. Corresponds to 'REGISTRY_AUTH_TOKEN_SERVICE' registry setting."
@@ -51,7 +51,7 @@ catalog:
       description: "FQDN of oauth2 issuer URL. Corresponds to 'REGISTRY_AUTH_TOKEN_ISSUER' registry setting."
       required: true
       type: "string"
-      default: "https://signin.lizoc.com/auth/realms/lizoc.com"
+      default: "https://signin.mydomain.com/auth/realms/mydomain.com"
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

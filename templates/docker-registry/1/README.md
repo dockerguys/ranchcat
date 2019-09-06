@@ -25,16 +25,26 @@ Usage
 4. Test things work on a linux machine with docker installed:
 
 ```
-# docker login -u admin -p MySecRetPass mydocker.lizoc.com
+# docker login -u admin -p MySecRetPass cr.mydomain.com
 Login Succeeded
 
-# docker pull mydocker.lizoc.com/busybox
+# docker pull cr.mydomain.com/common/busybox
 Using default tag: latest
-Error response from daemon: manifest for mydocker.lizoc.com/busybox:latest not found
+Error response from daemon: manifest for cr.mydomain.com/common/busybox:latest not found
 
 # docker pull busybox
-# docker tag busybox:latest mydocker.lizoc.com/busybox:latest
-# docker push mydocker.lizoc.com/busybox:latest
+# docker tag busybox:latest cr.mydomain.com/common/busybox:latest
+# docker push cr.mydomain.com/common/busybox:latest
 # docker rmi busybox
-# docker pull mydocker.lizoc.com/busybox
+# docker pull cr.mydomain.com/common/busybox
+```
+
+Notes
+-----
+1. Docker login uses regular usernames. You can't use email to login.
+2. If using self-signed CA, add it to docker first (no restart needed): 
+
+```
+mkdir -p /etc/docker/certs.d/cr.mydomain.internal
+cp ./ca.crt /etc/docker/certs.d/cr.mydomain.internal/
 ```

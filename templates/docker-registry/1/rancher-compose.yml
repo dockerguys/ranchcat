@@ -27,7 +27,7 @@ catalog:
       type: enum
       options: # List of options if using type of `enum`
         - registry:latest
-        - dockerguys/registry:2.7.1
+        - dockerguys/docker-registry:2.7.1
     # --- OAUTH2 settings ---
     - variable: oauth_cert
       label: "OAuth Certificate"

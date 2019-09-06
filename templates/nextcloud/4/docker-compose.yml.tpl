@@ -128,6 +128,15 @@ services:
 {{- if (.Values.extra_volume_a) }}
       - ${extra_volume_a}:/var/www/${extra_volume_a}
 {{- end }}
+{{- if (.Values.extra_volume_b) }}
+      - ${extra_volume_b}:/var/www/${extra_volume_b}
+{{- end }}
+{{- if (.Values.extra_volume_c) }}
+      - ${extra_volume_c}:/var/www/${extra_volume_c}
+{{- end }}
+{{- if (.Values.extra_volume_d) }}
+      - ${extra_volume_d}:/var/www/${extra_volume_d}
+{{- end }}
     # -----------------------------------
     # DEPENDENCIES
     # - redis for caching
@@ -286,7 +295,48 @@ volumes:
 {{-   else }}
     driver: local
 {{-   end }}
+{{- end }}
 
+{{- if (.Values.extra_volume_b) }}
+  # ************************************
+  # VOLUME
+  # - external volume 2
+  # ************************************
+  {{.Values.extra_volume_b}}:
+    external: true
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: ${storage_driver}
+{{-   else }}
+    driver: local
+{{-   end }}
+{{- end }}
+
+{{- if (.Values.extra_volume_c) }}
+  # ************************************
+  # VOLUME
+  # - external volume 3
+  # ************************************
+  {{.Values.extra_volume_c}}:
+    external: true
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: ${storage_driver}
+{{-   else }}
+    driver: local
+{{-   end }}
+{{- end }}
+
+{{- if (.Values.extra_volume_d) }}
+  # ************************************
+  # VOLUME
+  # - external volume 4
+  # ************************************
+  {{.Values.extra_volume_d}}:
+    external: true
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: ${storage_driver}
+{{-   else }}
+    driver: local
+{{-   end }}
 {{- end }}
 
 # +++++++++++++++++++++++

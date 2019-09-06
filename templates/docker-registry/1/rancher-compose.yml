@@ -23,7 +23,7 @@ catalog:
       label: "Registry Image"
       description: "Image to use for Docker Registry"
       required: true
-      default: "dockerguys/registry:2.7.1"
+      default: "dockerguys/docker-registry:2.7.1"
       type: enum
       options: # List of options if using type of `enum`
         - registry:latest

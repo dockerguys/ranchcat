@@ -31,11 +31,13 @@ catalog:
       label: "Keycloak Image"
       description: "Image to use"
       required: true
-      default: "dockerguys/keycloak:6.0.1"
+      default: "dockerguys/keycloak:7.0.0"
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/keycloak:6.0.1
         - dockerguys/keycloak:6.0.1-charlen
+        - dockerguys/keycloak:7.0.0
+        - dockerguys/keycloak:7.0.0-charlen
     - variable: "db_service"
       description: "External DB service to use (if 'Database Vendor' is not 'h2'). You can reference the service as 'db' by setting this."
       label: "DB Service"
@@ -78,14 +80,25 @@ catalog:
       type: boolean
       required: true
       default: true
+    - variable: keycloak_metrics
+      description: "Comma delimited list of metrics to enable: all | db, http, jgroups"
+      label: "Enable Metrics"
+      type: string
+      required: false
     - variable: keycloak_loglevel
       description: "Controls the verbosity of logs generated."
       label: "Log Level"
       type: enum
       required: true
       options:
+        - OFF
+        - FATAL
+        - ERROR
+        - WARN
         - INFO
+        - TRACE
         - DEBUG
+        - ALL
       default: "INFO"
     - variable: debug_mode
       description: "Runs Keycloak in debug mode. This disables theme caching."

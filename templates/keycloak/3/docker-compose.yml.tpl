@@ -94,6 +94,9 @@ services:
       POSTGRES_USER: ${keycloak_dbuser}
       POSTGRES_PASSWORD: ${keycloak_dbpassword}
 {{- end}}
+{{- if (.Values.keycloak_metrics) }}
+      KEYCLOAK_STATISTICS: ${keycloak_metrics}
+{{- end}}
     # -----------------------------------
     # Scheduler labels
     # -----------------------------------

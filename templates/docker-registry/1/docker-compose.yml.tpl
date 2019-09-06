@@ -179,3 +179,4 @@ volumes:
 {{-   else }}
     driver: local
 {{-   end }}
+{{- end }}

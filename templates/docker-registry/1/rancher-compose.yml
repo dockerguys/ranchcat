@@ -10,6 +10,15 @@ catalog:
       required: true
       default: "ChangeMeChangeMe"
       type: "password"
+    - variable: "busybox_image"
+      label: "Busybox Image"
+      description: "Image to use for Busybox"
+      required: true
+      default: "dockerguys/busybox:1.31.0"
+      type: enum
+      options: # List of options if using type of `enum`
+        - busybox:latest
+        - dockerguys/busybox:1.31.0
     - variable: "registry_image"
       label: "Registry Image"
       description: "Image to use for Docker Registry"

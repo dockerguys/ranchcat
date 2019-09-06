@@ -20,7 +20,7 @@ services:
     # - support private registry
     # -----------------------------------
 {{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/busybox"
+    image: "${docker_registry_name}/${busybox_image}"
 {{- else }}
     image: busybox
 {{- end }}

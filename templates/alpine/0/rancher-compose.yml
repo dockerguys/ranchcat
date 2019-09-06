@@ -10,9 +10,9 @@ catalog:
       label: "Container Image"
       type: "enum"
       options:
-        - "dockerguys/alpine:3.6"
-        - "alpine:3.6"
-      default: "dockerguys/alpine:3.6"
+        - "dockerguys/alpine:3.10"
+        - "alpine:3.10"
+      default: "dockerguys/alpine:3.10"
       required: true
     - variable: repull_image
       description: "Pull from registry source even if the host already have a local image with the same tag."

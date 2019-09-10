@@ -27,3 +27,12 @@ If you are migrating from a previous instance, there are a couple of important t
 3. If these mounted volumes contains data, they will be untouched by the installation procedure.
 4. The `config` folder will contain the database server connection credentials. Therefore, you need to ensure that the database 
 password is the same as the previous instance for things to work.
+
+Upgrade Gotchas
+---------------
+Reinitializing an existing database will cause a mysterious "occ:maintenance" error, resulting in a bootloop. You need to 
+set "DATABASE_ALREADY_EXISTS" to "true" in order to upgrade successfully.
+
+Integration with Keycloak
+-------------------------
+A <a href="https://www.github.com/dockerguys/ranchcat/templates/nextcloud/4/howto-integrate-nc-keycloak.md" target="_blank">detailed walkthrough</a> is available on integrating NextCloud to Keycloak for single sign-on.

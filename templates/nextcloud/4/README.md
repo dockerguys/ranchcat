@@ -35,4 +35,4 @@ set "DATABASE_ALREADY_EXISTS" to "true" in order to upgrade successfully.
 
 Integration with Keycloak
 -------------------------
-A <a href="https://www.github.com/dockerguys/ranchcat/templates/nextcloud/4/howto-integrate-nc-keycloak.md" target="_blank">detailed walkthrough</a> is available on integrating NextCloud to Keycloak for single sign-on.
+A <a href="https://github.com/dockerguys/ranchcat/blob/master/templates/nextcloud/4/howto-integrate-nc-keycloak.md" target="_blank">detailed walkthrough</a> is available on integrating NextCloud to Keycloak for single sign-on.

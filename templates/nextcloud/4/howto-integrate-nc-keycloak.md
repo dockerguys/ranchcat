@@ -150,6 +150,7 @@ root url:
 valid redirect uris: https://<signin_host>/*
   http://<signin_host>/*
   https://<host_name>/*
+  http://<host_name>/*
 base url:
 master saml processing url: https://<signin_host>/auth/realms/<your_realm>
 idp initiated sso url name:

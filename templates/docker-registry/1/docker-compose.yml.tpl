@@ -37,8 +37,8 @@ services:
     # -----------------------------------
     volumes:
 {{- if (.Values.datavolume_name) }}
-    - ${datavolume_name}_images:/var/lib/registry
-    - ${datavolume_name}_certs:/certs
+      - ${datavolume_name}_images:/var/lib/registry
+      - ${datavolume_name}_certs:/certs
 {{- else }}
       - /var/lib/registry
       - /certs

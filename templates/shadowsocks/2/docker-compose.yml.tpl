@@ -16,9 +16,9 @@ services:
   # ************************************
   shadowsocks-server:
 {{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/${keycloak_image}"
+    image: "${docker_registry_name}/${shadowsocks_image}"
 {{- else }}
-    image: ${keycloak_image}
+    image: ${shadowsocks_image}
 {{- end }}
     labels:
       io.shadowsocks.role: "{{ .Stack.Name }}/server"

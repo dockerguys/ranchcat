@@ -1,0 +1,8 @@
+name: V2Ray Server
+description: |
+  Build your own privacy network over internet
+version: 4.0
+category: Networking
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

@@ -31,6 +31,14 @@ services:
     environment:
       V2RAY_BUF_READV: ${v2ray_buf_readv}
     # -----------------------------------
+    # Expose ports
+    # -----------------------------------
+    ports: # haproxy doesn't support udp
+      - 43432:43432/tcp
+      - 43432:43432/udp
+      - 43433:43433/tcp
+      - 43433:43433/udp
+    # -----------------------------------
     # Scheduler labels
     # -----------------------------------
     labels:

@@ -155,15 +155,16 @@ catalog:
       options: # List of options if using type of `enum`
         - dockerguys/gitea:1.7.5
         - dockerguys/gitea:1.8.1
+        - dockerguys/gitea:1.9.3
     - variable: "redis_image"
       label: "Redis Image"
       description: |
         Redis is used for caching, session engine storage, and issue indexing. Ignore this option if "Enable Redis" is set to false.
       required: true
-      default: "dockerguys/redis:5.0.4"
+      default: "dockerguys/redis:5.0.5"
       type: enum
       options:
-        - dockerguys/redis:5.0.4
+        - dockerguys/redis:5.0.5
     - variable: "db_vendor"
       description: "Database backend for Gitea. The default is sqlite3, which should not be used for production purposes."
       label: "DB Vendor"

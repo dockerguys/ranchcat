@@ -22,6 +22,9 @@ services:
 {{- end }}
     labels:
       io.shadowsocks.role: "{{ .Stack.Name }}/server"
+      # hard anti-affinity rule to prevent >1 instance per host (port mapping conflict)
+      io.shadowsocks.host: dedicated
+      io.rancher.scheduler.affinity:container_label_ne: io.shadowsocks.host=dedicated
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

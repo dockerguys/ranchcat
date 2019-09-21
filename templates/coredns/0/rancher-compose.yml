@@ -18,7 +18,8 @@ catalog:
       type: enum
       options:
         - cloudflare-tls
-        - tencent
+        - quad9-tls
+        - china
       required: true
       default: "cloudflare-tls"
     - variable: coredns_private_domains

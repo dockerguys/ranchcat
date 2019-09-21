@@ -1,0 +1,8 @@
+name: CoreDNS
+description: |
+  DNS and Service Discovery
+version: 1.6
+category: Networking
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

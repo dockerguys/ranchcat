@@ -40,8 +40,7 @@ services:
     # Expose ports
     # -----------------------------------
     ports: # haproxy doesn't support udp
-      - 5353:5353/tcp
-      - 5353:5353/udp
+      - 53:53/udp
     # -----------------------------------
     # Scheduler labels
     # -----------------------------------

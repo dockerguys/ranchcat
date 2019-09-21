@@ -30,7 +30,7 @@ catalog:
     - variable: coredns_enable_metrics
       description: "Enable metrics reporting"
       label: "Enable Metrics"
-      type: bool
+      type: boolean
       required: true
       default: true
     - variable: coredns_brand_name

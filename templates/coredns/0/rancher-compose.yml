@@ -22,9 +22,26 @@ catalog:
         - china
       required: true
       default: "cloudflare-tls"
+    - variable: coredns_port
+      description: "Port to listen for DNS requests. The host will open this UDP port directly."
+      label: "DNS Port"
+      type: int
+      required: true
+      default: 53
     - variable: coredns_private_domains
       description: "Domains that should not be resolved by upstream DNS server. Separate by space."
       label: "Private Domains"
+      type: string
+      required: true
+      default: "internal"
+    - variable: coredns_internal_upstream_server
+      description: "IP address of your LAN DNS server for resolving local domains."
+      label: "Internal Upstream DNS"
+      type: string
+      required: false
+    - variable: coredns_internal_upstream_domain
+      description: "Domain to be resolved by your LAN DNS server."
+      label: "Internal Upstream Domain"
       type: string
       required: true
       default: "internal"

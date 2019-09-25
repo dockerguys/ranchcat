@@ -1,0 +1,8 @@
+name: Polr
+description: |
+  A minimalistic URL shortener web service.
+version: v2.2
+category: Web
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

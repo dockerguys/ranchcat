@@ -46,11 +46,6 @@ catalog:
       required: true
       type: "password"
       default: "DatabasePassword"
-    - variable: host_affinity_label
-      description: "The stack will launch on one of the hosts that has this label."
-      label: "Host Affinity Label"
-      type: "string"
-      required: false
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

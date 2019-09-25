@@ -20,9 +20,9 @@ services:
     # - support private registry
     # -----------------------------------
 {{- if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/${gitea_image}"
+    image: "${docker_registry_name}/${polr_image}"
 {{- else }}
-    image: ${gitea_image}
+    image: ${polr_image}
 {{- end }}
 {{- if ne .Values.db_vendor "sqlite3" }}
     # -----------------------------------

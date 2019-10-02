@@ -203,7 +203,7 @@ services:
     health_check:
       response_timeout: 2000
       healthy_threshold: 2
-      port: 53000
+      port: 43456
       unhealthy_threshold: 3
       initializing_timeout: 300000
       interval: 2000

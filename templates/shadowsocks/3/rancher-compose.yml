@@ -87,25 +87,6 @@ catalog:
         - warning
         - info
         - debug
-    - variable: ss_default_port
-      description: "Default Shadowsocks port to expose. The container will use this port on the host directly."
-      label: "Shadowsocks Port"
-      default: 53000
-      type: int
-    - variable: ss_port_allocation
-      description: "Controls ports to expose: V2RAY port only, Shadowsocks port only, or both."
-      label: "Port Allocation"
-      default: "shadowsocks-v2ray"
-      type: enum
-      options:
-        - v2ray
-        - shadowsocks
-        - shadowsocks-v2ray
-    - variable: ss_enable_v2ray
-      description: "Enable V2RAY plugin."
-      label: "Enable V2Ray"
-      default: true
-      type: boolean
     - variable: v2ray_vpn_mode
       description: "Enable V2RAY VPN mode. This is ignored if V2RAY is not enabled."
       label: "V2RAY VPN Mode"
@@ -140,11 +121,6 @@ catalog:
       label: "V2Ray Hostname"
       default: ""
       type: string
-    - variable: v2ray_port
-      description: "V2RAY port to expose. The container will use this port on the host directly if V2RAY is enabled."
-      label: "V2Ray Port"
-      default: 1943
-      type: int
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
@@ -203,7 +179,8 @@ services:
     health_check:
       response_timeout: 2000
       healthy_threshold: 2
-      port: 43456
+      port: 53000
+      request_line: GET /healthcheck HTTP/1.0
       unhealthy_threshold: 3
       initializing_timeout: 300000
       interval: 2000

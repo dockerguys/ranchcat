@@ -80,29 +80,15 @@ services:
       SS_MODE: ${ss_mode}
       SS_KEY: ${ss_key}
       SS_LOG_LEVEL: ${ss_log_level}
-      SS_EXTERNAL_PORT: ${ss_default_port}
-      SS_ENABLE_V2RAY: ${ss_enable_v2ray}
+      SS_EXTERNAL_PORT: 53000
+      SS_ENABLE_V2RAY: "true"
       V2RAY_VPN_MODE: ${v2ray_vpn_mode}
       V2RAY_WEBSOCKET_PATH: ${v2ray_websocket_path}
       V2RAY_TRANSPORT_PROTOCOL: ${v2ray_transport_protocol}
       V2RAY_HOSTNAME: ${v2ray_hostname}
-      V2RAY_SERVER_IP: ""
-      V2RAY_EXTERNAL_PORT: ${v2ray_port}
     ports: # haproxy doesn't support udp
-{{- if eq .Values.ss_port_allocation "v2ray" }}
-      - ${v2ray_port}:${v2ray_port}/tcp
-      - ${v2ray_port}:${v2ray_port}/udp
-{{- end }}
-{{- if eq .Values.ss_port_allocation "shadowsocks" }}
-      - ${ss_default_port}:${ss_default_port}/tcp
-      - ${ss_default_port}:${ss_default_port}/udp
-{{- end }}
-{{- if eq .Values.ss_port_allocation "shadowsocks-v2ray" }}
-      - ${ss_default_port}:${ss_default_port}/tcp
-      - ${ss_default_port}:${ss_default_port}/udp
-      - ${v2ray_port}:${v2ray_port}/tcp
-      - ${v2ray_port}:${v2ray_port}/udp
-{{- end }}
+      - 53000:53000/tcp
+      - 53000:53000/udp
 {{- if ne .Values.v2ray_transport_protocol "websocket-http" }}
     # -----------------------------------
     # VOLUMES

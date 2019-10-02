@@ -1,7 +1,7 @@
 name: Shadowsocks Server
 description: |
   Active traffic obfuscation using SOCKS5 based proxy.
-version: 3.2.5
+version: 3.3.1.1
 category: Networking
 maintainer: Dockerguys <dockerguys@lizoc.com>
 license: Proprietary ULA

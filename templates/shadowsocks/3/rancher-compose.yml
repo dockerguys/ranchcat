@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Shadowsocks Server"
-  version: "3.3.1.0"
+  version: "3.3.1.1"
   description: "Active traffic obfuscation using SOCKS5 proxy"
   questions:
     - variable: shadowsocks_image
@@ -9,9 +9,9 @@ catalog:
       label: "Shadowsocks Image"
       type: enum
       options:
-        - dockerguys/shadowsocks:3.3.1-server
+        - dockerguys/shadowsocks:3.3.1-v2ray
       required: true
-      default: "dockerguys/shadowsocks:3.3.1-server"
+      default: "dockerguys/shadowsocks:3.3.1-v2ray"
     - variable: ss_crypto
       description: "Cryptographic algorithm for traffic encryption"
       label: "Encryption Algorithm"
@@ -76,69 +76,74 @@ catalog:
       label: "External DNS"
       default: "8.8.8.8"
       type: string
-    - variable: kcptun_crypto
-      description: "Cryptographic algorithm for KCPTun connections"
-      label: "KCPTun Encryption"
-      default: "aes"
+    - variable: ss_log_level
+      description: "Log verbosity level"
+      label: "Log Level"
+      default: "info"
       type: enum
       options:
-        - aes
-        - aes-128
-        - aes-192
-        - salsa20
-        - blowfish
-        - twofish
-        - cast5
-        - 3des
-        - tea
-        - xtea
-        - xor
         - none
-    - variable: kcptun_key
-      description: "Connection password for default KCPTun user at port 34567"
-      label: "KCPTun Account Password"
-      type: "password"
-      required: true
-      default: ChangeMeChangeMe
-    - variable: kcptun_datashard
-      description: "Reed-solomon erasure coding - datashard"
-      label: "KCPTun Datashard"
-      default: 10
+        - error
+        - warning
+        - info
+        - debug
+    - variable: ss_default_port
+      description: "Default Shadowsocks port to expose. The container will use this port on the host directly."
+      label: "Shadowsocks Port"
+      default: 53000
       type: int
-    - variable: kcptun_parityshard
-      description: "Reed-solomon erasure coding - parityshard"
-      label: "KCPTun Parityshard"
-      default: 3
-      type: int
-    - variable: kcptun_nocomp
-      description: "Do not compress data."
-      label: "KCPTun Disable Compression"
-      default: false
-      type: boolean
-    - variable: kcptun_mode
-      description: "Default aggresiveness on retransmission for embeded modes"
-      label: "KCPTun Mode"
-      default: "fast2"
+    - variable: ss_port_allocation
+      description: "Controls ports to expose: V2RAY port only, Shadowsocks port only, or both."
+      label: "Port Allocation"
+      default: "shadowsocks-v2ray"
       type: enum
       options:
-        - fast3
-        - fast2
-        - fast
-        - normal
-    - variable: kcptun_mtu
-      description: "Default maximum transmission unit for UDP packets."
-      label: "KCPTun MTU"
-      default: 1350
-      type: int
-    - variable: kcptun_sndwnd
-      description: "Default send window size (number of packets)."
-      label: "KCPTun SNDWND"
-      default: 1024
-      type: int
-    - variable: kcptun_rcvwnd
-      description: "Default receive window size (number of packets)."
-      label: "KCPTun RCVWND"
-      default: 1024
+        - v2ray
+        - shadowsocks
+        - shadowsocks-v2ray
+    - variable: ss_enable_v2ray
+      description: "Enable V2RAY plugin."
+      label: "Enable V2Ray"
+      default: true
+      type: boolean
+    - variable: v2ray_vpn_mode
+      description: "Enable V2RAY VPN mode. This is ignored if V2RAY is not enabled."
+      label: "V2RAY VPN Mode"
+      default: true
+      type: boolean
+    - variable: v2ray_transport_protocol
+      description: "V2RAY transport protocol. This is ignored if V2RAY is not enabled."
+      label: "V2RAY Transport Protocol"
+      default: "websocket-http"
+      type: enum
+      options:
+        - websocket-http
+        - websocket-tls
+        - quic-tls
+    - variable: v2ray_tls_cert
+      description: "V2RAY TLS certificate. Specify if using TLS based transport protocol."
+      label: "V2RAY TLS Certificate"
+      default: ""
+      type: string
+    - variable: v2ray_tls_key
+      description: "V2RAY TLS secret key. Specify if using TLS based transport protocol."
+      label: "V2RAY TLS Key"
+      default: ""
+      type: string
+    - variable: v2ray_websocket_path
+      description: "V2RAY websocket path. This is ignored if V2RAY is not enabled."
+      label: "V2RAY Websocket Path"
+      default: "/"
+      type: string
+    - variable: v2ray_hostname
+      description: "V2RAY domain name. This is ignored if V2RAY is not enabled, or server is not running in TLS mode."
+      label: "V2Ray Hostname"
+      default: ""
+      type: string
+    - variable: v2ray_port
+      description: "V2RAY port to expose. The container will use this port on the host directly if V2RAY is enabled."
+      label: "V2Ray Port"
+      default: 1943
       type: int
     # --- common param: host affinity
     - variable: host_affinity_label

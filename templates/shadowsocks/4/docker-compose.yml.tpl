@@ -81,6 +81,8 @@ services:
       SS_KEY: ${ss_key}
       SS_LOG_LEVEL: ${ss_log_level}
       SS_EXTERNAL_PORT: ${ss_connection_port}
+      SS_PRIVATE_MAN_PORT: 43456
+      SS_PUBLIC_MAN_PORT: 8080
 {{- if (.Values.ss_enable_v2ray) }}
       SS_ENABLE_V2RAY: "true"
 {{- else }}

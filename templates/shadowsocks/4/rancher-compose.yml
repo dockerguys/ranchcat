@@ -1,0 +1,198 @@
+version: '2'
+catalog:
+  name: "Shadowsocks Server"
+  version: "3.3.2.1"
+  description: "Active traffic obfuscation using SOCKS5 proxy"
+  questions:
+    - variable: shadowsocks_image
+      description: "Shadowsocks server image"
+      label: "Shadowsocks Image"
+      type: enum
+      options:
+        - dockerguys/shadowsocks:3.3.2-v2ray
+      required: true
+      default: "dockerguys/shadowsocks:3.3.2-v2ray"
+    - variable: ss_crypto
+      description: "Cryptographic algorithm for traffic encryption"
+      label: "Encryption Algorithm"
+      type: enum
+      options:
+        - rc4-md5
+        - aes-128-gcm
+        - aes-192-gcm
+        - aes-256-gcm
+        - aes-128-cfb
+        - aes-192-cfb
+        - aes-256-cfb
+        - aes-128-ctr
+        - aes-192-ctr
+        - aes-256-ctr
+        - camellia-128-cfb
+        - camellia-192-cfb
+        - camellia-256-cfb
+        - bf-cfb
+        - chacha20-poly1305
+        - chacha20-ietf-poly1305
+        - salsa20
+        - chacha20
+        - chacha20-ietf
+      required: true
+      default: chacha20-ietf-poly1305
+    - variable: ss_connection_port
+      description: "Port to use for data connection. This port must not be already used by the underlying host."
+      label: "Connection Port"
+      type: int
+      required: true
+      default: 53000
+    - variable: ss_key
+      description: "Password for connection port"
+      label: "Connection Port Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: ss_mode
+      description: "Support for TCP and UDP protocol"
+      label: "TCP/UDP Support"
+      type: enum
+      options:
+        - tcp_only
+        - udp_only
+        - tcp_and_udp
+      required: true
+      default: tcp_and_udp
+    - variable: ss_reuse_port
+      description: "Enables port reuse. Only available with Linux kernel > 3.9.0."
+      label: "Reuse Ports"
+      default: true
+      type: boolean
+      required: true
+    - variable: ss_fastopen
+      description: "Enables fast open. Only available with Linux kernel > 3.7.0."
+      label: "Fast Open Ports"
+      default: true
+      type: boolean
+      required: true
+    - variable: ss_timeout
+      description: "Set the socket timeout in seconds."
+      label: "Socket Timeout"
+      default: 60
+      type: int
+    - variable: ss_external_dns
+      description: "Setup name servers for internal DNS resolver (libudns). The default server is fetched from /etc/resolv.conf."
+      label: "External DNS"
+      default: "8.8.8.8"
+      type: string
+    - variable: ss_log_level
+      description: "Log verbosity level"
+      label: "Log Level"
+      default: "info"
+      type: enum
+      options:
+        - none
+        - error
+        - warning
+        - info
+        - debug
+    - variable: ss_enable_v2ray
+      description: "Enable V2RAY plugin. Leave all V2RAY related options at their default value if not enabling V2RAY."
+      label: "Enable V2RAY"
+      default: true
+      type: boolean
+    - variable: v2ray_vpn_mode
+      description: "Enable V2RAY VPN mode."
+      label: "V2RAY VPN Mode"
+      default: true
+      type: boolean
+    - variable: v2ray_transport_protocol
+      description: "V2RAY transport protocol. TLS-based protocols will require a certificate."
+      label: "V2RAY Transport Protocol"
+      default: "websocket-http"
+      type: enum
+      options:
+        - websocket-http
+        - websocket-tls
+        - quic-tls
+    - variable: v2ray_tls_cert
+      description: "V2RAY TLS certificate. Specify if using TLS based transport protocol."
+      label: "V2RAY TLS Certificate"
+      default: ""
+      type: string
+    - variable: v2ray_tls_key
+      description: "V2RAY TLS secret key. Specify if using TLS based transport protocol."
+      label: "V2RAY TLS Key"
+      default: ""
+      type: string
+    - variable: v2ray_websocket_path
+      description: "V2RAY websocket path."
+      label: "V2RAY Websocket Path"
+      default: "/"
+      type: string
+    - variable: v2ray_hostname
+      description: "V2RAY domain name. This is ignored if not running in TLS mode."
+      label: "V2Ray Hostname"
+      default: ""
+      type: string
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory, remove docker_memory_swap_limit
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  shadowsocks-server:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 43456
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

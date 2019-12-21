@@ -132,6 +132,15 @@ catalog:
       label: "V2Ray Hostname"
       default: ""
       type: string
+    - variable: busybox_image
+      description: "Busybox image"
+      label: "Busybox Image"
+      type: enum
+      options:
+        - dockerguys/busybox:1.31.0
+        - busybox
+      required: true
+      default: "dockerguys/busybox:1.31.0"
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

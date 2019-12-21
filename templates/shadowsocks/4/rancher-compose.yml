@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Shadowsocks Server"
-  version: "3.3.2.1"
+  version: "3.3.3.1"
   description: "Active traffic obfuscation using SOCKS5 proxy"
   questions:
     - variable: shadowsocks_image
@@ -9,9 +9,9 @@ catalog:
       label: "Shadowsocks Image"
       type: enum
       options:
-        - dockerguys/shadowsocks:3.3.2-v2ray
+        - dockerguys/shadowsocks:3.3.3-v2ray
       required: true
-      default: "dockerguys/shadowsocks:3.3.2-v2ray"
+      default: "dockerguys/shadowsocks:3.3.3-v2ray"
     - variable: ss_crypto
       description: "Cryptographic algorithm for traffic encryption"
       label: "Encryption Algorithm"
@@ -98,11 +98,6 @@ catalog:
       label: "Enable V2RAY"
       default: true
       type: boolean
-    - variable: v2ray_vpn_mode
-      description: "Enable V2RAY VPN mode."
-      label: "V2RAY VPN Mode"
-      default: true
-      type: boolean
     - variable: v2ray_transport_protocol
       description: "V2RAY transport protocol. TLS-based protocols will require a certificate."
       label: "V2RAY Transport Protocol"
@@ -113,12 +108,12 @@ catalog:
         - websocket-tls
         - quic-tls
     - variable: v2ray_tls_cert
-      description: "V2RAY TLS certificate. Specify if using TLS based transport protocol."
+      description: "V2RAY TLS certificate. You need to base64 encode it (base64 -w 0). Specify if using TLS based transport protocol."
       label: "V2RAY TLS Certificate"
       default: ""
       type: string
     - variable: v2ray_tls_key
-      description: "V2RAY TLS secret key. Specify if using TLS based transport protocol."
+      description: "V2RAY TLS secret key. You need to base64 encode it (base64 -w 0). Specify if using TLS based transport protocol."
       label: "V2RAY TLS Key"
       default: ""
       type: string

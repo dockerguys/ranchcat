@@ -46,8 +46,8 @@ services:
       - /bin/sh
       - -c
       - |
-        echo '${tls_cert}' >> /etc/acme/fullchain.pem
-        echo '${tls_key}' >> /etc/acme/cert.key
+        echo '${tls_cert}' | base64 -d >> /etc/acme/fullchain.cer
+        echo '${tls_key}' | base64 -d >> /etc/acme/cert.key
 {{- end }}
 
   # ************************************
@@ -91,7 +91,6 @@ services:
 {{- else }}
       SS_ENABLE_V2RAY: "false"
 {{- end }}
-      V2RAY_VPN_MODE: ${v2ray_vpn_mode}
       V2RAY_WEBSOCKET_PATH: ${v2ray_websocket_path}
       V2RAY_TRANSPORT_PROTOCOL: ${v2ray_transport_protocol}
       V2RAY_HOSTNAME: ${v2ray_hostname}

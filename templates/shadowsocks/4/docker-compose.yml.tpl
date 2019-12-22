@@ -53,9 +53,11 @@ services:
       V2RAY_HOSTNAME: ${v2ray_hostname}
       V2RAY_ACME_KEY: ${v2ray_acme_key}
       V2RAY_ACME_CERT: ${v2ray_acme_cert}
+{{- if (.Values.ss_expose_ports) }}
     ports: # haproxy doesn't support udp
       - ${ss_connection_port}:${ss_connection_port}/tcp
       - ${ss_connection_port}:${ss_connection_port}/udp
+{{- end }}
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`

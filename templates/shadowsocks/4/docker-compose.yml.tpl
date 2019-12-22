@@ -10,46 +10,6 @@ version: '2'
 # BEGIN SERVICES
 # +++++++++++++++++++++++
 services:
-{{- if ne .Values.v2ray_transport_protocol "websocket-http" }}
-  # ************************************
-  # SERVICE
-  # - sidekick to init data volumes
-  # ************************************
-  shadowsocks-data:
-    # -----------------------------------
-    # Image
-    # - support private registry
-    # -----------------------------------
-{{-   if (.Values.docker_registry_name) }}
-    image: "${docker_registry_name}/${busybox_image}"
-{{-   else }}
-    image: ${busybox_image}
-{{-   end }}
-    # -----------------------------------
-    # Scheduler labels
-    # -----------------------------------
-    labels:
-      io.rancher.container.start_once: true
-    # -----------------------------------
-    # VOLUMES
-    # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes
-    # - specify vol name to use the specified volume
-    # - just write path to create dynamic named volume
-    # -----------------------------------
-    volumes:
-      - /etc/acme
-    # -----------------------------------
-    # Commands
-    # - init cert volume
-    # -----------------------------------
-    command:
-      - /bin/sh
-      - -c
-      - |
-        echo '${tls_cert}' | base64 -d >> /etc/acme/fullchain.cer
-        echo '${tls_key}' | base64 -d >> /etc/acme/cert.key
-{{- end }}
-
   # ************************************
   # SERVICE
   # - primary application
@@ -65,9 +25,6 @@ services:
       # hard anti-affinity rule to prevent >1 instance per host (port mapping conflict)
       io.shadowsocks.host: dedicated
       io.rancher.scheduler.affinity:container_label_ne: io.shadowsocks.host=dedicated
-{{- if ne .Values.v2ray_transport_protocol "websocket-http" }}
-      io.rancher.sidekicks: shadowsocks-data
-{{- end }}
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
@@ -94,16 +51,11 @@ services:
       V2RAY_WEBSOCKET_PATH: ${v2ray_websocket_path}
       V2RAY_TRANSPORT_PROTOCOL: ${v2ray_transport_protocol}
       V2RAY_HOSTNAME: ${v2ray_hostname}
+      V2RAY_ACME_KEY: ${v2ray_acme_key}
+      V2RAY_ACME_CERT: ${v2ray_acme_cert}
     ports: # haproxy doesn't support udp
       - ${ss_connection_port}:${ss_connection_port}/tcp
       - ${ss_connection_port}:${ss_connection_port}/udp
-{{- if ne .Values.v2ray_transport_protocol "websocket-http" }}
-    # -----------------------------------
-    # VOLUMES
-    # -----------------------------------
-    volumes_from:
-      - shadowsocks-data
-{{- end }}
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`

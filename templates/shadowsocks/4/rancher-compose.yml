@@ -107,12 +107,12 @@ catalog:
         - websocket-http
         - websocket-tls
         - quic-tls
-    - variable: v2ray_tls_cert
+    - variable: v2ray_acme_cert
       description: "V2RAY TLS certificate. You need to base64 encode it (base64 -w 0). Specify if using TLS based transport protocol."
       label: "V2RAY TLS Certificate"
       default: ""
       type: string
-    - variable: v2ray_tls_key
+    - variable: v2ray_acme_key
       description: "V2RAY TLS secret key. You need to base64 encode it (base64 -w 0). Specify if using TLS based transport protocol."
       label: "V2RAY TLS Key"
       default: ""
@@ -127,15 +127,6 @@ catalog:
       label: "V2Ray Hostname"
       default: ""
       type: string
-    - variable: busybox_image
-      description: "Busybox image"
-      label: "Busybox Image"
-      type: enum
-      options:
-        - dockerguys/busybox:1.31.0
-        - busybox
-      required: true
-      default: "dockerguys/busybox:1.31.0"
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

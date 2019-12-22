@@ -98,6 +98,7 @@ catalog:
       label: "Expose Ports"
       default: true
       type: boolean
+      required: true
     - variable: ss_enable_v2ray
       description: "Enable V2RAY plugin. Leave all V2RAY related options at their default value if not enabling V2RAY."
       label: "Enable V2RAY"

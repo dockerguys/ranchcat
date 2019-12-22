@@ -22,7 +22,7 @@ services:
 {{- end }}
     labels:
       io.shadowsocks.role: "{{ .Stack.Name }}/server"
-{{- if (.Values.ss_expose_ports) }}
+{{- if eq .Values.ss_expose_ports "true" }}
       # hard anti-affinity rule to prevent >1 instance per host (port mapping conflict)
       io.shadowsocks.host: dedicated
       io.rancher.scheduler.affinity:container_label_ne: io.shadowsocks.host=dedicated
@@ -45,7 +45,7 @@ services:
       SS_EXTERNAL_PORT: ${ss_connection_port}
       SS_PRIVATE_MAN_PORT: 43456
       SS_PUBLIC_MAN_PORT: 8080
-{{- if (.Values.ss_enable_v2ray) }}
+{{- if eq .Values.ss_enable_v2ray "true" }}
       SS_ENABLE_V2RAY: "true"
 {{- else }}
       SS_ENABLE_V2RAY: "false"
@@ -55,7 +55,7 @@ services:
       V2RAY_HOSTNAME: ${v2ray_hostname}
       V2RAY_ACME_KEY: ${v2ray_acme_key}
       V2RAY_ACME_CERT: ${v2ray_acme_cert}
-{{- if (.Values.ss_expose_ports) }}
+{{- if eq .Values.ss_expose_ports "true" }}
     ports: # haproxy doesn't support udp
       - ${ss_connection_port}:${ss_connection_port}/tcp
       - ${ss_connection_port}:${ss_connection_port}/udp

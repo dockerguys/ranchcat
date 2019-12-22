@@ -94,7 +94,7 @@ catalog:
         - info
         - debug
     - variable: ss_expose_ports
-      description: "Expose ports on host. Disable if using a proxy in front of Shadowsocks."
+      description: "Expose ports on host. You can run more than 1 instance per host by not exposing ports, but a proxy must be used."
       label: "Expose Ports"
       default: true
       type: boolean

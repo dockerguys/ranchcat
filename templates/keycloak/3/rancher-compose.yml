@@ -24,6 +24,8 @@ catalog:
         - postgres
         - mysql
         - mariadb
+        - oracle
+        - msssql
         - h2
       required: true
       default: h2
@@ -31,13 +33,15 @@ catalog:
       label: "Keycloak Image"
       description: "Image to use"
       required: true
-      default: "dockerguys/keycloak:7.0.0"
+      default: "dockerguys/keycloak:8.0-charlen"
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/keycloak:6.0.1
         - dockerguys/keycloak:6.0.1-charlen
         - dockerguys/keycloak:7.0.0
         - dockerguys/keycloak:7.0.0-charlen
+        - dockerguys/keycloak:8.0
+        - dockerguys/keycloak:8.0-charlen
     - variable: "db_service"
       description: "External DB service to use (if 'Database Vendor' is not 'h2'). You can reference the service as 'db' by setting this."
       label: "DB Service"

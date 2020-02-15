@@ -25,7 +25,8 @@ dig @<dns_server_ip> CH TXT hostname.bind
 dig @<dns_server_ip> CH TXT id.server
 ```
 
-5. All requests hosts defined by Rancher load balancer are automatically polled every 30 seconds and served by this DNS server.
+5. All requests hosts defined by Rancher load balancer are automatically polled every 30 seconds and served by this DNS server. Hosts defined by Rancher load balancer are served statically, i.e. it is never resolved by internal upstream DNS nor upstream DNS.
+6. You need to tag hosts that are running the load balancer with `role.lbs=true`, and the load balancer service must be named `loadbalancer`.
 
 
 Caveats
@@ -38,3 +39,5 @@ sed -i 's/#DNSStubListener=yes/DNSStubListener=no/g' /etc/systemd/resolved.conf
 ln -sfr /run/systemd/resolve/resolv.conf /etc/resolv.conf
 systemctl restart systemd-resolved
 ```
+
+You can add the hosts running CoreDNS to the "domain overrides" section of an upstream unbound server, but "forwarding mode" needs to be enabled on unbound for things to work.

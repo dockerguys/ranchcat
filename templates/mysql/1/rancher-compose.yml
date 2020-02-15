@@ -9,8 +9,11 @@
       label: "MySQL Docker Image"
       type: "enum"
       options:
-        - "dockerguys/mariadb:10.3.17.0"
-      default: "dockerguys/mariadb:10.3.17.0"
+        - "dockerguys/mariadb:10.2"
+        - "dockerguys/mariadb:10.3"
+        - "dockerguys/mariadb:10.4"
+        - "dockerguys/mariadb:latest"
+      default: "dockerguys/mariadb:10.4"
       required: true
     - variable: mysql_root_name
       description: |
@@ -75,9 +78,9 @@
       label: "Web Admin Docker Image"
       type: "enum"
       options:
-        - "dockerguys/adminer:4.7.2"
-        - "dockerguys/adminer:4.7.3"
-      default: "dockerguys/adminer:4.7.3"
+        - "dockerguys/adminer:4.7"
+        - "dockerguys/adminer:latest"
+      default: "dockerguys/adminer:latest"
       required: true
     - variable: adminer_css
       description: "CSS theme file for web administration interface."

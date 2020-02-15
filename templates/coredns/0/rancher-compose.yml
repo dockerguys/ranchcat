@@ -24,11 +24,17 @@ catalog:
       required: true
       default: "cloudflare-tls"
     - variable: coredns_port
-      description: "Port to listen for DNS requests. The host will open this UDP port directly."
+      description: "Port to listen for DNS requests. The host will open this UDP port directly, unless UDP is disabled."
       label: "DNS Port"
       type: int
       required: true
       default: 53
+    - variable: coredns_disable_udp
+      description: "Disable UDP port. You need to configure the load balancer manually."
+      label: "Disable UDP"
+      type: boolean
+      required: true
+      default: false
     - variable: coredns_private_domains
       description: "Domains that should not be resolved by upstream DNS server. Separate by space."
       label: "Private Domains"

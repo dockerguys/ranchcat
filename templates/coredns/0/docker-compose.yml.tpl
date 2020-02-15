@@ -40,11 +40,13 @@ services:
       COREDNS_INTERNAL_UPSTREAM_FORWARD: ${coredns_internal_upstream_server}
 {{- end }}
       COREDNS_INTERNAL_UPSTREAM_DOMAIN: ${coredns_internal_upstream_domain}
+{{- if eq .Values.coredns_disable_udp "false" }}
     # -----------------------------------
     # Expose ports
     # -----------------------------------
     ports: # haproxy doesn't support udp
       - ${coredns_port}:53/udp
+{{- end }}
     # -----------------------------------
     # Scheduler labels
     # -----------------------------------

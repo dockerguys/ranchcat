@@ -67,6 +67,18 @@ catalog:
       required: true
       default: "code.lizoc.com"
       type: "string"
+    - variable: gitea_openid_domain
+      label: "OpenID Domain"
+      description: "Override the OpenID domain. Leave blank to ignore. Works with OpenID IP."
+      required: false
+      default: ""
+      type: "string"
+    - variable: gitea_openid_ip
+      label: "OpenID IP"
+      description: "Override the OpenID domain. Separate IPs by space."
+      required: false
+      default: ""
+      type: "string"
     - variable: gitea_public_url
       label: "Public URL"
       description: "Public URL of this service."

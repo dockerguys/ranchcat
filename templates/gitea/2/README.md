@@ -39,3 +39,21 @@ The customization repo lives in `system/theme`. Symlinks will be created as foll
 - /src/options --> /data/gitea/options
 
 Symlinks will be rebuilt as needed every time you push to the repo.
+
+
+Keycloak Integration
+--------------------
+If Keycloak is hosted in the same system, you may need to make Gitea resolve your OpenID authentication domain using the load balancers internal IP.
+
+To do that, set "OpenID Domain Override" to your authentication domain (e.g. auth.example.com). Set "OpenID IP Override" to the internal IPs of your load balancers (e.g. 172.22.30.40 172.22.30.40).
+
+1. Go to "Admin Panel > Authentications > Add new source". Authentication name = [my-keycloak-gitea]; OAuth2 provider = openid connect; client id = keycloak-gitea; client secret = [copy from keycloak]; autodiscovery url = https://[keycloak.mydomain]/auth/realms/[my-realm]/.well-known/openid-configuration
+2. Don't enable yet.
+3. Go to Keycloak:
+- (select or create realm 'my-realm') and enter 'my-realm'
+- clients > create > client id = keycloak-gitea; protocol = openid-connect > save
+clients > keycloak-gitea > enabled; access type = confidential; standard flow; direct access grant; valid redirect urls = https://<gitea.mydomain>/*; web origins=+;
+- credentials > authenticator = client id & secret; (copy secret to gitea 'client secret')
+- mappers > (remove from list or add using 'add builtin' so that list only contains) family name, locale, given name, email, username, email verified
+- scope > full scope allowed
+4. enable in Gitea

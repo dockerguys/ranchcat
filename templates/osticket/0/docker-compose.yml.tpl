@@ -44,7 +44,7 @@ services:
       SMTP_FROM: "helpdesk@${brand_domain}"
       SMTP_USER: "${smtp_user}"
       SMTP_PASSWORD: "${smtp_password}"
-      SMTP_TLS="0"
+      SMTP_TLS: "0"
     # -----------------------------------
     # Links to other containers
     # - database service as "db"

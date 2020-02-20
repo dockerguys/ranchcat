@@ -65,18 +65,21 @@ catalog:
       label: "NextCloud Image"
       description: "Image to use"
       required: true
-      default: "dockerguys/nextcloud:16.0.4"
+      default: "dockerguys/nextcloud:18.0"
       type: enum
       options: # List of options if using type of `enum`
-        - dockerguys/nextcloud:16.0.4
+        - dockerguys/nextcloud:16.0
+        - dockerguys/nextcloud:18.0
+        - dockerguys/nextcloud:latest
     - variable: "redis_image"
       label: "Redis Image"
       description: "Redis database required. Choose the desired version."
       required: true
-      default: "dockerguys/redis:5.0.5"
+      default: "dockerguys/redis:5.0"
       type: enum
       options:
-        - dockerguys/redis:5.0.5
+        - dockerguys/redis:5.0
+        - dockerguys/redis:latest
     - variable: extra_volume_a
       label: "Extra Volume 1"
       description: |

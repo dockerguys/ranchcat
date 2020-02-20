@@ -73,8 +73,8 @@ services:
     # ENV
     # -----------------------------------
     environment:
-      OPENID_OVERRIDE_DOMAIN: "${gitea_openid_ip}"
-      OPENID_OVERRIDE_IP: "${gitea_openid_domain}"
+      OPENID_OVERRIDE_DOMAIN: "${gitea_openid_domain}"
+      OPENID_OVERRIDE_IP: "${gitea_openid_ip}"
       GITEA_SETUP_SKIP_DATABASE_INIT: "${skip_db_init}"
       DISABLE_REGISTRATION: "${disable_registration}"
       REQUIRE_SIGNIN_VIEW: "${view_require_signin}"

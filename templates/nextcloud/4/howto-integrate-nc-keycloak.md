@@ -23,7 +23,7 @@ You need to first create a certificate for NextCloud SAML:
 ```bash
 # use . for all questions (means empty value), 
 # except for Common Name, which should be <host_name>
-openssl req  -nodes -new -x509  -keyout private.key -out public.crt
+openssl req -days +3650 -nodes -new -x509  -keyout private.key -out public.crt
 cat public.crt
 cat private.key
 ```
@@ -204,6 +204,15 @@ saml attribute nameFormat: basic
 aggregate attribute values: off
 ```
 
+```
+name: nc_group
+mapper type: user attribute
+property: nc_group
+friendly name:
+saml attribute name: nc_group
+saml attribute nameFormat: basic
+aggregate attribute values: off
+```
 
 Set Quota for Users
 -------------------
@@ -217,6 +226,10 @@ value: 1 GB
 ```
 
 Save your changes by clicking `Save`.
+
+Set Default Group
+-----------------
+Create groups in NextCloud. Then create the attribute `nc_group` for different groups in Keycloak, and set the value to the group name in NextCloud.
 
 
 Testing It Out

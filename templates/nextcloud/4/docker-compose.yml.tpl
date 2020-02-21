@@ -73,6 +73,8 @@ services:
     # -----------------------------------
     environment:
       NEXTCLOUD_UPDATE: "1"
+      OPENID_OVERRIDE_DOMAIN: "${sso_domain}"
+      OPENID_OVERRIDE_IP: "${sso_ip}"
       DEFAULT_ADMIN: "${nextcloud_user}"
       DEFAULT_ADMIN_PASSWORD: "${nextcloud_password}"
       DATABASE_BACKEND: "${db_vendor}"

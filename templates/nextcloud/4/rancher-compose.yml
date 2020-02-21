@@ -16,6 +16,18 @@ catalog:
       type: "password"
       required: true
       default: ChangeMeChangeMe
+    - variable: sso_ip
+      label: "Single Sign-On IP"
+      description: "Override SSO domain resolution. Separate IPs by space."
+      required: false
+      default: ""
+      type: "string"
+    - variable: sso_domain
+      label: "Single Sign-On Domain"
+      description: "Override SSO domain resolution. Set the domain name of the SSO provider."
+      required: false
+      default: ""
+      type: "string"
     - variable: db_vendor
       description: "Use embedded sqlite for testing purposes only. Otherwise you need to set up postgres and mysql/mariadb first."
       label: "Database Vendor"

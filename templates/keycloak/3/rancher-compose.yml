@@ -42,6 +42,8 @@ catalog:
         - dockerguys/keycloak:7.0.0-charlen
         - dockerguys/keycloak:8.0
         - dockerguys/keycloak:8.0-charlen
+        - dockerguys/keycloak:9.0
+        - dockerguys/keycloak:9.0-charlen
     - variable: "db_service"
       description: "External DB service to use (if 'Database Vendor' is not 'h2'). You can reference the service as 'db' by setting this."
       label: "DB Service"

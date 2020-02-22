@@ -53,11 +53,11 @@ services:
       KEYCLOAK_DEBUG_MODE: "true"
 {{- end }}
 {{- if and (eq .Values.keycloak_enable_feature_docker "true") (eq .Values.keycloak_enable_feature_js "true") }}
-      KEYCLOAK_STARTUP_EXTARGS: "-Dkeycloak.profile.feature.docker=enabled -Dkeycloak.profile.feature.scripts=enabled ${keycloak_extarg}"
+      KEYCLOAK_STARTUP_EXTARGS: "-Dkeycloak.profile.feature.docker=enabled -Dkeycloak.profile.feature.scripts=enabled -Dkeycloak.profile.feature.upload_scripts=enabled ${keycloak_extarg}"
 {{- else if eq .Values.keycloak_enable_feature_docker "true" }}
       KEYCLOAK_STARTUP_EXTARGS: "-Dkeycloak.profile.feature.docker=enabled ${keycloak_extarg}"
 {{- else if eq .Values.keycloak_enable_feature_js "true" }}
-      KEYCLOAK_STARTUP_EXTARGS: "-Dkeycloak.profile.feature.scripts=enabled ${keycloak_extarg}"
+      KEYCLOAK_STARTUP_EXTARGS: "-Dkeycloak.profile.feature.scripts=enabled -Dkeycloak.profile.feature.upload_scripts=enabled ${keycloak_extarg}"
 {{- else }}
       KEYCLOAK_STARTUP_EXTARGS: ${keycloak_extarg}
 {{- end }}

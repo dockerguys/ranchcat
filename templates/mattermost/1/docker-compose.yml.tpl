@@ -94,6 +94,7 @@ services:
 # +++++++++++++++++++++++
 
 {{- if (.Values.datavolume_name) }}
+volumes:
   # ************************************
   # VOLUME
   # - holds config

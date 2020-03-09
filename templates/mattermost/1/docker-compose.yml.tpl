@@ -93,6 +93,7 @@ services:
 # BEGIN VOLUMES
 # +++++++++++++++++++++++
 
+{{- if (.Values.datavolume_name) }}
   # ************************************
   # VOLUME
   # - holds config
@@ -118,7 +119,6 @@ services:
 {{-   else }}
     driver: local
 {{-   end }}
-{{- end }}
 
   # ************************************
   # VOLUME

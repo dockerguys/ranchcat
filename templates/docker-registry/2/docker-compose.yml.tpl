@@ -194,13 +194,13 @@ services:
       REGISTRY_LOG_LEVEL: warn
       REGISTRY_LOG_ACCESSLOG_DISABLED: false
       REGISTRY_STORAGE_DELETE_ENABLED: true
-      REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/registry.key
+      REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/registry.crt
       REGISTRY_AUTH_TOKEN_ISSUER: ${portus_domain}
       REGISTRY_AUTH_TOKEN_SERVICE: ${portus_domain}:5000
-      REGISTRY_AUTH_TOKEN_REALM: http://${portus_domain}:3000/v2/token
+      REGISTRY_AUTH_TOKEN_REALM: http://portus:3000/v2/token
       REGISTRY_NOTIFICATIONS_ENDPOINTS: >
         - name: portus
-          url: http://${portus_domain}:3000/v2/webhooks/events
+          url: http://portus:3000/v2/webhooks/events
           timeout: 2000ms
           threshold: 5
           backoff: 1s

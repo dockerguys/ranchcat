@@ -10,15 +10,6 @@ catalog:
       required: true
       default: "ChangeMeChangeMe"
       type: "password"
-    - variable: "busybox_image"
-      label: "Busybox Image"
-      description: "Image to use for Busybox"
-      required: true
-      default: "dockerguys/busybox:1.31.0"
-      type: enum
-      options: # List of options if using type of `enum`
-        - busybox:latest
-        - dockerguys/busybox:1.31.0
     - variable: "registry_image"
       label: "Registry Image"
       description: "Image to use for Docker Registry"
@@ -28,30 +19,51 @@ catalog:
       options: # List of options if using type of `enum`
         - registry:latest
         - dockerguys/docker-registry:2.7.1
-    # --- OAUTH2 settings ---
-    - variable: oauth_cert
-      label: "OAuth Certificate"
-      description: "Certificate bundle provided by OAuth server."
+    - variable: "portus_rootpasswd"
+      label: "Portus Secret Keybase"
+      description: "Portus uses this to encrypt and sign sessions"
+      required: true
+      default: "ChangeMeChangeMe"
+      type: "password"
+    - variable: "portus_dbpasswd"
+      label: "Portus Root Password"
+      description: "Password of the special user portus. Also used for the database backend."
+      required: true
+      default: "ChangeMeChangeMe"
+      type: "password"
+    - variable: "portus_domain"
+      label: "Portus Domain"
+      description: "FQDN of Portus domain"
       required: true
       type: "string"
-    - variable: oauth_token_realm_url
-      label: "OAuth Token Realm Url"
-      description: "FQDN of oauth2 url that will provides the token realm. Corresponds to 'REGISTRY_AUTH_TOKEN_REALM' registry setting."
+    # --- db settings ---
+    - variable: "db_vendor"
+      description: "Database backend for Portus."
+      label: "DB Vendor"
+      default: "mysql2"
+      required: true
+      type: "enum"
+      options:
+        - mysql2
+    - variable: "db_service"
+      description: |
+        External DB service to use. You can reference the service as "db" by setting this.
+      label: "DB Service"
+      default: ""
+      required: false
+      type: "service"
+    - variable: "db_name"
+      description: "Name of database."
+      label: "Database Name"
       required: true
       type: "string"
-      default: "https://signin.mydomain.com/auth/realms/mydomain.com/protocol/docker-v2/auth"
-    - variable: oauth_token_service_name
-      label: "OAuth Token Service Name"
-      description: "Unique service name provided by the authentication service. Corresponds to 'REGISTRY_AUTH_TOKEN_SERVICE' registry setting."
+      default: "portus"
+    - variable: "db_username"
+      description: "Database user with full access to the database."
+      label: "Database User Name"
       required: true
       type: "string"
-      default: "docker-registry"
-    - variable: oauth_token_issuer_url
-      label: "OAuth Token Issuer Url"
-      description: "FQDN of oauth2 issuer URL. Corresponds to 'REGISTRY_AUTH_TOKEN_ISSUER' registry setting."
-      required: true
-      type: "string"
-      default: "https://signin.mydomain.com/auth/realms/mydomain.com"
+      default: "portusapp"
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

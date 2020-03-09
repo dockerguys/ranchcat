@@ -194,6 +194,7 @@ services:
       REGISTRY_LOG_LEVEL: warn
       REGISTRY_LOG_ACCESSLOG_DISABLED: false
       REGISTRY_STORAGE_DELETE_ENABLED: true
+      REGISTRY_AUTH: token
       REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/registry.crt
       REGISTRY_AUTH_TOKEN_ISSUER: ${portus_domain}
       REGISTRY_AUTH_TOKEN_SERVICE: ${portus_domain}:5000

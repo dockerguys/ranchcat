@@ -33,8 +33,6 @@ services:
       PORTUS_MACHINE_FQDN_VALUE: ${portus_domain}
       # disable ssl to use lb ssl termination
       PORTUS_CHECK_SSL_USAGE_ENABLED: false
-      # bg on another container
-      PORTUS_BACKGROUND: false
       # serve static using nginx by map to /srv/Portus/public
       RAILS_SERVE_STATIC_FILES: true
       # just to be sure

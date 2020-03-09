@@ -91,6 +91,12 @@ services:
     mem_limit: "${docker_memory_limit}m"
     memswap_limit: "${docker_memory_limit}m"
 {{- end }}
+    # -----------------------------------
+    # Entrypoint override
+    # -----------------------------------
+    entrypoint:
+      - /bin/sh
+      - /init
 
   # ************************************
   # SERVICE
@@ -174,6 +180,12 @@ services:
     # -----------------------------------
     depends_on:
       - portus
+    # -----------------------------------
+    # Entrypoint override
+    # -----------------------------------
+    entrypoint:
+      - /bin/sh
+      - /init
 
   # ************************************
   # SERVICE

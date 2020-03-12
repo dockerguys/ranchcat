@@ -12,6 +12,7 @@ catalog:
       type: "enum"
       options: 
         - "dockerguys/mattermost:5.20"
+        - "dockerguys/mattermost:5.20-ve"
       required: true
       default: "dockerguys/mattermost:5.20"
     - variable: "mattermost_db_name"

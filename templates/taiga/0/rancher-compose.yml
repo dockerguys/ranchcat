@@ -59,6 +59,12 @@ catalog:
       required: true
       type: "string"
       default: "https://www.lizoc.com/privacy"
+    - variable: redis_cache_size_mb
+      label: "Cache Limit Memory"
+      description: "Maxiumum memory that Redis container can use (in megabytes)."
+      type: int
+      required: true
+      default: 256
     - variable: "taiga_backend_image"
       label: "Taiga Backend Image"
       description: "Backend image name."

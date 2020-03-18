@@ -212,7 +212,7 @@ services:
 {{- end }}
       TAIGA_DB_SERVER: "pgsql"
       TAIGA_DB_NAME: "taiga"
-      TAIGA_DB_PASSWORD: "$taiga_secret}"
+      TAIGA_DB_PASSWORD: "${taiga_secret}"
       TAIGA_RABBITMQ_SERVER: "rabbit"
       TAIGA_RABBITMQ_SERVER_PORT: "5672"
       TAIGA_RABBITMQ_USER: "taiga"

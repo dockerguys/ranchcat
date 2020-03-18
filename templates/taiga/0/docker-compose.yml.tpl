@@ -72,7 +72,7 @@ services:
     # -----------------------------------
     environment:
       POSTGRES_PASSWORD: "${taiga_secret}"
-      POSTGRES_DB="taiga"
+      POSTGRES_DB: "taiga"
     # -----------------------------------
     # Scheduler labels
     # -----------------------------------
@@ -101,6 +101,10 @@ services:
     cpu_quota: ${docker_cpu_quota_limit}
 {{- end }}
     cpu_shares: ${docker_cpu_weight_limit}
+    # -----------------------------------
+    # Misc behavior
+    # -----------------------------------
+    restart: always
     # -----------------------------------
     # LIMIT RAM
     # -----------------------------------

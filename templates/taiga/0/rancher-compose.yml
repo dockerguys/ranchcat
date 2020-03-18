@@ -251,13 +251,3 @@ services:
   events:
     scale: 1
     retain_ip: true
-    health_check:
-      response_timeout: 2000
-      healthy_threshold: 2
-      port: 8888
-      unhealthy_threshold: 3
-      initializing_timeout: 300000
-      interval: 2000
-      strategy: recreate
-      reinitializing_timeout: 120000
-      request_line: GET "/" "HTTP/1.0"

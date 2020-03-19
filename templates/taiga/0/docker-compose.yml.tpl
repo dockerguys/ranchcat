@@ -16,6 +16,8 @@ services:
   # ************************************
   lbs:
     image: rancher/lb-service-haproxy
+  labels:
+    io.taiga.role: "{{ .Stack.Name }}/lbs"
   # ************************************
   # SERVICE
   # - same host affinity as backend

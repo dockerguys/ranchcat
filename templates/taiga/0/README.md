@@ -15,8 +15,11 @@ Includes the following services:
 
 Usage
 -----
-1. Update your external load balancer 443 to port 80 of the internal loadbalancer. 
+1. Update your external load balancer 443 to port 80 of the internal loadbalancer (`io.taiga.role=<stack_name>/lbs`). 
 2. Django backend is disabled by default. Enable it by editing the internal loadbalancer:
 - `/admin` port 80 -> `taiga` port 80
 3. Default credentials are `admin`:`1213123`.
 
+Caveats
+-------
+PostgresSQL server is using a local volume. This means data will be lost if the server migrates to another host. You should use host affinity to pin it to a static host.

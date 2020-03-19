@@ -234,7 +234,7 @@ services:
       interval: 2000
       strategy: recreate
       reinitializing_timeout: 120000
-      request_line: GET "/" "HTTP/1.0"
+      request_line: GET "/api/v1/" "HTTP/1.0"
   tgfront:
     scale: 1
     retain_ip: true

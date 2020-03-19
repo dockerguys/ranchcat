@@ -49,6 +49,10 @@ services:
       KEYCLOAK_DEFAULT_THEME: ${keycloak_theme}
 {{- end }}
       KEYCLOAK_OPERATING_MODE_CONFIG: "${keycloak_opmode_config}.xml"
+{{- if eq .Values.keycloak_opmode_config "standalone-ha" }}
+      JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+      JGROUPS_DISCOVERY_PROPERTIES: datasource_jndi_name=java:jboss/datasources/KeycloakDS,info_writer_sleep_time=500
+{{- end }}
 {{- if eq .Values.debug_mode "true" }}
       KEYCLOAK_DEBUG_MODE: "true"
 {{- end }}

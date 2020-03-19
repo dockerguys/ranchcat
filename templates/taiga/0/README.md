@@ -16,6 +16,7 @@ Includes the following services:
 Usage
 -----
 1. Update your external load balancer 443 to port 80 of the internal loadbalancer. 
-2. Django backend can be accessed via `/admin/`.
+2. Django backend is disabled by default. Enable it by editing the internal loadbalancer:
+- `/admin` port 80 -> `taiga` port 80
 3. Default credentials are `admin`:`1213123`.
 

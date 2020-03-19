@@ -15,7 +15,9 @@ Includes the following services:
 
 Usage
 -----
-1. Update your external load balancer 443 to port 80 of the internal loadbalancer (`io.taiga.role=<stack_name>/lbs`). 
+1. Update your external load balancer:
+- HTTPS 443 <fqdn> /events to port 8888 of `io.taiga.role=<stack_name>/events`
+- HTTPS 443 <fqdn> (blank) to port 80 of `io.taiga.role=<stack_name>/lbs`
 2. Django backend is disabled by default. Enable it by editing the internal loadbalancer:
 - `/admin` port 80 -> `taiga` port 80
 3. Default credentials are `admin`:`1213123`.

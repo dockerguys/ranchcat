@@ -218,6 +218,18 @@ services:
       TAIGA_HTTP_PROTOCOL: "http"
       TAIGA_WS_PROTOCOL: "ws"
 {{- end }}
+      TAIGA_EMAIL_SERVER: "${taiga_email_server}"
+      TAIGA_EMAIL_PORT: "${taiga_email_port}
+      TAIGA_EMAIL_USER: "${taiga_email_user}"
+      TAIGA_EMAIL_PASSWORD: "${taiga_email_password}"
+{{- if eq .Values.taiga_email_encryption "TLS" }}
+      TAIGA_EMAIL_TLS: "True"
+      TAIGA_EMAIL_SSL: "False"
+{{- end }}
+{{- if eq .Values.taiga_email_encryption "SSL" }}
+      TAIGA_EMAIL_TLS: "False"
+      TAIGA_EMAIL_SSL: "True"
+{{- end }}
       TAIGA_DB_SERVER: "pgsql"
       TAIGA_DB_NAME: "taiga"
       TAIGA_DB_PASSWORD: "${taiga_secret}"
@@ -296,6 +308,11 @@ services:
 {{- else }}
     image: ${taiga_events_image}
 {{- end }}
+    # -----------------------------------
+    # Scheduler labels
+    # -----------------------------------
+    labels:
+      io.taiga.role: "{{ .Stack.Name }}/events"
     # -----------------------------------
     # ENV
     # -----------------------------------

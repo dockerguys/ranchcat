@@ -41,6 +41,37 @@ catalog:
       required: true
       type: "boolean"
       default: false
+    - variable: "taiga_email_server"
+      label: "Email Server"
+      description: "FQDN of email server for sending out notifications. Leave blank to disable."
+      required: false
+      type: "string"
+    - variable: "taiga_email_port"
+      label: "Email Server Port"
+      description: "Email server port. Ignore if email server is not specified."
+      required: false
+      type: "int"
+      default: 25
+    - variable: "taiga_email_encryption"
+      label: "Email Server Encryption"
+      description: "Username for email bot user account. Ignore if email server is not specified."
+      required: true
+      default: "TLS"
+      type: "enum"
+      options:
+        - "TLS"
+        - "SSL"
+    - variable: "taiga_email_user"
+      label: "Email Username"
+      description: "Username for email bot user account. Ignore if email server is not specified."
+      required: false
+      type: "string"
+    - variable: "taiga_email_password"
+      label: "Email Password"
+      description: "Password for email bot user account. Ignore if email server is not specified."
+      required: true
+      type: "password"
+      default: "ChangeMeChangeMe"
     - variable: "taiga_support_url"
       label: "Support URL"
       description: "Customize support link URL"
@@ -228,12 +259,6 @@ services:
     lb_config:
       certs: []
       port_rules:
-      - path: /events
-        priority: 1
-        protocol: http
-        service: events
-        source_port: 80
-        target_port: 8888
       - path: /api
         priority: 2
         protocol: http
@@ -294,3 +319,13 @@ services:
   events:
     scale: 1
     retain_ip: true
+  rabbit:
+    scale: 1
+    health_check:
+      port: 5672
+      interval: 2000
+      initializing_timeout: 60000
+      unhealthy_threshold: 3
+      strategy: recreate
+      healthy_threshold: 2
+      response_timeout: 2000

@@ -12,6 +12,12 @@ version: '2'
 services:
   # ************************************
   # SERVICE
+  # - rancher loadbalancer (internal)
+  # ************************************
+  lbs:
+    image: rancher/lb-service-haproxy
+  # ************************************
+  # SERVICE
   # - same host affinity as backend
   # ************************************
   redis:

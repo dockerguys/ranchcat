@@ -222,6 +222,55 @@ catalog:
       default: 1024
 
 services:
+  lbs:
+    scale: 1
+    start_on_create: true
+    lb_config:
+      certs: []
+      port_rules:
+      - path: /events
+        priority: 1
+        protocol: http
+        service: events
+        source_port: 80
+        target_port: 8888
+      - path: /api
+        priority: 2
+        protocol: http
+        service: taiga
+        source_port: 80
+        target_port: 80
+      - path: /admin
+        priority: 3
+        protocol: http
+        service: taiga
+        source_port: 80
+        target_port: 80
+      - path: /static
+        priority: 4
+        protocol: http
+        service: taiga
+        source_port: 80
+        target_port: 80
+      - path: /media
+        priority: 5
+        protocol: http
+        service: taiga
+        source_port: 80
+        target_port: 80
+      - priority: 6
+        protocol: http
+        service: tgfront
+        source_port: 80
+        target_port: 80
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      reinitializing_timeout: 60000
   taiga:
     scale: 1
     retain_ip: true

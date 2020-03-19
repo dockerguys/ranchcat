@@ -7,13 +7,15 @@ Services
 Includes the following services:
 - Frontend
 - Backend
+- Events server
 - PostgresSQL
 - Redis
-
-What's not included:
-- Load balancer
+- RabbitMQ
+- Internal loadbalancer
 
 Usage
 -----
-1. Update your load balancer 80/443 to port 80 of the frontend. 
-2. 
+1. Update your external load balancer 443 to port 80 of the internal loadbalancer. 
+2. Django backend can be accessed via `/admin/`.
+3. Default credentials are `admin`:`1213123`.
+

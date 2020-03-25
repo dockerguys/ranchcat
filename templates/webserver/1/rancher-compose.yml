@@ -115,6 +115,12 @@ catalog:
       type: boolean
       required: true
       default: true
+    - variable: nginx_ro_mode
+      description: "Mounts existing /usr/html in read-only mode."
+      label: "ReadOnly Mode"
+      type: boolean
+      required: true
+      default: false
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

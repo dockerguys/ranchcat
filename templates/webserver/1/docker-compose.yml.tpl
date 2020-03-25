@@ -103,7 +103,9 @@ services:
     # -----------------------------------
     volumes:
 {{- if (.Values.datavolume_name) }}
+{{-   if eq .Values.nginx_managed_conf "false" }}
       - ${datavolume_name}_conf:/etc/nginx/conf.d
+{{-   end }}
 {{-   if eq .Values.nginx_ro_mode "true" }}
       - ${datavolume_name}_www:/usr/html:ro
 {{-   else }}

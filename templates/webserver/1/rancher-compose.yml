@@ -121,6 +121,12 @@ catalog:
       type: boolean
       required: true
       default: false
+    - variable: nginx_managed_conf
+      description: "Automate configuration management. Webserver will be reset everytime the container restarts. This also means conf volume is not needed."
+      label: "Managed Configuration"
+      type: boolean
+      required: true
+      default: false
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

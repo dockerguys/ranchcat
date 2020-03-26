@@ -1,5 +1,0 @@
-name: MailU
-description: |
-  Insular email distribution - email server as Docker images
-version: v1.0.0
-category: Mail

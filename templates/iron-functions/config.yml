@@ -1,8 +1,0 @@
-name: Iron Functions
-description: |
-  Serverless API platform for the agile developer
-version: 1.0.0
-category: Platform
-maintainer: Dockerguys <dockerguys@lizoc.com>
-license: Proprietary ULA
-projectURL: https://code.lizoc.com/dockerguys/alpines

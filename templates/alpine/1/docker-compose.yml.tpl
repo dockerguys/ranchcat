@@ -35,7 +35,7 @@ services:
     # -----------------------------------
     tty: true
     stdin_open: true
-{{- if (.Values.volume_name) }}
+{{- if (.Values.datavolume_name) }}
     # -----------------------------------
     # VOLUMES
     # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes
@@ -43,7 +43,7 @@ services:
     # - just write path to create dynamic named volume
     # -----------------------------------
     volumes:
-      - ${volume_name}:${volume_mountpoint}
+      - ${datavolume_name}:${volume_mountpoint}
 {{- end }}
     # -----------------------------------
     # LIMIT CPU

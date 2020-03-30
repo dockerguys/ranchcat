@@ -73,7 +73,7 @@ services:
 # +++++++++++++++++++++++
 {{- if (.Values.datavolume_name) }}
 volumes:
-  {{.Values.volume_name}}:
+  {{.Values.datavolume_name}}:
 {{-   if eq .Values.volume_exists "true" }}
     external: true
 {{-   end }}

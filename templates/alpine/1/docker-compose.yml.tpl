@@ -14,6 +14,7 @@ services:
   # SERVICE
   # - alpine image
   # ************************************
+  alpine:
 {{- if (.Values.docker_registry_name) }}
     image: "${docker_registry_name}/${alpine_image}"
 {{- else }}

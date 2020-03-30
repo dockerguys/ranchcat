@@ -1,7 +1,7 @@
 name: Alpine
 description: |
     Simple lightweight containers used for testing
-version: v3.6
+version: v3.7
 category: DevOps
 maintainer: Dockerguys <dockerguys@lizoc.com>
 license: Proprietary ULA

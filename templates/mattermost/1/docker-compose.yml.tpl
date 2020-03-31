@@ -152,7 +152,6 @@ volumes:
 {{-   else }}
     driver: local
 {{-   end }}
-{{- end }}
 
   # ************************************
   # VOLUME
@@ -179,7 +178,6 @@ volumes:
 {{-   else }}
     driver: local
 {{-   end }}
-{{- end }}
 
   # ************************************
   # VOLUME
@@ -206,7 +204,6 @@ volumes:
 {{-   else }}
     driver: local
 {{-   end }}
-{{- end }}
 
   # ************************************
   # VOLUME

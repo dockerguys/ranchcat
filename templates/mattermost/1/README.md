@@ -15,5 +15,5 @@ What's not included:
 Usage
 -----
 1. Create your database first. MySQL recommended.
-2. Update your load balancer to point 80/443 to port 80 of the Mattermost service.
+2. Update your load balancer to point HTTPS/443 to port 8065 of the Mattermost service.
 3. Go to the web UI and perform setup.

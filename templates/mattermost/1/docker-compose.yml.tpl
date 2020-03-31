@@ -62,9 +62,15 @@ services:
 {{- if (.Values.datavolume_name) }}
       - ${datavolume_name}_conf:/mattermost/config
       - ${datavolume_name}_data:/mattermost/data
+      - ${datavolume_name}_logs:/mattermost/logs
+      - ${datavolume_name}_plugins:/mattermost/plugins
+      - ${datavolume_name}_clientplugins:/mattermost/client/plugins
 {{- else }}
       - /mattermost/config
       - /mattermost/data
+      - /mattermost/logs
+      - /mattermost/plugins
+      - /mattermost/client/plugins
 {{- end }}
     # -----------------------------------
     # LIMIT CPU
@@ -126,6 +132,87 @@ volumes:
   # - holds data
   # ************************************
   {{.Values.datavolume_name}}_data:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
+      host: ${storage_driver_nfsopts_host}
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
+{{-     end }}
+{{-   else }}
+    driver: local
+{{-   end }}
+{{- end }}
+
+  # ************************************
+  # VOLUME
+  # - holds logs
+  # ************************************
+  {{.Values.datavolume_name}}_logs:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
+      host: ${storage_driver_nfsopts_host}
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
+{{-     end }}
+{{-   else }}
+    driver: local
+{{-   end }}
+{{- end }}
+
+  # ************************************
+  # VOLUME
+  # - holds plugins
+  # ************************************
+  {{.Values.datavolume_name}}_plugins:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
+      host: ${storage_driver_nfsopts_host}
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
+{{-     end }}
+{{-   else }}
+    driver: local
+{{-   end }}
+{{- end }}
+
+  # ************************************
+  # VOLUME
+  # - holds client plugins
+  # ************************************
+  {{.Values.datavolume_name}}_clientplugins:
 {{-   if eq .Values.volume_exists "true" }}
     external: true
 {{-   end }}

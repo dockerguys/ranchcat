@@ -12,9 +12,9 @@ catalog:
       type: "enum"
       options: 
         - "dockerguys/mattermost:5.20"
-        - "dockerguys/mattermost:5.20-ve"
+        - "dockerguys/mattermost:5.21"
       required: true
-      default: "dockerguys/mattermost:5.20"
+      default: "dockerguys/mattermost:5.21"
     - variable: "mattermost_db_name"
       description: "Mattermost database name"
       label: "Database Name"
@@ -44,7 +44,7 @@ catalog:
       label: "Host Affinity Label"
       type: string
       required: false
-    # --- common param: storage; subst vols_required = `volume ("Volume Name"_[data,conf])`
+    # --- common param: storage; subst vols_required = `volume ("Volume Name"_[data,conf,logs,plugins,clientplugins])`
     - variable: datavolume_name
       label: "Volume Base Name"
       description: |
@@ -55,7 +55,7 @@ catalog:
     - variable: volume_exists
       label: "Volume Exists"
       description: |
-        Check this if you have already created the volume ("Volume Name"_[data,conf]). Remember to set the "Volume Storage Driver" too. Do not fill 
+        Check this if you have already created the volume ("Volume Name"_[data,conf,logs,plugins,clientplugins]). Remember to set the "Volume Storage Driver" too. Do not fill 
         in "NFS Driver Host" or "NFS Driver Volume Path".
       required: true
       type: boolean
@@ -158,10 +158,10 @@ services:
     health_check:
       response_timeout: 2000
       healthy_threshold: 2
-      port: 8000
+      port: 8065
       unhealthy_threshold: 3
       initializing_timeout: 300000
       interval: 2000
       strategy: recreate
-      request_line: GET "/" "HTTP/1.0"
+      request_line: GET "/api/v4/system/ping" "HTTP/1.0"
       reinitializing_timeout: 120000

@@ -74,13 +74,12 @@ services:
 volumes:
   {{.Values.volume_name}}:
     external: true
-{{-   if eq .Values.storage_driver "rancher-nfs" }}
+{{- if eq .Values.storage_driver "rancher-nfs" }}
     driver: rancher-nfs
-{{-   else }}
+{{- else }}
     driver: local
-{{-   end }}
+{{- end }}
   remote_nfsvol:
-    external: true
     driver: rancher-nfs
     driver_opts:
       host: ${remote_nfs_host}

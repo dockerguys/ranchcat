@@ -1,0 +1,137 @@
+version: '2'
+catalog:
+  name: "alpine"
+  version: "v3.8"
+  description: "Lightweight container instances for testing"
+  minimum_rancher_version: v1.2.0
+  questions:
+    - variable: alpine_image
+      description: "The docker image to use for the testing container."
+      label: "Container Image"
+      type: "enum"
+      options:
+        - "dockerguys/alpine:3.10"
+        - "dockerguys/alpine:3.11"
+      default: "dockerguys/alpine:3.11"
+      required: true
+    - variable: volume_mountpoint
+      description: "Path to mount volume. Ignore if not mounting a volume."
+      label: "Volume Mountpoint"
+      type: "string"
+      required: true
+      default: "/var/lib/storage"
+    - variable: mount_ro
+      description: "Mount volumes as read-only."
+      label: "Readonly Mount"
+      type: "boolean"
+      required: true
+      default: false
+    - variable: datavolume1_name
+      label: "Volume 1 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume2_name
+      label: "Volume 2 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume3_name
+      label: "Volume 3 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume4_name
+      label: "Volume 4 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume5_name
+      label: "Volume 5 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume6_name
+      label: "Volume 6 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    - variable: docker_memory_swap_limit
+      label: "Limit Swap Memory"
+      description: |
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
+        or the same value as Limit Memory to disable swap.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  alpine:
+    scale: 1

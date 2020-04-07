@@ -26,6 +26,17 @@ catalog:
       type: "boolean"
       required: true
       default: false
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
     - variable: datavolume1_name
       label: "Volume 1 Name"
       description: |
@@ -62,17 +73,6 @@ catalog:
         Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
       required: false
       type: string
-    - variable: storage_driver
-      label: "Volume Storage Driver"
-      description: |
-        To use a stack scoped volume backed by a persistent storage service, enter the name
-        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
-      required: true
-      type: enum
-      default: "local"
-      options:
-        - local
-        - rancher-nfs
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

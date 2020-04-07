@@ -44,7 +44,7 @@ services:
     # -----------------------------------
     volumes:
       - ${volume_name}:/clustervol:ro
-      - remote_nfsvol:/remotevol
+      - remote_mountvol:/remotevol
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`
@@ -70,18 +70,27 @@ services:
 
 # +++++++++++++++++++++++
 # BEGIN VOLUMES
+# - stores the static files to serve
+# - https://docs.docker.com/compose/compose-file/compose-file-v2/#volume-configuration-reference
 # +++++++++++++++++++++++
+
 volumes:
+  # ************************************
+  # VOLUME
+  # ************************************
   {{.Values.volume_name}}:
     external: true
-{{- if eq .Values.storage_driver "rancher-nfs" }}
-    driver: rancher-nfs
-{{- else }}
-    driver: local
-{{- end }}
-  remote_nfsvol:
+    driver: ${storage_driver}
+
+  # ************************************
+  # VOLUME
+  # ************************************
+  remote_mountvol:
     driver: rancher-nfs
     driver_opts:
       host: ${remote_nfs_host}
       export: ${remote_nfs_export}
-      onRemove: retain
+
+# +++++++++++++++++++++++
+# END VOLUMES
+# +++++++++++++++++++++++

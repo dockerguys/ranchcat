@@ -1,0 +1,8 @@
+name: NFS Volume Migrate
+description: |
+    Copies a volume to a remote NFS server
+version: v3.7
+category: DevOps
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

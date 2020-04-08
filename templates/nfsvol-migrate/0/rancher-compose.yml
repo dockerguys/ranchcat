@@ -13,11 +13,6 @@ catalog:
         - "dockerguys/alpine:3.11"
       default: "dockerguys/alpine:3.11"
       required: true
-    - variable: volume_name
-      description: "Name of volume to mount. Volume must already exists."
-      label: "Volume Name"
-      type: "string"
-      required: true
     - variable: volume_driver
       label: "Volume Storage Driver"
       description: |
@@ -29,16 +24,46 @@ catalog:
       options:
         - local
         - rancher-nfs
+    - variable: volume1_name
+      description: "Name of volume to mount. Volume must exists on source and destination."
+      label: "Volume 1 Name"
+      type: "string"
+      required: true
+    - variable: volume2_name
+      description: "Name of volume to mount. Volume must exists on source and destination. Ignore if not migrating multiple volumes"
+      label: "Volume 2 Name"
+      type: "string"
+      required: false
+    - variable: volume3_name
+      description: "Name of volume to mount. Volume must exists on source and destination. Ignore if not migrating multiple volumes"
+      label: "Volume 3 Name"
+      type: "string"
+      required: false
+    - variable: volume4_name
+      description: "Name of volume to mount. Volume must exists on source and destination. Ignore if not migrating multiple volumes"
+      label: "Volume 4 Name"
+      type: "string"
+      required: false
+    - variable: volume5_name
+      description: "Name of volume to mount. Volume must exists on source and destination. Ignore if not migrating multiple volumes"
+      label: "Volume 5 Name"
+      type: "string"
+      required: false
+    - variable: volume6_name
+      description: "Name of volume to mount. Volume must exists on source and destination. Ignore if not migrating multiple volumes"
+      label: "Volume 6 Name"
+      type: "string"
+      required: false
     - variable: remote_nfs_host
       label: "Remote NFS Host"
       description: |
         Specify a NFS hostname that is reachable by this container.
       required: true
       type: string
-    - variable: remote_nfs_export
-      label: "Remote NFS Volume Path"
+    - variable: remote_nfs_export_base
+      label: "Remote NFS Base Path"
       description: |
-        Specify the exported full path on the NFS server (e.g. "/storage/nfsvol/myvol"). Do not append the "/" at the end. This 
+        Specify the exported base path on the NFS server (e.g. "/storage/hdd/nfsvol"). Do not append the "/" at the end. This 
         exported path must already exist on the NFS server.
       required: true
       type: string

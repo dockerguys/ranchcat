@@ -43,8 +43,28 @@ services:
     # - just write path to create dynamic named volume
     # -----------------------------------
     volumes:
-      - ${volume_name}:/clustervol:ro
-      - remote_mountvol:/remotevol
+      - ${volume1_name}:/srcvol/${volume1_name}:ro
+      - remote1_mountvol:/destvol/${volume1_name}
+{{- if (.Values.volume2_name) }}
+      - ${volume2_name}:/srcvol/${volume2_name}:ro
+      - remote2_mountvol:/destvol/${volume2_name}
+{{- end }}
+{{- if (.Values.volume3_name) }}
+      - ${volume3_name}:/srcvol/${volume3_name}:ro
+      - remote3_mountvol:/destvol/${volume3_name}
+{{- end }}
+{{- if (.Values.volume4_name) }}
+      - ${volume4_name}:/srcvol/${volume4_name}:ro
+      - remote4_mountvol:/destvol/${volume4_name}
+{{- end }}
+{{- if (.Values.volume5_name) }}
+      - ${volume5_name}:/srcvol/${volume5_name}:ro
+      - remote5_mountvol:/destvol/${volume5_name}
+{{- end }}
+{{- if (.Values.volume6_name) }}
+      - ${volume6_name}:/srcvol/${volume6_name}:ro
+      - remote6_mountvol:/destvol/${volume6_name}
+{{- end }}
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`
@@ -78,18 +98,108 @@ volumes:
   # ************************************
   # VOLUME
   # ************************************
-  {{.Values.volume_name}}:
+  {{.Values.volume1_name}}:
     external: true
     driver: ${storage_driver}
 
   # ************************************
   # VOLUME
   # ************************************
-  remote_mountvol:
+  remote1_mountvol:
     driver: rancher-nfs
     driver_opts:
       host: ${remote_nfs_host}
-      export: ${remote_nfs_export}
+      export: ${remote_nfs_export_base}/${volume1_name}
+
+{{- if (.Values.volume2_name) }}
+  # ************************************
+  # VOLUME
+  # ************************************
+  {{.Values.volume2_name}}:
+    external: true
+    driver: ${storage_driver}
+
+  # ************************************
+  # VOLUME
+  # ************************************
+  remote2_mountvol:
+    driver: rancher-nfs
+    driver_opts:
+      host: ${remote_nfs_host}
+      export: ${remote_nfs_export_base}/${volume2_name}
+{{- end }}
+
+{{- if (.Values.volume3_name) }}
+  # ************************************
+  # VOLUME
+  # ************************************
+  {{.Values.volume3_name}}:
+    external: true
+    driver: ${storage_driver}
+
+  # ************************************
+  # VOLUME
+  # ************************************
+  remote3_mountvol:
+    driver: rancher-nfs
+    driver_opts:
+      host: ${remote_nfs_host}
+      export: ${remote_nfs_export_base}/${volume3_name}
+{{- end }}
+
+{{- if (.Values.volume4_name) }}
+  # ************************************
+  # VOLUME
+  # ************************************
+  {{.Values.volume4_name}}:
+    external: true
+    driver: ${storage_driver}
+
+  # ************************************
+  # VOLUME
+  # ************************************
+  remote4_mountvol:
+    driver: rancher-nfs
+    driver_opts:
+      host: ${remote_nfs_host}
+      export: ${remote_nfs_export_base}/${volume4_name}
+{{- end }}
+
+{{- if (.Values.volume5_name) }}
+  # ************************************
+  # VOLUME
+  # ************************************
+  {{.Values.volume5_name}}:
+    external: true
+    driver: ${storage_driver}
+
+  # ************************************
+  # VOLUME
+  # ************************************
+  remote5_mountvol:
+    driver: rancher-nfs
+    driver_opts:
+      host: ${remote_nfs_host}
+      export: ${remote_nfs_export_base}/${volume5_name}
+{{- end }}
+
+{{- if (.Values.volume6_name) }}
+  # ************************************
+  # VOLUME
+  # ************************************
+  {{.Values.volume6_name}}:
+    external: true
+    driver: ${storage_driver}
+
+  # ************************************
+  # VOLUME
+  # ************************************
+  remote6_mountvol:
+    driver: rancher-nfs
+    driver_opts:
+      host: ${remote_nfs_host}
+      export: ${remote_nfs_export_base}/${volume6_name}
+{{- end }}
 
 # +++++++++++++++++++++++
 # END VOLUMES

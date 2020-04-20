@@ -96,6 +96,7 @@ services:
     memswap_limit: "${docker_memory_limit}m"
 {{- end }}
 
+{{- if (.Values.adminer_image) }}
   # ************************************
   # SERVICE
   # - web ui
@@ -105,11 +106,11 @@ services:
     # Image
     # - support private registry
     # -----------------------------------
-{{- if (.Values.docker_registry_name) }}
+{{-   if (.Values.docker_registry_name) }}
     image: "${docker_registry_name}/${adminer_image}"
-{{- else }}
+{{-   else }}
     image: ${adminer_image}
-{{- end }}
+{{-   end }}
     # -----------------------------------
     # ENV
     # -----------------------------------
@@ -123,9 +124,9 @@ services:
     # -----------------------------------
     labels:
       io.mysqldb.role: "{{ .Stack.Name }}/webadmin"
-{{- if eq .Values.repull_image "always" }}
+{{-   if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
-{{- end }}
+{{-   end }}
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`
@@ -138,6 +139,7 @@ services:
     # -----------------------------------
     mem_limit: "512m"
     memswap_limit: "1024m"
+{{- end }}
 
 # +++++++++++++++++++++++
 # END SERVICES

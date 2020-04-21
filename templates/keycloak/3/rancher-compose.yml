@@ -36,14 +36,10 @@ catalog:
       default: "dockerguys/keycloak:8.0-charlen"
       type: enum
       options: # List of options if using type of `enum`
-        - dockerguys/keycloak:6.0.1
-        - dockerguys/keycloak:6.0.1-charlen
-        - dockerguys/keycloak:7.0.0
-        - dockerguys/keycloak:7.0.0-charlen
         - dockerguys/keycloak:8.0
         - dockerguys/keycloak:8.0-charlen
-        - dockerguys/keycloak:9.0
-        - dockerguys/keycloak:9.0-charlen
+        - dockerguys/keycloak:8.0-c1
+        - dockerguys/keycloak:8.0-c1s
     - variable: "db_service"
       description: "External DB service to use (if 'Database Vendor' is not 'h2'). You can reference the service as 'db' by setting this."
       label: "DB Service"

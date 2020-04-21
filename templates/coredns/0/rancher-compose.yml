@@ -75,13 +75,13 @@ catalog:
       label: "Loadbalancer Label"
       type: string
       required: true
-      default: "io.role.loadbalancer"
+      default: "io.role.loadbalancer=yes"
     - variable: coredns_lb_stack
-      description: "Name of the stack that is running the target loadbalancers"
+      description: "Name of the stack/service that is running the target loadbalancers"
       label: "Loadbalancer Stack"
       type: string
       required: true
-      default: "loadbalancer"
+      default: "loadbalancer/lbs"
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

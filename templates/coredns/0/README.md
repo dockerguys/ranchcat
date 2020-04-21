@@ -26,7 +26,7 @@ dig @<dns_server_ip> CH TXT id.server
 ```
 
 5. All requests hosts defined by Rancher load balancer are automatically polled every 30 seconds and served by this DNS server. Hosts defined by Rancher load balancer are served statically, i.e. it is never resolved by internal upstream DNS nor upstream DNS.
-6. You need to tag hosts that are running the load balancer with `role.lbs=true`, and the load balancer service must be named `loadbalancer`.
+6. If the loadbalancer servers `.internal|.lan|.local` domains, the host running it must have a label `io.lan.ip=<ip>`. All other domain extensions will use the host's agent ip.
 
 
 Caveats

@@ -106,6 +106,7 @@ services:
     # -----------------------------------
     labels:
       io.keycloak.role: "{{ .Stack.Name }}/server"
+      io.rancher.scheduler.affinity:container_label_ne: io.keycloak.role={{ .Stack.Name }}/server
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

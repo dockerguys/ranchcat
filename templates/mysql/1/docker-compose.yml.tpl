@@ -96,7 +96,7 @@ services:
     memswap_limit: "${docker_memory_limit}m"
 {{- end }}
 
-{{- if (.Values.adminer_image) }}
+{{- if ne .Values.adminer_image "disable" }}
   # ************************************
   # SERVICE
   # - web ui

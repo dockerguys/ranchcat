@@ -74,13 +74,15 @@
       required: false
       type: string
     - variable: adminer_image
-      description: "The docker image to use for web administration. Leave blank to skip."
+      description: "The docker image to use for web administration. Select 'disable' to skip."
       label: "Web Admin Docker Image"
       type: "enum"
       options:
+        - "disable"
         - "dockerguys/adminer:4.7"
         - "dockerguys/adminer:latest"
-      required: false
+      required: true
+      default: "dockerguys/adminer:4.7"
     - variable: adminer_css
       description: "CSS theme file for web administration interface."
       label: "Web Admin CSS"

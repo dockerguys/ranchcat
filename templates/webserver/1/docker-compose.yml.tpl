@@ -95,6 +95,9 @@ services:
 {{- if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
 {{- end }}
+      io.webserver.host: spread
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.webserver.host=spread
+
     # -----------------------------------
     # VOLUMES
     # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes

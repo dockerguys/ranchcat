@@ -11,10 +11,11 @@ catalog:
       description: |
         Image to use. Be sure to fill in "Private Registry" field too if the image is not available publically.
       required: true
-      default: "dockerguys/theia:0.5.0"
+      default: "dockerguys/theia:1.0"
       type: enum
       options: # List of options if using type of `enum`
-        - dockerguys/theia:0.5.0
+        - dockerguys/theia:1.0
+        - dockerguys/theia:1.0-golang
     - variable: "runas_root"
       label: "Root Access"
       description: Runs the IDE as root user.
@@ -97,7 +98,7 @@ catalog:
       default: 1024
 
 services:
-  theia:
+  webstudio:
     scale: 1
     retain_ip: true
     health_check:

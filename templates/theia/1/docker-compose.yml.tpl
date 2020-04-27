@@ -14,7 +14,7 @@ services:
   # SERVICE
   # - primary application
   # ************************************
-  theia:
+  webstudio:
     # -----------------------------------
     # Image
     # - support private registry
@@ -85,6 +85,18 @@ volumes:
     external: true
 {{-   if eq .Values.exist_datavolume_storage_driver "rancher-nfs" }}
     driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
+      host: ${storage_driver_nfsopts_host}
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
+{{-     end }}
 {{-   else }}
     driver: local
 {{-   end }}

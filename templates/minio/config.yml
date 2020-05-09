@@ -1,0 +1,8 @@
+name: MinIO
+description: |
+  High performance Kubernetes native object storage
+category: Storage
+version: v1.0.0
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

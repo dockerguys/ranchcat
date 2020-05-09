@@ -1,0 +1,167 @@
+version: '2'
+catalog:
+  name: "Mattermost"
+  minimum_rancher_version: v0.51.0
+  version: "v1.0.0"
+  description: "High Performance, Kubernetes Native Object Storage"
+  maintainer: dockerguys <dockerguys@lizoc.com>
+  questions:
+    - variable: "minio_image"
+      description: "MinIO server image"
+      label: "Server Image"
+      type: "enum"
+      options: 
+        - "dockerguys/minio:2020-05"
+      required: true
+      default: "dockerguys/minio:2020-05"
+    - variable: "minio_runmode"
+      description: |
+        Standalone runs a single instance of MinIO, cluster runs several instances in a clustered configuration, and gateway provides a  
+        S3 interface to the underlying storage.
+      label: "Run Mode"
+      type: "enum"
+      required: true
+      default: "standalone"
+      options:
+        - "standalone"
+        - "cluster"
+        - "gateway"
+    - variable: "minio_key"
+      description: "Default API key is akin to username. Minimum 3 chars."
+      label: "API Key"
+      type: "string"
+      required: true
+      default: "admin"
+    - variable: "minio_secret"
+      description: "Default API secret is akin to password. Min 8 chars."
+      label: "API Secret"
+      type: "password"
+      required: true
+      default: "MySecret0"
+    - variable: "minio_volcount"
+      description: "Number of volumes for each storage node."
+      label: "Volume Count"
+      type: "int"
+      required: true
+      default: 1
+    - variable: "minio_nodecount"
+      description: "Number of instances of MinIO servers. This is ignored if Run Mode is standalone."
+      label: "Node Count"
+      type: "int"
+      required: true
+      default: 1
+    - variable: datavolume_name
+      label: "Volume Base Name"
+      description: |
+        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes will be created with this value as the prefix. 
+        By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: "minio_tenant"
+      description: "Tenant name allows multitenancy on a single volume."
+      label: "Tenant Name"
+      type: "string"
+      required: true
+      default: "tenant1"
+    - variable: "minio_region"
+      description: "Region name for compatibility with S3"
+      label: "Region Name"
+      type: "string"
+      required: true
+      default: "us-east-1"
+    - variable: "minio_region_comment"
+      description: "Region comment for documentation only"
+      label: "Region Comment"
+      type: "string"
+      required: true
+      default: "Default region"
+    - variable: "minio_browser"
+      description: "Enables web GUI browser"
+      label: "Enable Web GUI"
+      type: bool
+      required: true
+      default: true
+    - variable: "minio_compress_ext"
+      description: "Automatically compress files that has these extensions. Separate by space."
+      label: "Compress File Extension"
+      type: string
+      required: true
+      default: ".pdf .doc .xml .json"
+    - variable: "minio_compress_mime"
+      description: "Automatically compresss anything that has these mimetypes. Separate by space."
+      label: "Compress Mimetypes"
+      type: string
+      required: true
+      default: "application/pdf text/* application/json application/xml"
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    - variable: docker_memory_swap_limit
+      label: "Limit Swap Memory"
+      description: |
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
+        or the same value as Limit Memory to disable swap.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  minio:
+    scale: ${minio_nodecount}
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 9000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 5000
+      strategy: recreate
+      request_line: GET "/minio/health/live" "HTTP/1.0"
+      reinitializing_timeout: 120000

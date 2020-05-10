@@ -71,13 +71,13 @@ services:
     # - just write path to create dynamic named volume
     # -----------------------------------
     volumes:
-{{- if (.Values.datavolume_name) }}
-{{-   range $idx, $e := atoi .Values.minio_volcount | until }}
-      - ${datavolume_name}_{{$idx}}:/data/export{{$idx}}
-{{-   end }}
-{{- else }}
-{{-   range $idx, $e := atoi .Values.minio_volcount | until }}
-      - /data/export{{$idx}}
+{{- range $idx, $e := atoi .Values.minio_volcount | until }}
+{{-   if and (eq .Values.datavolume_backing "local") (.Values.datavolume_name) }}
+      - ${datavolume_name}_{{ add1 $idx }}:/data/export{{ add1 $idx }}
+{{-   else if (eq .Values.datavolume_backing "local") }}
+      - /data/export{{ add1 $idx }}
+{{-   else if (eq .Values.datavolume_backing "hostdir") }}
+      - ${hostdir_basepath}{{ add1 $idx }}:/data/export{{ add1 $idx }}
 {{-   end }}
 {{- end }}
     # -----------------------------------
@@ -107,14 +107,14 @@ services:
 # BEGIN VOLUMES
 # +++++++++++++++++++++++
 
-{{- if (.Values.datavolume_name) }}
+{{- if and (eq .Values.datavolume_backing "local") (.Values.datavolume_name) }}
 volumes:
   # ************************************
   # VOLUME
   # - holds data
   # ************************************
 {{-   range $idx, $e := atoi .Values.minio_volcount | until }}
-  {{.Values.datavolume_name}}_data_{{$idx}}:
+  {{.Values.datavolume_name}}_{{add1 $idx}}:
     per_container: true
     driver: local
 {{-   end }}

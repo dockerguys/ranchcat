@@ -39,22 +39,78 @@ catalog:
       required: true
       default: "MySecret0"
     - variable: "minio_volcount"
-      description: "Number of volumes for each storage node."
+      description: |
+        Number of volumes for each storage node.
       label: "Volume Count"
-      type: "int"
+      type: "enum"
       required: true
       default: 1
+      options:
+        - 1
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 18
+        - 20
+        - 21
+        - 22
+        - 24
+        - 26
+        - 27
+        - 28
+        - 30
+        - 32
+        - 33
+        - 36
+        - 39
+        - 40
+        - 42
+        - 44
+        - 45
+        - 48
+        - 52
+        - 56
+        - 60
+        - 64
     - variable: "minio_nodecount"
       description: "Number of instances of MinIO servers. This is ignored if Run Mode is standalone."
       label: "Node Count"
       type: "int"
       required: true
       default: 1
+    - variable: datavolume_backing
+      label: "Volume Backing"
+      description: |
+        Option "local" will use regular local container volume(s), which may mean it is not beneficial to use more than 1 volume per storage node. 
+        Option "hostdir" will mount directories on host directly, but EC is only useful if each mounted directory is on a different physical drive.
+      required: true
+      type: enum
+      default: local
+      options:
+        - local
+        - hostdir
+    - variable: hostdir_basepath
+      label: "Host Base Path"
+      description: |
+        Specify the prefix mount path for volume directories on host. For example, `/storage/objdata/export` will mount `/storage/objdata/export{1..n}`. 
+        This option is ignored unless "Volume Backing" is set to "hostdir".
+      required: true
+      type: string
+      default: /storage/objdata/export
     - variable: datavolume_name
       label: "Volume Base Name"
       description: |
-        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes will be created with this value as the prefix. 
-        By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+        Specify a base name for volumes created. This option is ignored unless "Volume Backing" is set to "local".
       required: false
       type: string
     - variable: "minio_tenant"

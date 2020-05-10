@@ -125,7 +125,7 @@ volumes:
   # - holds data
   # ************************************
 {{-     range $idx, $e := atoi .Values.minio_volcount | until }}
-  ${datavolume_name}_{{ $idx }}:
+  {{ $.Values.datavolume_name }}{{ $idx }}:
     per_container: true
     driver: local
 {{-     end }}

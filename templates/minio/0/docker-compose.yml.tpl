@@ -74,9 +74,8 @@ services:
     # - just write path to create dynamic named volume
     # -----------------------------------
     volumes:
-      - /data/export1
 {{- range $idx, $e := atoi .Values.minio_volcount | until }}
-# foo{{ add1 $idx }}
+      - /data/export{{ add1 $idx }}
 {{- end }}
     # -----------------------------------
     # LIMIT CPU

@@ -76,10 +76,10 @@ services:
     volumes:
 {{- range $idx, $e := atoi .Values.minio_volcount | until }}
 {{-   if eq .Values.datavolume_backing "hostdir" }}
-      - ${hostdir_basepath}{{ add1 $idx }}:/data/export{{ add1 $idx }}
+      - ${hostdir_basepath}{{ $idx }}:/data/export{{ $idx }}
 {{-   else }}
 {{-     if (.Values.datavolume_name) }}
-      - ${datavolume_name}_{{ add1 $idx }}:/data/export{{ add1 $idx }}
+      - ${datavolume_name}_{{ $idx }}:/data/export{{ $idx }}
 {{-     else }}
       - /data/export{{ $idx }}
 {{-     end }}
@@ -120,7 +120,7 @@ volumes:
   # - holds data
   # ************************************
 {{-     range $idx, $e := atoi .Values.minio_volcount | until }}
-  {{.Values.datavolume_name}}_{{add1 $idx}}:
+  {{.Values.datavolume_name}}_{{ $idx}}:
     per_container: true
     driver: local
 {{-     end }}

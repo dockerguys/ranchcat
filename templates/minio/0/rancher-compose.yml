@@ -102,7 +102,7 @@ catalog:
     - variable: hostdir_basepath
       label: "Host Base Path"
       description: |
-        Specify the prefix mount path for volume directories on host. For example, `/storage/objdata/export` will mount `/storage/objdata/export{1..n}`. 
+        Specify the prefix mount path for volume directories on host. For example, "/storage/objdata/export" will mount "/storage/objdata/export{1..n}". 
         This option is ignored unless "Volume Backing" is set to "hostdir".
       required: true
       type: string
@@ -134,7 +134,7 @@ catalog:
     - variable: "minio_browser"
       description: "Enables web GUI browser"
       label: "Enable Web GUI"
-      type: bool
+      type: boolean
       required: true
       default: true
     - variable: "minio_compress_ext"

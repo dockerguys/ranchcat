@@ -58,6 +58,9 @@ services:
     labels:
       io.minio.role: "{{ .Stack.Name }}/node"
       io.rancher.container.hostname_override: container_name
+      # if cluster-mode, make sure only 1 container in stack is running on each host
+      # https://rancher.com/docs/rancher/v1.6/en/cattle/scheduling
+      io.rancher.scheduler.affinity:container_label_ne: io.minio.role={{ .Stack.Name }}/node
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}

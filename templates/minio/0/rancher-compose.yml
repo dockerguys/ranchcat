@@ -83,7 +83,8 @@ catalog:
         - 60
         - 64
     - variable: "minio_nodecount"
-      description: "Number of instances of MinIO servers. This is ignored if Run Mode is standalone."
+      description: |
+        Number of instances of MinIO servers. If >1, remember to set "Run Mode" to "cluster" or multinode storage won't work.
       label: "Node Count"
       type: "int"
       required: true

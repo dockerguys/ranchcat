@@ -37,7 +37,7 @@ services:
       IOBJ_DISKS_RANGE: "1:${minio_volcount}"
 {{- end }}
 {{- if eq .Values.minio_runmode "cluster" }}
-      IOBJ_CLUSTER_1_BASENAME: "minio-"
+      IOBJ_CLUSTER_1_BASENAME: "{{.Stack.Name }}-minio-"
       IOBJ_CLUSTER_1_PEER_INDEX_RANGE: "1:${minio_nodecount}"
       IOBJ_CLUSTER_1_PEER_DISKS_RANGE: "1:${minio_volcount}"
 {{- end }}

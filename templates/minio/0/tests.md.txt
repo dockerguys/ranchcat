@@ -1,0 +1,64 @@
+everyone:
+  expect_container_hostname:
+    - (stack-name)-minio-(container-index)
+  expect_container_sh:
+    - hostname: $expect_container_hostname
+
+default_quick_try:
+  config:
+    - (all defaults)
+  expect_container_logs:
+    - runmode standalone
+    - single_disk
+    - export_disk /data/export1/tenant1
+  expect_container_vols:
+    - (rand-guid):/data/export1
+
+default_specify_volname:
+  config:
+    - volume base name: foo
+  expect_docker_compose:
+    - volumes_contains:
+      - name: foo1
+  expect_container_vols:
+    - (container-name)_foo1_1_(rand-guid):/data/export1
+  expect_container_log: $default_quick_try.expect_container_logs
+
+multivolume:
+  config:
+    - volume count: 4
+  expect_container_logs:
+    - runmode standalone
+    - multi_disk
+    - "export_disk /data/export{1...4}/tenant1"
+    - "Formatting 1 zone, 1 set(s), 4 drives per set."
+    - "WARNING: Host local has more than 2 drives of set. A host failure will result in data becoming unavailable."
+    - "Status:         4 Online, 0 Offline."
+  expect_container_vols:
+    - (rand-guid):/data/export1
+    - (rand-guid):/data/export2
+    - (rand-guid):/data/export3
+    - (rand-guid):/data/export4
+
+multivolume_specify_volname:
+  config:
+    - volume count: 4
+    - volume base name: foo
+  expect_docker_compose:
+    - volumes_contains:
+      - name: foo1
+      - name: foo2
+      - name: foo3
+      - name: foo4
+  expect_container_vols:
+    - (container-name)_foo1_1_(rand-guid):/data/export1
+    - (container-name)_foo2_1_(rand-guid):/data/export2
+    - (container-name)_foo3_1_(rand-guid):/data/export3
+    - (container-name)_foo4_1_(rand-guid):/data/export4
+  expect_container_log: $multivolume.expect_container_logs
+
+cluster_single_volume:
+  config:
+    - run mode: cluster
+    - node count: 2
+

@@ -74,16 +74,9 @@ services:
     # - just write path to create dynamic named volume
     # -----------------------------------
     volumes:
-{{- range $idx, $e := atoi .Values.minio_volcount | until }}
-{{-   if eq .Values.datavolume_backing "hostdir" }}
-      - ${hostdir_basepath}{{ $idx }}:/data/export{{ $idx }}
-{{-   else }}
-{{-     if (.Values.datavolume_name) }}
-      - ${datavolume_name}_{{ $idx }}:/data/export{{ $idx }}
-{{-     else }}
-      - /data/export{{ $idx }}
-{{-     end }}
-{{-   end }}
+      - /data/export1
+{{- range $idx, e := atoi .Values.minio_volcount | until }}
+# foo{{ $idx }}
 {{- end }}
     # -----------------------------------
     # LIMIT CPU

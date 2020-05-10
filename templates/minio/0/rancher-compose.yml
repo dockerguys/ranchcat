@@ -150,6 +150,16 @@ catalog:
       type: string
       required: true
       default: "application/pdf text/* application/json application/xml"
+    - variable: host_negative_affinity
+      description: "Make sure only 1 container is launched per host."
+      label: "Negative Affinity"
+      type: enum
+      required: true
+      default: ensure
+      options:
+        - best-effort
+        - ensure
+        - disable
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

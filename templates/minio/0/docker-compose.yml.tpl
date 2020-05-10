@@ -60,7 +60,11 @@ services:
       io.rancher.container.hostname_override: container_name
       # if cluster-mode, make sure only 1 container in stack is running on each host
       # https://rancher.com/docs/rancher/v1.6/en/cattle/scheduling
+{{- if eq .Values.host_negative_affinity "ensure" }}
       io.rancher.scheduler.affinity:container_label_ne: io.minio.role={{ .Stack.Name }}/node
+{{- else if eq .Values.host_negative_affinity "best-effort" }}
+      io.rancher.scheduler.affinity:container_label_soft_ne: io.minio.role={{ .Stack.Name }}/node
+{{- end }}
 {{- if (.Values.host_affinity_label) }}
       io.rancher.scheduler.affinity:host_label: ${host_affinity_label}
 {{- end }}
@@ -89,7 +93,6 @@ services:
 {{-     end }}
 {{-   end }}
 {{- end }}
-
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`

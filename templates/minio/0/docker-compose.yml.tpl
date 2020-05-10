@@ -74,9 +74,22 @@ services:
     # - just write path to create dynamic named volume
     # -----------------------------------
     volumes:
-{{- range $idx, $e := atoi .Values.minio_volcount | until }}
+{{- if eq .Values.datavolume_backing "hostdir" }}
+{{-   range $idx, $e := atoi .Values.minio_volcount | until }}
+      - ${hostdir_basepath}{{ add1 $idx }}:/data/export{{ add1 $idx }}
+{{-   end }}
+{{- else }}
+{{-   if (.Values.datavolume_name) }}
+{{-     range $idx, $e := atoi .Values.minio_volcount | until }}
+      - ${datavolume_name}{{ add1 $idx }}:/data/export{{ add1 $idx }}
+{{-     end }}
+{{-   else }}
+{{-     range $idx, $e := atoi .Values.minio_volcount | until }}
       - /data/export{{ add1 $idx }}
+{{-     end }}
+{{-   end }}
 {{- end }}
+
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`
@@ -112,7 +125,7 @@ volumes:
   # - holds data
   # ************************************
 {{-     range $idx, $e := atoi .Values.minio_volcount | until }}
-  {{.Values.datavolume_name}}_{{ $idx}}:
+  ${datavolume_name}_{{ $idx }}:
     per_container: true
     driver: local
 {{-     end }}

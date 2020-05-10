@@ -81,7 +81,7 @@ services:
 {{-     if (.Values.datavolume_name) }}
       - ${datavolume_name}_{{ add1 $idx }}:/data/export{{ add1 $idx }}
 {{-     else }}
-      - /data/export{{ add1 $idx }}
+      - /data/export{{ $idx }}
 {{-     end }}
 {{-   end }}
 {{- end }}

@@ -75,12 +75,14 @@ services:
     # -----------------------------------
     volumes:
 {{- range $idx, $e := atoi .Values.minio_volcount | until }}
-{{-   if and (eq .Values.datavolume_backing "local") (.Values.datavolume_name) }}
-      - ${datavolume_name}_{{ add1 $idx }}:/data/export{{ add1 $idx }}
-{{-   else if (eq .Values.datavolume_backing "local") }}
-      - /data/export{{ add1 $idx }}
-{{-   else if (eq .Values.datavolume_backing "hostdir") }}
+{{-   if eq .Values.datavolume_backing "hostdir" }}
       - ${hostdir_basepath}{{ add1 $idx }}:/data/export{{ add1 $idx }}
+{{-   else }}
+{{-     if (.Values.datavolume_name) }}
+      - ${datavolume_name}_{{ add1 $idx }}:/data/export{{ add1 $idx }}
+{{-     else }}
+      - /data/export{{ add1 $idx }}
+{{-     end }}
 {{-   end }}
 {{- end }}
     # -----------------------------------
@@ -106,23 +108,25 @@ services:
 # END SERVICES
 # +++++++++++++++++++++++
 
+{{- if eq .Values.datavolume_backing "local" }}
+{{-   if (.Values.datavolume_name) }}
 # +++++++++++++++++++++++
 # BEGIN VOLUMES
 # +++++++++++++++++++++++
 
-{{- if and (eq .Values.datavolume_backing "local") (.Values.datavolume_name) }}
 volumes:
   # ************************************
   # VOLUME
   # - holds data
   # ************************************
-{{-   range $idx, $e := atoi .Values.minio_volcount | until }}
+{{-     range $idx, $e := atoi .Values.minio_volcount | until }}
   {{.Values.datavolume_name}}_{{add1 $idx}}:
     per_container: true
     driver: local
-{{-   end }}
-{{- end }}
+{{-     end }}
 
 # +++++++++++++++++++++++
 # END VOLUMES
 # +++++++++++++++++++++++
+{{-   end }}
+{{- end }}

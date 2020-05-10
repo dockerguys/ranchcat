@@ -1,6 +1,6 @@
 version: '2'
 catalog:
-  name: "Mattermost"
+  name: "MinIO"
   minimum_rancher_version: v0.51.0
   version: "v1.0.0"
   description: "High Performance, Kubernetes Native Object Storage"

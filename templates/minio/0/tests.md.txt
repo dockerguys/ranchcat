@@ -1,3 +1,9 @@
+Testing
+=======
+Configurations to test...
+
+```yaml
+
 everyone:
   expect_container_hostname:
     - (stack-name)-minio-(container-index)
@@ -21,7 +27,7 @@ default_specify_volname:
     - volumes_contains:
       - name: foo1
   expect_container_vols:
-    - (container-name)_foo1_1_(rand-guid):/data/export1
+    - (stack-name)_foo1_1_(rand-guid):/data/export1
   expect_container_log: $default_quick_try.expect_container_logs
 
 multivolume:
@@ -51,14 +57,64 @@ multivolume_specify_volname:
       - name: foo3
       - name: foo4
   expect_container_vols:
-    - (container-name)_foo1_1_(rand-guid):/data/export1
-    - (container-name)_foo2_1_(rand-guid):/data/export2
-    - (container-name)_foo3_1_(rand-guid):/data/export3
-    - (container-name)_foo4_1_(rand-guid):/data/export4
+    - (stack-name)_foo1_1_(rand-guid):/data/export1
+    - (stack-name)_foo2_1_(rand-guid):/data/export2
+    - (stack-name)_foo3_1_(rand-guid):/data/export3
+    - (stack-name)_foo4_1_(rand-guid):/data/export4
   expect_container_log: $multivolume.expect_container_logs
 
 cluster_single_volume:
   config:
     - run mode: cluster
-    - node count: 2
+    - node count: 4
+    - negative affinity: best-effort
+  expect_container_logs:
+    - runmode clustering
+    - resolve_cluster_peers
+    - "peer_resolve 1"
+    - "cluster_peer_zone http://minio2-minio-{1...4}:9000/data/export{1...1}/tenant1"
+    - "Status:         4 Online, 0 Offline."
+    - leader: "Formatting 1 zone, 1 set(s), 4 drives per set."
+    - followers: "Waiting for the first server to format the disks."
+    - first-container-to-start: "Waiting for a minimum of 2 disks to come online (elapsed 8s)"
+  expect_container_vols:
+    - (rand-guid):/data/export1
 
+cluster_single_volume_specify_volname:
+  config:
+    - run mode: cluster
+    - node count: 4
+    - negative affinity: best-effort
+    - volume base name: foo
+  expect_docker_compose:
+    - volumes_contains:
+      - name: foo1
+  expect_container_vols:
+    - (stack-name)_foo1_(container-index)_(rand-guid):/data/export1
+  expect_container_log: $cluster_single_volume.expect_container_logs
+
+cluster_multivolume:
+  config:
+    - run mode: cluster
+    - node count: 2
+    - volume count: 4
+    - negative affinity: best-effort
+  expect_container_vols:
+    - (rand-guid):/data/export1
+    - (rand-guid):/data/export2
+    - (rand-guid):/data/export3
+    - (rand-guid):/data/export4
+  expect_container_logs:
+    - runmode clustering
+    - resolve_cluster_peers
+    - "peer_resolve 1"
+    - "cluster_peer_zone http://minio2-minio-{1...2}:9000/data/export{1...4}/tenant1"
+    - "Status:         8 Online, 0 Offline."
+    - leader: "Formatting 1 zone, 1 set(s), 8 drives per set."
+    - followers: "Waiting for the first server to format the disks."
+    - first-container-to-start: "Waiting for a minimum of 4 disks to come online (elapsed 8s)"
+
+cluster_multivolume_specify_volname:
+    - volume base name: foo
+
+```

@@ -40,7 +40,9 @@ catalog:
       default: "MySecret0"
     - variable: "minio_volcount"
       description: |
-        Number of volumes for each storage node.
+        Number of volumes for each storage node. Volumes are divided into sets of 4-16, and each object is written to one set. The 
+        largest set size will be used for volumes given: 18 volumes means 2 sets, etc. If each volume is on a separate disk, make 
+        sure the disks are about the same spec.
       label: "Volume Count"
       type: "enum"
       required: true
@@ -84,7 +86,8 @@ catalog:
         - 64
     - variable: "minio_nodecount"
       description: |
-        Number of instances of MinIO servers. If >1, remember to set "Run Mode" to "cluster" or multinode storage won't work.
+        Number of instances of MinIO servers. If >1, remember to set "Run Mode" to "cluster" or multinode storage won't work. 
+        Total volumes in cluster still applies as if single node, i.e. if 1 volume per node, at least 4 nodes are required.
       label: "Node Count"
       type: "int"
       required: true
@@ -94,10 +97,12 @@ catalog:
       description: |
         Option "local" will use regular local container volume(s), which may mean it is not beneficial to use more than 1 volume per storage node. 
         Option "hostdir" will mount directories on host directly, but EC is only useful if each mounted directory is on a different physical drive.
+        Option "none" means no volume will be created, and data is lost everytime the container restarts.
       required: true
       type: enum
       default: local
       options:
+        - none
         - local
         - hostdir
     - variable: hostdir_basepath
@@ -151,7 +156,7 @@ catalog:
       required: true
       default: "application/pdf text/* application/json application/xml"
     - variable: host_negative_affinity
-      description: "Make sure only 1 container is launched per host."
+      description: "Make sure only 1 container is launched per host?"
       label: "Negative Affinity"
       type: enum
       required: true

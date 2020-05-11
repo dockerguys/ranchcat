@@ -71,6 +71,7 @@ services:
 {{- if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
 {{- end }}
+{{- if ne .Values.datavolume_backing "none" }}
     # -----------------------------------
     # VOLUMES
     # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes
@@ -78,18 +79,19 @@ services:
     # - just write path to create dynamic named volume
     # -----------------------------------
     volumes:
-{{- if eq .Values.datavolume_backing "hostdir" }}
-{{-   range $idx, $e := atoi .Values.minio_volcount | until }}
-      - ${hostdir_basepath}{{ add1 $idx }}:/data/export{{ add1 $idx }}
-{{-   end }}
-{{- else }}
-{{-   if (.Values.datavolume_name) }}
+{{-   if eq .Values.datavolume_backing "hostdir" }}
 {{-     range $idx, $e := atoi .Values.minio_volcount | until }}
-      - ${datavolume_name}{{ add1 $idx }}:/data/export{{ add1 $idx }}
+      - ${hostdir_basepath}{{ add1 $idx }}:/data/export{{ add1 $idx }}
 {{-     end }}
 {{-   else }}
-{{-     range $idx, $e := atoi .Values.minio_volcount | until }}
+{{-     if (.Values.datavolume_name) }}
+{{-       range $idx, $e := atoi .Values.minio_volcount | until }}
+      - ${datavolume_name}{{ add1 $idx }}:/data/export{{ add1 $idx }}
+{{-       end }}
+{{-     else }}
+{{-       range $idx, $e := atoi .Values.minio_volcount | until }}
       - /data/export{{ add1 $idx }}
+{{-       end }}
 {{-     end }}
 {{-   end }}
 {{- end }}

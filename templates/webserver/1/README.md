@@ -27,6 +27,7 @@ This image offers a variety of services on different ports. You can create multi
 
 4. **Port 8080**: Subsite service. Visitors are served files from `/usr/html/sites/www/{domain}/html`, so you can show different content based on the domain accessed. Also designed for HTML5 push-state, meaning that if you visit `www.mydomain.com/foobar`, the server will search inside `/usr/html/sites/www/www.mydomain.com/html` for `/foobar/index.html`, and if not found, `/index.html`. But if the URL has a file extension like `www.mydomain.com/foobar.js`, it'll just search for `/foobar.js` and 404 when not found.
 
+5. **Port 8811**: Root domain redirection service. A second level domain (e.g. example.com) will be redirected to its `www` name (i.e. www.example.com).
 
 Modifying Content
 -----------------

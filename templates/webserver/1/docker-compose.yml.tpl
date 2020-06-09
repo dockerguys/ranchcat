@@ -84,6 +84,11 @@ services:
 {{- else }}
       NGINX_ENABLE_HTTPS_REDIRECTOR: "false"
 {{- end }}
+{{- if eq .Values.nginx_enable_www_redirect_svc "true" }}
+      NGINX_ENABLE_WWW_REDIRECTOR: "true"
+{{- else }}
+      NGINX_ENABLE_WWW_REDIRECTOR: "false"
+{{- end }}
     # -----------------------------------
     # Scheduler labels
     # -----------------------------------

@@ -115,6 +115,12 @@ catalog:
       type: boolean
       required: true
       default: true
+    - variable: nginx_enable_www_redirect_svc
+      description: "Enable root domain redirect to www service."
+      label: "Root Domain Redirect Service"
+      type: boolean
+      required: true
+      default: true
     - variable: nginx_ro_mode
       description: "Mounts existing /usr/html in read-only mode."
       label: "ReadOnly Mode"

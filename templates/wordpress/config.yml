@@ -2,7 +2,7 @@ name: WordPress
 description: |
   Blog Tool, Publishing Platform, and CMS
 version: 1.0.0
-category: File Synchronisation
+category: Web
 maintainer: Dockerguys <dockerguys@lizoc.com>
 license: Proprietary ULA
 projectURL: https://code.lizoc.com/dockerguys/library

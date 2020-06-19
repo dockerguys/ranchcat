@@ -30,7 +30,7 @@ services:
     environment:
       WORDPRESS_DB_HOST: "db"
       WORDPRESS_DB_USER: "${wordpress_user}"
-      WORDPRESS_DB_PASSWORD: "${wordpress_password}
+      WORDPRESS_DB_PASSWORD: "${wordpress_password}"
       WORDPRESS_DB_NAME: "${wordpress_dbname}"
       WORDPRESS_DEBUG: "${debug_mode}"
       WORDPRESS_SSL_OFFLOAD: true

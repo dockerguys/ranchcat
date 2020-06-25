@@ -11,8 +11,9 @@ catalog:
       type: enum
       options:
         - dockerguys/softether:4.29.9680
+        - dockerguys/softether:4.29.9680-s1
       required: true
-      default: "dockerguys/softether:4.29.9680"
+      default: "dockerguys/softether:4.29.9680-s1"
     - variable: softether_password
       description: "Default administrator password."
       label: "Administrator Password"

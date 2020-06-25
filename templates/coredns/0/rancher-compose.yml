@@ -10,9 +10,9 @@ catalog:
       type: enum
       options:
         - dockerguys/coredns:1.6
-        - dockerguys/coredns:latest
+        - dockerguys/coredns:1.7
       required: true
-      default: "dockerguys/coredns:1.6"
+      default: "dockerguys/coredns:1.7"
     - variable: coredns_upstream_forward
       description: "Profile to use for upstream DNS server"
       label: "Upstream Server"

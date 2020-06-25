@@ -10,11 +10,12 @@ catalog:
       label: "Windows KMS Image"
       description: "Image to use. Be sure to fill in the 'Private Registry' field too if the image is not available publically."
       required: true
-      default: "dockerguys/windowskms:0.1112"
+      default: "dockerguys/windowskms:0.1113"
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/windowskms:0.1111
         - dockerguys/windowskms:0.1112
+        - dockerguys/windowskms:0.1113
     - variable: verbose_logging
       description: "Enable verbose logging."
       label: "Verbose Logging"

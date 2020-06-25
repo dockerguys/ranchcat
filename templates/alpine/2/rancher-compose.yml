@@ -12,7 +12,8 @@ catalog:
       options:
         - "dockerguys/alpine:3.10"
         - "dockerguys/alpine:3.11"
-      default: "dockerguys/alpine:3.11"
+        - "dockerguys/alpine:3.12"
+      default: "dockerguys/alpine:3.12"
       required: true
     - variable: volume_mountpoint
       description: "Path to mount volume. Ignore if not mounting a volume."

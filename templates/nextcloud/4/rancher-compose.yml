@@ -82,7 +82,7 @@ catalog:
       options: # List of options if using type of `enum`
         - dockerguys/nextcloud:16.0
         - dockerguys/nextcloud:18.0
-        - dockerguys/nextcloud:latest
+        - dockerguys/nextcloud:19.0
     - variable: "redis_image"
       label: "Redis Image"
       description: "Redis database required. Choose the desired version."
@@ -91,7 +91,7 @@ catalog:
       type: enum
       options:
         - dockerguys/redis:5.0
-        - dockerguys/redis:latest
+        - dockerguys/redis:6.0
     - variable: extra_volume_a
       label: "Extra Volume 1"
       description: |

@@ -17,17 +17,15 @@ catalog:
       default: "dockerguys/busybox:1.31.0"
       type: enum
       options: # List of options if using type of `enum`
-        - busybox:latest
         - dockerguys/busybox:1.31.0
     - variable: "registry_image"
       label: "Registry Image"
       description: "Image to use for Docker Registry"
       required: true
-      default: "dockerguys/docker-registry:2.7.1"
+      default: "dockerguys/docker-registry:2.7"
       type: enum
       options: # List of options if using type of `enum`
-        - registry:latest
-        - dockerguys/docker-registry:2.7.1
+        - dockerguys/docker-registry:2.7
     # --- OAUTH2 settings ---
     - variable: oauth_cert
       label: "OAuth Certificate"

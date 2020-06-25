@@ -11,7 +11,8 @@ catalog:
       type: "enum"
       options:
         - "dockerguys/alpine:3.11"
-      default: "dockerguys/alpine:3.11"
+        - "dockerguys/alpine:3.12"
+      default: "dockerguys/alpine:3.12"
       required: true
     - variable: volume_driver
       label: "Volume Storage Driver"

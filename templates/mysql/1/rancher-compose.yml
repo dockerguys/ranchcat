@@ -12,7 +12,6 @@
         - "dockerguys/mariadb:10.2"
         - "dockerguys/mariadb:10.3"
         - "dockerguys/mariadb:10.4"
-        - "dockerguys/mariadb:latest"
       default: "dockerguys/mariadb:10.4"
       required: true
     - variable: mysql_root_name

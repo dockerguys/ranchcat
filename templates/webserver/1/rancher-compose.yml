@@ -11,11 +11,12 @@ catalog:
       description: |
         Webserver image. Be sure to fill in the "Private Registry" field too if the image is not available publically.
       required: true
-      default: "dockerguys/nginx:1.17-lite"
+      default: "dockerguys/nginx:1.19-lite"
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/nginx:1.17-lite
         - dockerguys/nginx:1.18-lite
+        - dockerguys/nginx:1.19-lite
     - variable: nginx_console_log
       description: "Output log information to console instead of file."
       label: "Console Logging"

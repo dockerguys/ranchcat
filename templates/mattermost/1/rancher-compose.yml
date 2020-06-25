@@ -11,10 +11,10 @@ catalog:
       label: "Server Image"
       type: "enum"
       options: 
-        - "dockerguys/mattermost:5.20"
         - "dockerguys/mattermost:5.21"
+        - "dockerguys/mattermost:5.24"
       required: true
-      default: "dockerguys/mattermost:5.21"
+      default: "dockerguys/mattermost:5.24"
     - variable: "mattermost_db_name"
       description: "Mattermost database name"
       label: "Database Name"

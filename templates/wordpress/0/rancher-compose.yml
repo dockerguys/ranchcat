@@ -4,39 +4,6 @@ catalog:
   version: "1.0.0"
   description: "Create a beautiful website, blog, or app"
   questions:
-    - variable: wordpress_user
-      description: "Primary administrative user"
-      label: "Admin User"
-      type: "string"
-      required: true
-      default: cloudmaster
-    - variable: wordpress_password
-      description: "Password for primary administrative user"
-      label: "Admin Password"
-      type: "password"
-      required: true
-      default: ChangeMeChangeMe
-    - variable: "debug_mode"
-      description: |
-        Enable debug mode
-      label: "Debug Mode"
-      default: false
-      required: true
-      type: boolean
-    - variable: "db_service"
-      description: |
-        External DB service to use (MySQL or MariaDB). You can reference the service as "db" by setting this.
-      label: "DB Service"
-      default: ""
-      required: false
-      type: "service"
-    - variable: wordpress_dbname
-      description: |
-        Name of database to use.
-      label: "Database Name"
-      type: "string"
-      required: true
-      default: "wordpress"
     - variable: "wordpress_image"
       label: "WordPress Image"
       description: "Image to use"
@@ -45,6 +12,39 @@ catalog:
       type: enum
       options: # List of options if using type of `enum`
         - dockerguys/wordpress:5.4
+    - variable: wordpress_dbuser
+      description: "Database username"
+      label: "Database User"
+      type: "string"
+      required: true
+      default: wpapp
+    - variable: wordpress_dbpassword
+      description: "Password for database"
+      label: "Database Password"
+      type: "password"
+      required: true
+      default: ChangeMeChangeMe
+    - variable: wordpress_dbname
+      description: |
+        Name of database to use.
+      label: "Database Name"
+      type: "string"
+      required: true
+      default: "wordpress"
+    - variable: "db_service"
+      description: |
+        External DB service to use (MySQL or MariaDB). You can reference the service as "db" by setting this.
+      label: "DB Service"
+      default: ""
+      required: false
+      type: "service"
+    - variable: "debug_mode"
+      description: |
+        Enable debug mode
+      label: "Debug Mode"
+      default: false
+      required: true
+      type: boolean
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."

@@ -52,6 +52,12 @@ catalog:
       type: string
       required: true
       default: "internal"
+    - variable: coredns_lb_zones
+      description: "Authority zones for entries from loadbalancer. Separate by space."
+      label: "Static Zones"
+      type: string
+      required: true
+      default: "internal"
     - variable: coredns_enable_metrics
       description: "Enable metrics reporting"
       label: "Enable Metrics"

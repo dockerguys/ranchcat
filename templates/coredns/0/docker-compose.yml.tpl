@@ -37,6 +37,7 @@ services:
       COREDNS_PRIVATE_DOMAINS: ${coredns_private_domains}
       COREDNS_ENABLE_METRICS: ${coredns_enable_metrics}
       COREDNS_LB_LABEL: ${coredns_lb_label}
+      COREDNS_LB_ZONES: "${coredns_lb_zones}"
       COREDNS_LB_STACK: ${coredns_lb_stack}
 {{- if (.Values.coredns_internal_upstream_server) }}
       COREDNS_INTERNAL_UPSTREAM_FORWARD: ${coredns_internal_upstream_server}

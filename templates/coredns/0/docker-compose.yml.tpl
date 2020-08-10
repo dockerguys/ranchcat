@@ -30,7 +30,7 @@ services:
     # -----------------------------------
     environment:
       COREDNS_FEATURE_BRANDING: true
-      COREDNS_ENABLE_RANCHER_INTEGRATION: true
+      COREDNS_ENABLE_LB_INTEGRATION: true
       COREDNS_BRAND_NAME: ${coredns_brand_name}
       COREDNS_BRAND_AUTHOR: ${coredns_brand_author}
       COREDNS_UPSTREAM_FORWARD: ${coredns_upstream_forward}

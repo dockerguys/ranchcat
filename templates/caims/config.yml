@@ -1,0 +1,8 @@
+name: CloudAIM
+description: |
+  CloudAIM is a self-hosted cloud native solution for identity and access management
+version: 10.0
+category: Authentication
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/library

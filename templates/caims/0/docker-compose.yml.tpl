@@ -26,8 +26,8 @@ services:
     image: "${docker_registry_name}/${caims_image}"
 {{-   end }}
 {{- else }}
-{{-   if (.Values.caims_custom_image) }}
-    image: ${caims_custom_image}
+{{-   if (.Values.caims_image_custom) }}
+    image: ${caims_image_custom}
 {{-   else }}
     image: ${caims_image}
 {{-   end }}

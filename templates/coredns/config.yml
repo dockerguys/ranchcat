@@ -1,7 +1,7 @@
 name: CoreDNS
 description: |
   DNS and Service Discovery
-version: 1.6
+version: 1.7
 category: Networking
 maintainer: Dockerguys <dockerguys@lizoc.com>
 license: Proprietary ULA

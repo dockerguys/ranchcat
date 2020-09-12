@@ -38,7 +38,7 @@ services:
       COREDNS_UPSTREAM_FORWARD_POLICY: ${coredns_upstream_policy}
       COREDNS_PRIVATE_DOMAINS: ${coredns_private_domains}
       COREDNS_ENABLE_METRICS: ${coredns_enable_metrics}
-{{- if le .Values.coredns_ratelimit_maxquery 0 }}
+{{- if eq .Values.coredns_ratelimit_maxquery "0" }}
       COREDNS_ENABLE_RATELIMIT: false
 {{- else }}
       COREDNS_ENABLE_RATELIMIT: true

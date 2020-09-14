@@ -88,11 +88,11 @@ services:
     # -----------------------------------
     volumes:
 {{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}_zones:/var/lib/coredns/zones
-      - ${datavolume_name}_static:/var/lib/coredns/static
+      - ${datavolume_name}_zones:/var/lib/coredns/zones:ro
+      - ${datavolume_name}_static:/var/lib/coredns/static:ro
 {{- else }}
-      - /var/lib/coredns/zones
-      - /var/lib/coredns/static
+      - /var/lib/coredns/zones:ro
+      - /var/lib/coredns/static:ro
 {{- end }}
     # -----------------------------------
     # LIMIT CPU

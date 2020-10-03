@@ -1,0 +1,244 @@
+version: '2'
+catalog:
+  name: "MinIO"
+  minimum_rancher_version: v0.51.0
+  version: "v1.1.0"
+  description: "High Performance, Kubernetes Native Object Storage"
+  maintainer: dockerguys <dockerguys@lizoc.com>
+  questions:
+    - variable: "minio_image"
+      description: "MinIO server image"
+      label: "MinIO Image"
+      type: "enum"
+      options: 
+        - "dockerguys/minio:2020-09"
+      required: true
+      default: "dockerguys/minio:2020-09"
+    - variable: "minio_image_custom"
+      label: "Custom MinIO server image"
+      description: "Use a custom MinIO image. This will override value of MinIO image."
+      required: false
+      type: string
+    - variable: "minio_runmode"
+      description: |
+        Standalone runs a single instance of MinIO, cluster runs several instances in a clustered configuration, and gateway provides a  
+        S3 interface to the underlying storage.
+      label: "Run Mode"
+      type: "enum"
+      required: true
+      default: "standalone"
+      options:
+        - "standalone"
+        - "cluster"
+        - "gateway"
+    - variable: "minio_key"
+      description: "Default API key is akin to username. Minimum 3 chars."
+      label: "API Key"
+      type: "string"
+      required: true
+      default: "admin"
+    - variable: "minio_secret"
+      description: "Default API secret is akin to password. Min 8 chars."
+      label: "API Secret"
+      type: "password"
+      required: true
+      default: "MySecret0"
+    - variable: "minio_volcount"
+      description: |
+        Number of volumes for each storage node. Volumes are divided into sets of 4-16, and each object is written to one set. The 
+        largest set size will be used for volumes given: 18 volumes means 2 sets, etc. If each volume is on a separate disk, make 
+        sure the disks are about the same spec.
+      label: "Volume Count"
+      type: "enum"
+      required: true
+      default: 1
+      options:
+        - 1
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 18
+        - 20
+        - 21
+        - 22
+        - 24
+        - 26
+        - 27
+        - 28
+        - 30
+        - 32
+        - 33
+        - 36
+        - 39
+        - 40
+        - 42
+        - 44
+        - 45
+        - 48
+        - 52
+        - 56
+        - 60
+        - 64
+    - variable: "minio_nodecount"
+      description: |
+        Number of instances of MinIO servers. If >1, remember to set "Run Mode" to "cluster" or multinode storage won't work. 
+        Total volumes in cluster still applies as if single node, i.e. if 1 volume per node, at least 4 nodes are required.
+      label: "Node Count"
+      type: "int"
+      required: true
+      default: 1
+    - variable: datavolume_backing
+      label: "Volume Backing"
+      description: |
+        Option "local" will use regular local container volume(s), which may mean it is not beneficial to use more than 1 volume per storage node. 
+        Option "hostdir" will mount directories on host directly, but EC is only useful if each mounted directory is on a different physical drive.
+        Option "none" means no volume will be created, and data is lost everytime the container restarts.
+      required: true
+      type: enum
+      default: local
+      options:
+        - none
+        - local
+        - hostdir
+    - variable: hostdir_basepath
+      label: "Host Base Path"
+      description: |
+        Specify the prefix mount path for volume directories on host. For example, "/storage/objdata/export" will mount "/storage/objdata/export{1..n}". 
+        This option is ignored unless "Volume Backing" is set to "hostdir".
+      required: true
+      type: string
+      default: /storage/objdata/export
+    - variable: datavolume_name
+      label: "Volume Base Name"
+      description: |
+        Specify a base name for volumes created. This option is ignored unless "Volume Backing" is set to "local".
+      required: false
+      type: string
+    - variable: "minio_tenant"
+      description: "Tenant name allows multitenancy on a single volume."
+      label: "Tenant Name"
+      type: "string"
+      required: true
+      default: "tenant1"
+    - variable: "minio_region"
+      description: "Region name for compatibility with S3"
+      label: "Region Name"
+      type: "string"
+      required: true
+      default: "us-east-1"
+    - variable: "minio_region_comment"
+      description: "Region comment for documentation only"
+      label: "Region Comment"
+      type: "string"
+      required: true
+      default: "Default region"
+    - variable: "minio_browser"
+      description: "Enables web GUI browser"
+      label: "Enable Web GUI"
+      type: boolean
+      required: true
+      default: true
+    - variable: "minio_compress_ext"
+      description: "Automatically compress files that has these extensions. Separate by space."
+      label: "Compress File Extension"
+      type: string
+      required: true
+      default: ".pdf .doc .xml .json"
+    - variable: "minio_compress_mime"
+      description: "Automatically compresss anything that has these mimetypes. Separate by space."
+      label: "Compress Mimetypes"
+      type: string
+      required: true
+      default: "application/pdf text/* application/json application/xml"
+    - variable: host_negative_affinity
+      description: "Make sure only 1 container is launched per host?"
+      label: "Negative Affinity"
+      type: enum
+      required: true
+      default: ensure
+      options:
+        - best-effort
+        - ensure
+        - disable
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    - variable: docker_memory_swap_limit
+      label: "Limit Swap Memory"
+      description: |
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
+        or the same value as Limit Memory to disable swap.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  minio:
+    scale: ${minio_nodecount}
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 9000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 5000
+      strategy: recreate
+      request_line: GET "/minio/health/live" "HTTP/1.0"
+      reinitializing_timeout: 120000

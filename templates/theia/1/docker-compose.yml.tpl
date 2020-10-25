@@ -48,9 +48,9 @@ services:
     # -----------------------------------
     volumes:
 {{- if (.Values.exist_datavolume_name) }}
-      - ${exist_datavolume_name}:/home/project
+      - ${exist_datavolume_name}:${datavolume_mount_path}
 {{- else }}
-      - /home/project
+      - ${datavolume_mount_path}
 {{- end }}
     # -----------------------------------
     # LIMIT CPU

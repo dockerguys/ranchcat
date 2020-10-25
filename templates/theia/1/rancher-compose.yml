@@ -30,6 +30,12 @@ catalog:
         Mount an existing volume to the container, so that you can edit its content using the IDE. Leave blank to NOT mount a volume.
       required: false
       type: string
+    - variable: "datavolume_mount_path"
+      label: "Volume Mount Path"
+      description: Mount the volume to a custom path
+      required: true
+      type: string
+      default: "/home/project"
     - variable: "exist_datavolume_storage_driver"
       label: "Volume Storage Driver"
       description: |

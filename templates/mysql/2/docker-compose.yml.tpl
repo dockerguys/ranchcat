@@ -195,6 +195,7 @@ volumes:
 {{-     end }}
 {{-   else }}
     driver: local
+{{-   end }}
 {{- end }}
 
 # +++++++++++++++++++++++

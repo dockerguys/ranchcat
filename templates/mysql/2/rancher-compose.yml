@@ -130,7 +130,7 @@
       label: "Host Affinity Label"
       type: string
       required: false
-    # --- common param: subst vols_required = `volume ("Volume Name"_[[db,]backup])`
+    # --- common param: subst vols_required = `volume ("Volume Name"_backup)`
     - variable: datavolume_name
       label: "Volume Base Name"
       description: |
@@ -141,7 +141,7 @@
     - variable: volume_exists
       label: "Volume Exists"
       description: |
-        Check this if you have already created the volume ("Volume Name"_[[db,],backup]). Remember to set the "Volume Storage Driver" too.
+        Check this if you have already created the volume ("Volume Name"_backup). Remember to set the "Volume Storage Driver" too.
       required: true
       type: boolean
       default: false

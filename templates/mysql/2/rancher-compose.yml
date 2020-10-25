@@ -72,17 +72,17 @@
       type: string
     - variable: backup_full_interval
       description: |
-        Number of seconds before a full backup.
+        Number of seconds between each full backup.
       label: "Full Backup Interval"
       type: "int"
-      default: 3600
+      default: 86400
       required: true
     - variable: backup_incre_interval
       description: |
-        Number of seconds before an incremental backup.
+        Number of seconds between each incremental backup.
       label: "Quick Backup Interval"
       type: "int"
-      default: 86400
+      default: 3600
       required: true
     - variable: backup_count
       description: |

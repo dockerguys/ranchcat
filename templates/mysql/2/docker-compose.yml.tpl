@@ -51,8 +51,8 @@ services:
 {{- if (.Values.mysql_extargs) }}
       MYSQL_EXTARGS: ${mysql_extargs}
 {{- end}}
-      DB_BACKUP_INTERVAL: ${backup_full_interval}
-      DB_FULL_BACKUP_INTERVAL: ${backup_incre_interval}
+      DB_BACKUP_INTERVAL: ${backup_incre_interval}
+      DB_FULL_BACKUP_INTERVAL: ${backup_full_interval}
       DB_BACKUP_USER_PASSWORD: ${backup_password}
       DB_BACKUP_RETAINS: ${backup_count}
       DB_BACKUP_TIMEOUT: ${backup_timeout}

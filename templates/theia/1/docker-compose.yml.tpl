@@ -28,7 +28,7 @@ services:
     # ENV
     # -----------------------------------
     environment:
-      THEIA_RUNAS_ROOT: "{{ .Values.runas_root }}"
+      WEBSTUDIO_RUNAS_ROOT: "{{ .Values.runas_root }}"
     # -----------------------------------
     # Scheduler labels
     # -----------------------------------

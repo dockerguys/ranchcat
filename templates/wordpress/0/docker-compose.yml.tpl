@@ -34,6 +34,7 @@ services:
       WORDPRESS_DB_NAME: "${wordpress_dbname}"
       WORDPRESS_DEBUG: "${debug_mode}"
       WORDPRESS_SSL_OFFLOAD: true
+      NGINX_HTTP_UPLOAD_MAX_SIZE: "${nginx_upload_maxsize}m"
     # -----------------------------------
     # Links to other containers
     # - database service as "db"

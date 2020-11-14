@@ -18,6 +18,8 @@ catalog:
         - dockerguys/theia:1.0-golang
         - dockerguys/theia:1.2
         - dockerguys/theia:1.2-golang
+        - dockerguys/theia:1.7
+        - dockerguys/theia:1.7-golang1.15
     - variable: "runas_root"
       label: "Root Access"
       description: Runs the IDE as root user.

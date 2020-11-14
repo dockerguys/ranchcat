@@ -32,3 +32,12 @@ Usage
 -----
 1. Update your load balancer to point HTTPS/443 to port 9000 of the MinIO storage service.
 2. Access by web GUI or API.
+3. Create a custom user:
+
+```
+cat /root/.mc/config.json
+mc admin user add local foo
+mc admin group add local admins foo
+mc admin policy set local readwrite group=admins
+mc admin group info local admins
+```

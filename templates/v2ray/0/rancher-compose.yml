@@ -12,55 +12,22 @@ catalog:
         - dockerguys/v2ray:4.20.0
       required: true
       default: "dockerguys/v2ray:4.20.0"
-    - variable: v2ray_buf_readv
-      description: "Optimize memory usage on 100mb/s or faster connection."
-      label: "Scatter/Gather IO"
-      type: enum
-      options:
-        - auto
-        - enable
-        - disable
-      required: true
-      default: "auto"
+    - variable: "v2ray_image_custom"
+      label: "Custom V2Ray server image"
+      description: "Use a custom V2Ray image. This will override value of V2Ray image."
+      required: false
+      type: string
+    - variable: "v2ray_default_client_guid"
+      label: "Default Client GUID"
+      description: "Specify the default client GUID. Leave blank to generate automatically."
+      required: false
+      type: string
     # --- common param: host affinity
     - variable: host_affinity_label
       description: "The stack will launch on one of the hosts that has this label."
       label: "Host Affinity Label"
       type: string
       required: false
-    # --- common param: 
-    # --- - storage
-    # --- -- subst vols_required = `volume ("Volume Name"_conf)`
-    - variable: datavolume_name
-      label: "Volume Base Name"
-      description: |
-        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes will be created with this value as the prefix. 
-        By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
-      required: false
-      type: string
-    - variable: volume_exists
-      label: "Volume Exists"
-      description: |
-        Check this if you have already created the volume ("Volume Name"_conf). Remember to set the "Volume Storage Driver" too.
-      required: true
-      type: boolean
-      default: false
-    #- variable: storage_size
-    #  label: "Volume Storage Size"
-    #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
-    #  required: false
-    #  type: int
-    - variable: storage_driver
-      label: "Volume Storage Driver"
-      description: |
-        To use a stack scoped volume backed by a persistent storage service, enter the name
-        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
-      required: true
-      type: enum
-      default: "local"
-      options:
-        - local
-        - rancher-nfs
     # --- common param: repull
     - variable: repull_image
       description: "Pull from registry source even if the host already have a local image with the same tag."
@@ -113,7 +80,7 @@ services:
     health_check:
       response_timeout: 2000
       healthy_threshold: 2
-      port: 43432
+      port: 1080
       unhealthy_threshold: 3
       initializing_timeout: 300000
       interval: 2000

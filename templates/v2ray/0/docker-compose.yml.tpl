@@ -21,23 +21,23 @@ services:
     # - support private registry
     # -----------------------------------
 {{- if (.Values.docker_registry_name) }}
+{{-   if (.Values.v2ray_image_custom) }}
+    image: "${docker_registry_name}/${v2ray_image_custom}"
+{{-   else }}
     image: "${docker_registry_name}/${v2ray_image}"
+{{-   end }}
 {{- else }}
+{{-   if (.Values.v2ray_image_custom) }}
+    image: ${v2ray_image_custom}
+{{-   else }}
     image: ${v2ray_image}
+{{-   end }}
 {{- end }}
     # -----------------------------------
     # ENV
     # -----------------------------------
     environment:
-      V2RAY_BUF_READV: ${v2ray_buf_readv}
-    # -----------------------------------
-    # Expose ports
-    # -----------------------------------
-    ports: # haproxy doesn't support udp
-      - 43432:43432/tcp
-      - 43432:43432/udp
-      - 43433:43433/tcp
-      - 43433:43433/udp
+      V2RAY_CLIENT_DEFAULT_GUID: ${v2ray_default_client_guid}
     # -----------------------------------
     # Scheduler labels
     # -----------------------------------
@@ -59,45 +59,9 @@ services:
 {{- end }}
     cpu_shares: ${docker_cpu_weight_limit}
     # -----------------------------------
-    # VOLUMES
-    # - https://docs.docker.com/compose/compose-file/compose-file-v2/#volumes
-    # - specify vol name to use the specified volume
-    # - just write path to create dynamic named volume
-    # -----------------------------------
-    volumes:
-{{- if (.Values.datavolume_name) }}
-      - ${datavolume_name}_conf:/etc/v2ray
-{{- else }}
-      - /etc/v2ray
-{{- end }}
-    # -----------------------------------
     # LIMIT RAM
     # -----------------------------------
 {{- if (.Values.docker_memory_limit) }}
     mem_limit: "${docker_memory_limit}m"
     memswap_limit: "${docker_memory_limit}m"
 {{- end }}
-
-
-# +++++++++++++++++++++++
-# BEGIN VOLUMES
-# - stores database files
-# - https://docs.docker.com/compose/compose-file/compose-file-v2/#volume-configuration-reference
-# +++++++++++++++++++++++
-
-{{- if (.Values.datavolume_name) }}
-volumes:
-  # ************************************
-  # VOLUME
-  # - holds the database
-  # ************************************
-  {{.Values.datavolume_name}}_conf:
-{{-   if eq .Values.volume_exists "true" }}
-    external: true
-{{-   end }}
-    driver: local
-{{- end }}
-
-# +++++++++++++++++++++++
-# END VOLUMES
-# +++++++++++++++++++++++

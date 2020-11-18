@@ -1,0 +1,8 @@
+name: OpenSSH Server
+description: |
+  OpenSSH server for remote connectivity via the SSH protocol
+version: 1.0
+category: Networking
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

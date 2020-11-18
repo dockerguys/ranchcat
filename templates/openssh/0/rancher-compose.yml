@@ -1,0 +1,209 @@
+version: '2'
+catalog:
+  name: "OpenSSH Server"
+  version: "1.0"
+  description: "OpenSSH server for remote connectivity via the SSH protocol"
+  questions:
+    - variable: openssh_image
+      description: "OpenSSH server image"
+      label: "OpenSSH Image"
+      type: enum
+      options:
+        - dockerguys/openssh:8.3
+      required: true
+      default: "dockerguys/openssh:8.3"
+    - variable: "openssh_image_custom"
+      label: "Custom OpenSSH server image"
+      description: "Use a custom OpenSSH server image. This will override value of OpenSSH image."
+      required: false
+      type: string
+    - variable: "ssh_password_auth"
+      label: "Password Authentication"
+      description: "Set to false to allow login by SSH key only"
+      required: true
+      type: boolean
+      default: true
+    - variable: "ssh_root_logon"
+      label: "Root Logon"
+      description: "Enable login as root user"
+      required: true
+      type: enum
+      options:
+        - disable
+        - enable
+        - sshkey-only
+      default: "disable"
+    - variable: "ssh_system_user"
+      label: "System User"
+      description: "Create system user and group"
+      required: true
+      type: boolean
+      default: true
+    - variable: "ssh_group"
+      label: "Group Name"
+      description: "Create user group on first startup"
+      required: true
+      type: string
+      default: "administrators"
+    - variable: "ssh_gid"
+      label: "Group ID"
+      description: "The GID for user group. Do not use a reserved GID."
+      required: true
+      type: int
+      default: 1000
+    - variable: "ssh_user"
+      label: "Username"
+      description: "Create user account on first startup"
+      required: true
+      type: string
+      default: "administrator"
+    - variable: "ssh_uid"
+      label: "User ID"
+      description: "The UID for user. Do not use a reserved UID."
+      required: true
+      type: int
+      default: 1000
+    - variable: "ssh_user_display_name"
+      label: "User Friendly Name"
+      description: "User display name. Leave blank to use username."
+      required: false
+      type: string
+    - variable: "ssh_key"
+      label: "User SSH Key"
+      description: "The PEM public key for user."
+      required: false
+      type: string
+    - variable: "ssh_password"
+      label: "User Password"
+      description: "The password for user. Leave blank to generate a random one."
+      required: false
+      type: string
+    - variable: "ssh_hash_password"
+      label: "Hashed Password"
+      description: "Password is hashed. Ignore if generating random password"
+      required: true
+      type: boolean
+      default: false
+    - variable: volume_mountpoint
+      description: "Path to mount volume. Ignore if not mounting a volume."
+      label: "Volume Mountpoint"
+      type: "string"
+      required: true
+      default: "/var/lib/storage"
+    - variable: mount_ro
+      description: "Mount volumes as read-only."
+      label: "Readonly Mount"
+      type: "boolean"
+      required: true
+      default: false
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    - variable: datavolume1_name
+      label: "Volume 1 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume2_name
+      label: "Volume 2 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume3_name
+      label: "Volume 3 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume4_name
+      label: "Volume 4 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume5_name
+      label: "Volume 5 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: datavolume6_name
+      label: "Volume 6 Name"
+      description: |
+        Mount an existing volume. Leave blank to ignore. By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory; exclude docker_memory_swap_limit
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  openssh:
+    scale: 1
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 22
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

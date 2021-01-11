@@ -50,6 +50,14 @@
       label: "MySQL Password"
       required: true
       type: password
+    - variable: mysql_binlog_expire
+      description: |
+        Number of days to keep binlog files. Set to -1 will disable binlog and replication. 0 means never expire. Any other positive integer 
+        means days to keep.
+      label: "BinLog Max Days"
+      required: true
+      type: "int"
+      default: 7
     - variable: mysql_buffer_memory
       description: |
         Sets the InnoDB buffer memory size (in megabytes). You should only use InnoDB after enabling this. If you are limiting overall 

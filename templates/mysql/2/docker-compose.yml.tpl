@@ -51,6 +51,7 @@ services:
 {{- if (.Values.mysql_extargs) }}
       MYSQL_EXTARGS: ${mysql_extargs}
 {{- end}}
+      MYSQL_BINLOG_EXPIRE: ${mysql_binlog_expire}
       DB_BACKUP_INTERVAL: ${backup_incre_interval}
       DB_FULL_BACKUP_INTERVAL: ${backup_full_interval}
       DB_BACKUP_USER_PASSWORD: ${backup_password}

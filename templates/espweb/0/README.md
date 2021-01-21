@@ -10,4 +10,4 @@ Includes the following services:
 Usage
 -----
 1. Configuration on /etc/espweb.
-2. Adjust load balancer to port 1080 HTTP.
+2. Adjust load balancer to port 8080 HTTP.

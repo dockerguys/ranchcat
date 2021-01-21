@@ -129,9 +129,10 @@ services:
     health_check:
       response_timeout: 2000
       healthy_threshold: 2
-      port: 1080
+      port: 8080
       unhealthy_threshold: 3
       initializing_timeout: 300000
       interval: 2000
       strategy: recreate
+      request_line: GET "/health/ping" "HTTP/1.0"
       reinitializing_timeout: 120000

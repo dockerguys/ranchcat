@@ -1,0 +1,8 @@
+name: ESPWeb
+description: |
+  A ESP controller hub exposed using RESTful APIs
+version: 1.0
+category: IOT
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/alpines

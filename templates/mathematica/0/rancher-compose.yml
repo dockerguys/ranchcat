@@ -1,0 +1,128 @@
+version: '2'
+catalog:
+  name: "Mathematica"
+  version: "1.0"
+  description: "Wolfram Engine is a CLI version of Mathematica"
+  questions:
+    - variable: mma_image
+      description: "Mathematica container image"
+      label: "Mathematica Image"
+      type: enum
+      options:
+        - dockerguys/mathematica:12.1
+      required: true
+      default: "dockerguys/mathematica:12.1"
+    - variable: "mma_image_custom"
+      label: "Custom Mathematica Image"
+      description: "Use a custom Mathematica image. This will override value of Mathematica Image."
+      required: false
+      type: string
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: storage; subst vols_required = `volume ("Volume Name"_data)`
+    - variable: datavolume_name
+      label: "Volume Base Name"
+      description: |
+        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes will be created with this value as the prefix. 
+        By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: volume_exists
+      label: "Volume Exists"
+      description: |
+        Check this if you have already created the volume ("Volume Name"_data). Remember to set the "Volume Storage Driver" too. Do not fill 
+        in "NFS Driver Host" or "NFS Driver Volume Path".
+      required: true
+      type: boolean
+      default: false
+    #- variable: storage_size
+    #  label: "Volume Storage Size"
+    #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
+    #  required: false
+    #  type: int
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    - variable: storage_driver_nfsopts_host
+      label: "NFS Driver Host"
+      description: |
+        Specify a NFS hostname instead of the default NFS server. Only fill in this option if "Volume Storage Driver" is 
+        set to "rancher-nfs", and the volume does not already exist.
+      required: false
+      type: string
+    - variable: storage_driver_nfsopts_export
+      label: "NFS Driver Volume Path"
+      description: |
+        Specify the exported base path on the NFS server (e.g. "/storage/nfsvol"). The full directory(ies) created 
+        on the NFS server will be this path and the volume name(s). Do not append the "/" at the end. This exported base path 
+        must already exist on the NFS server. Only fill in this option if "Volume Storage Driver" is set to "rancher-nfs", and 
+        the volume does not already exist.
+      required: false
+      type: string
+    - variable: storage_retain_volume
+      label: "Retain NFS Volume"
+      description: Keep the volumes created even after this stack gets deleted. This option has no effect if the volume(s) already exists.
+      required: true
+      type: boolean
+      value: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory; exclude docker_memory_swap_limit
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  mathematica:
+    scale: 1

@@ -1,0 +1,8 @@
+name: Mathematica
+description: |
+  Wolfram Engine is a CLI version of Mathematica
+version: 1.0
+category: Science
+maintainer: Dockerguys <dockerguys@lizoc.com>
+license: Proprietary ULA
+projectURL: https://code.lizoc.com/dockerguys/library

@@ -122,7 +122,3 @@ catalog:
       type: int
       required: true
       default: 1024
-
-services:
-  mathematica:
-    scale: 1

@@ -28,8 +28,6 @@ services:
     # ENV
     # -----------------------------------
     environment:
-      KMS_LISTEN_IPV4: "0.0.0.0"
-      KMS_LISTEN_IPV6: "[::]"
       KMS_EXIT_ON_ERROR: "no"
       KMS_CLIENT_TIMEOUT: "${client_timeout}"
       KMS_RENEW_INTERVAL: "${renew_interval}w"
@@ -46,6 +44,11 @@ services:
       KMS_ENABLE_RPC_BTFN: "${enable_rpc_btfn}"
       KMS_ALLOW_FREEBIND: "${enable_freebind}"
       KMS_MAX_CLIENTS: "${max_clients}"
+{{- if eq .Values.reject_public_ip_client "true" }}
+      KMS_ACCEPT_POLICY: "2"
+{{- else }}
+      KMS_ACCEPT_POLICY: "0"
+{{- end }}
 {{- if eq .Values.log_output "Console" }}
       KMS_CONSOLE_LOG: "yes"
 {{- else }}

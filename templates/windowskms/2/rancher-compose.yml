@@ -42,10 +42,11 @@ catalog:
       required: true
       default: false
     - variable: max_clients
-      description: "Limit the number of concurrent clients. Defaults to unlimited."
+      description: "Limit the number of concurrent clients."
       label: "Max Clients"
       type: int
-      required: false
+      required: true
+      default: 32
     - variable: client_timeout
       description: "Number of seconds for timeout errors to occur."
       label: "Client Timeout"

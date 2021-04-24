@@ -1,0 +1,119 @@
+version: '2'
+catalog:
+  name: "Theia"
+  version: "v1.12.0"
+  description: "Full IDE inside your browser"
+  minimum_rancher_version: v0.51.0
+  maintainer: dockerguys <dockerguys@lizoc.com>
+  questions:
+    - variable: "theia_image"
+      label: "Theia Image"
+      description: |
+        Image to use. Be sure to fill in "Private Registry" field too if the image is not available publically.
+      required: true
+      default: "dockerguys/theia:1.12"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/theia:1.12
+        - dockerguys/theia:1.12-golang1.16 
+    - variable: "runas_root"
+      label: "Root Access"
+      description: Runs the IDE as root user.
+      required: true
+      type: boolean
+      default: false
+    - variable: "exist_datavolume_name"
+      label: "Volume Name"
+      description: |
+        Mount an existing volume to the container, so that you can edit its content using the IDE. Leave blank to NOT mount a volume.
+      required: false
+      type: string
+    - variable: "datavolume_mount_path"
+      label: "Volume Mount Path"
+      description: Mount the volume to a custom path
+      required: true
+      type: string
+      default: "/home/project"
+    - variable: "exist_datavolume_storage_driver"
+      label: "Volume Storage Driver"
+      description: |
+        Specify the driver used by the volume. This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    - variable: docker_memory_swap_limit
+      label: "Limit Swap Memory"
+      description: |
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
+        or the same value as Limit Memory to disable swap.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  webstudio:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

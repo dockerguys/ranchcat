@@ -1,0 +1,212 @@
+version: '2'
+catalog:
+  name: "Windows KMS"
+  version: "v0.1113"
+  description: "A Windows activation emulator"
+  minimum_rancher_version: v0.51.0
+  maintainer: dockerguys <dockerguys@lizoc.com>
+  questions:
+    - variable: "winkms_image"
+      label: "Windows KMS Image"
+      description: "Image to use. Be sure to fill in the 'Private Registry' field too if the image is not available publically."
+      required: true
+      default: "dockerguys/windowskms:0.1113"
+      type: enum
+      options: # List of options if using type of `enum`
+        - dockerguys/windowskms:0.1113
+    - variable: verbose_logging
+      description: "Enable verbose logging."
+      label: "Verbose Logging"
+      type: boolean
+      required: true
+      default: false
+    - variable: log_timestamp
+      description: "Record timestamp in log entries."
+      label: "Log Timestamp"
+      type: boolean
+      required: true
+      default: true
+    - variable: log_output
+      description: "Log to stdout or file"
+      label: "Log Output"
+      type: enum
+      required: true
+      options:
+        - Console
+        - File
+      default: "Console"
+    - variable: debug_mode
+      description: "Run the KMS Server in debug mode."
+      label: "Debug Mode"
+      type: boolean
+      required: true
+      default: false
+    - variable: max_clients
+      description: "Limit the number of concurrent clients. Defaults to unlimited."
+      label: "Max Clients"
+      type: int
+      required: false
+    - variable: client_timeout
+      description: "Number of seconds for timeout errors to occur."
+      label: "Client Timeout"
+      type: int
+      required: true
+      default: 30
+    - variable: product_filter
+      description: "Controls what products can be activated by this KMS server."
+      label: "Activation Filter Policy"
+      type: enum
+      required: true
+      options:
+        - Any
+        - Volume License Only
+        - Ignore Unknown
+        - Ignore Retail
+      default: "Any"
+    - variable: quick_disconnect
+      description: "Non-standard feature! Disconnect client immediately after activation."
+      label: "Quick Disconnect"
+      type: boolean
+      required: true
+      default: false
+    - variable: client_time_check
+      description: "This policy requires a minimum 4 hours wait between successful activations of the same client. Disabling this is a non-standard KMS server behavior."
+      label: "Client Time Check"
+      type: boolean
+      required: true
+      default: false
+    - variable: maintain_clients
+      description: "Causes the server to remember client information. Disabling this is a non-standard KMS server behavior."
+      label: "Maintain Client List"
+      type: boolean
+      required: true
+      default: true
+    - variable: empty_clients_onstart
+      description: "Reset the client list when the server starts. This will cause the first 25 activations to fail!"
+      label: "Empty Client List On Start"
+      type: boolean
+      required: true
+      default: false
+    - variable: enable_rpc_ndr64
+      description: "Do not disable this unless required."
+      label: "Enable RPC NDR64"
+      type: boolean
+      required: true
+      default: true
+    - variable: enable_rpc_btfn
+      description: "All Windows computers from Vista onwards negotiate for BTFN when starting a RPC connection. Do not disable unless required."
+      label: "Enable RPC BTFN"
+      type: boolean
+      required: true
+      default: true
+    - variable: enable_freebind
+      description: "Freebind is a Linux feature that supports binding to IP when available."
+      label: "Enable FreeBind"
+      type: boolean
+      required: true
+      default: true
+    - variable: reject_public_ip_client
+      description: "Reject requests from clients with public IP addresses."
+      label: "Reject Public Clients"
+      type: boolean
+      required: true
+      default: false
+    - variable: renew_interval
+      description: "Renew interval in weeks."
+      label: "Renew Interval"
+      type: int
+      required: true
+      default: 1
+    - variable: retry_interval
+      description: "Retry interval in hours."
+      label: "Retry Interval"
+      type: int
+      required: true
+      default: 2
+    - variable: server_lcid
+      description: "Sets the KMS Server language identifier."
+      label: "Server LCID"
+      type: string
+      required: true
+      default: "1033"
+    - variable: server_build_number
+      description: "Sets the Windows build number of the KMS server."
+      label: "Server Build Number"
+      type: string
+      required: true
+      default: "17763"
+    - variable: server_epid_rand
+      description: "Controls how the KMS server reports its ePID. The default setting causes a random ePID to be used every time the server starts."
+      label: "Server Build Number"
+      type: enum
+      options:
+        - BuiltIn
+        - Random Per Instance
+        - Random Per Request
+      required: true
+      default: "Random Per Instance"
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      description: "The stack will launch on one of the hosts that has this label."
+      label: "Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory, remove docker_memory_swap_limit
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  winkms:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 1688
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 120000

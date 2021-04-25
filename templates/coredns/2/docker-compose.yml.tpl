@@ -47,9 +47,9 @@ services:
       COREDNS_ENABLE_AUTOZONE: "no"
 {{- end }}
 {{- if eq .Values.coredns_console_log "true" }}
-      COREDNS_LOG_FILE: "yes"
-{{- else }}
       COREDNS_LOG_FILE: "no"
+{{- else }}
+      COREDNS_LOG_FILE: "yes"
 {{- end }}
 {{- if eq .Values.coredns_ratelimit_maxquery "0" }}
       COREDNS_ENABLE_RATELIMIT: "no"

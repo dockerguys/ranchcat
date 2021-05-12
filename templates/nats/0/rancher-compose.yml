@@ -1,0 +1,426 @@
+version: '2'
+catalog:
+  name: "NATS"
+  minimum_rancher_version: v0.51.0
+  version: "v1.0.0"
+  description: "Connecting modern distributed systems"
+  maintainer: "dockerguys <dockerguys@lizoc.com>"
+  questions:
+    - variable: nats_image
+      description: "Name of NATS image"
+      label: "NATS Image"
+      type: "enum"
+      options: 
+        - "dockerguys/nats:2.2.2"
+        - "dockerguys/nats:2.2"
+      required: true
+      default: "dockerguys/nats:2.2"
+    - variable: nats_image_custom
+      label: "Custom NATS image"
+      description: "Use a custom NATS image. This will override value of NATS Image."
+      required: false
+      type: string
+    - variable: default_region_jwt
+      label: "Region One Token"
+      description: "Encoded token for the default region. Do not mount ncred volume read-only if you specify this."
+      required: false
+      type: string
+    - variable: acs_enable
+      description: |
+        ACS is access management system. Primary deploys 1 primary server, and replica will sync with the primary to 
+        achieve high availability. Only replicas can be scaled. Note that tokenstore volume is not needed if using 
+        replica only or none.
+      label: "Enable ACS"
+      type: "enum"
+      required: true
+      default: "primary"
+      options:
+        - "primary"
+        - "replica"
+        - "primary_and_replica"
+        - "none"
+    - variable: acs_notify_upstream
+      description: |
+        FQDN of message channel servers that ACS will control. Separate with space (e.g. nats://host1:4222 
+        nats://host2:4222). Required unless Enable ACS is none.
+      label: "ACS Managed Nodes"
+      type: "string"
+      required: false
+    - variable: acs_primary_external_fqdn
+      description: |
+        FQDN of the primary ACS server (e.g. http[s]://host:port). Required unless Enable ACS is none or primary only.
+      label: "Primary ACS FQDN"
+      type: "string"
+      required: false
+    - variable: acs_ncred_readonly
+      description: "Mount credential directory read-only."
+      label: "R/O Ncred Volume"
+      type: "boolean"
+      required: true
+      default: false
+    - variable: acs_shard_tokenstore
+      description: "Shard files in the token storage directory to improve performance."
+      label: "Shard Token Store"
+      type: "boolean"
+      required: true
+      default: true
+    - variable: acs_replicate_timeout
+      description: "Max time ACS replica is allowed to talk to primary. Ignore if Enable ACS is none."
+      label: "ACS Replicate Timeout"
+      type: "int"
+      required: true
+      default: 5000
+    - variable: acs_replicate_maxsync
+      description: "Max number of tokens for replica to sync with primary on startup. Ignore if Enable ACS is none."
+      label: "ACS Replicate Max Sync"
+      type: "int"
+      required: true
+      default: 10000
+    - variable: acs_read_timeout
+      description: "ACS read timeout in millisecs as webserver. Ignore if Enable ACS is none."
+      label: "ACS Read Timeout"
+      type: "int"
+      required: true
+      default: 5000
+    - variable: acs_write_timeout
+      description: "ACS write timeout in millisecs as webserver. Ignore if Enable ACS is none."
+      label: "ACS Write Timeout"
+      type: "int"
+      required: true
+      default: 5000
+    - variable: acs_notify_conn_timeout
+      description: |
+        Timeout in millisecs for ACS to attempt connection to message channel servers it manages. ACS reports a connect 
+        error if timeout. Ignore if Enable ACS is none.
+      label: "ACS Connect Timeout"
+      type: "int"
+      required: true
+      default: 5000
+    - variable: acs_notify_reconn_timeout
+      description: |
+        Delay in millisecs between ACS reconnect attempts to message channel servers it manages. Ignore if Enable ACS 
+        is none.
+      label: "ACS Reconnect Timeout"
+      type: "int"
+      required: true
+      default: 10000
+    - variable: acs_loglevel
+      description: "ACS log level. Ignore if Enable ACS is none. Debug and trace are not recommended in production."
+      label: "ACS Log Level"
+      type: "enum"
+      required: true
+      default: "info"
+      options:
+        - info
+        - debug
+        - trace
+    - variable: cm_enable
+      description: |
+        Message channel server is the primary application. Cluster deploys a highly available cluster. Gateway is the 
+        same as cluster except that it also enables connecting another cluster to form a hypercluster. Gateway requires 
+        the certs volume to be provisioned.
+      label: "Message Channel Server"
+      type: "enum"
+      required: true
+      default: "cluster"
+      options:
+        - "standalone"
+        - "cluster"
+        - "cluster_and_gateway"
+        - "none"
+    - variable: acs_external_fqdn
+      description: "FQDN of ACS server (e.g. http[s]://host:port). Required if Message Channel Server is not none."
+      label: "ACS FQDN"
+      type: "string"
+      required: false
+    - variable: cm_tls
+      description: |
+        TLS encrypt traffic between message channel servers and clients. Certs volume is required unless no is selected 
+        here. If auto, will enable if TLS cert files are found.
+      label: "Enable CM TLS"
+      type: "enum"
+      required: true
+      default: "auto"
+      options:
+        - "auto"
+        - "yes"
+        - "no"
+    - variable: cm_tls_upgrade_timeout
+      description: "Timeout in seconds by message channel servers waiting for TLS upgrade request from client."
+      label: "CM TLS Upgrade Timeout"
+      type: "string"
+      required: true
+      default: 0.5
+    - variable: cm_tls_custom_ca
+      description: |
+        Enable if cert for TLS between message channel servers and clients is signed by a custom CA. This will also 
+        enable insecure TLS. Not recommended in production.
+      label: "CM TLS Custom CA"
+      type: "boolean"
+      required: true
+      default: false
+    - variable: cm_graceful_shutdown
+      description: "Deadline in seconds to wait for graceful shutdown of a message channel server."
+      label: "CM Graceful Shutdown"
+      type: "int"
+      required: true
+      default: 120
+    - variable: cm_disable_sublist_cache
+      description: |
+        Disable message channel servers from caching subscription lists. Only use if topics change too often for 
+        caching to be useful.
+      label: "Disable Topic Cache"
+      type: "boolean"
+      required: true
+      default: false
+    - variable: cm_file_log
+      description: "Make message channel servers log to file instead of stdout."
+      label: "CM File Logging"
+      type: "boolean"
+      required: true
+      default: true
+    - variable: cm_debug_log
+      description: "Enable debug logging on message channel servers. Not recommended in production."
+      label: "CM Debug Log"
+      type: "boolean"
+      required: true
+      default: false
+    - variable: cm_max_conn
+      description: "Limit number of connections per message channel server in k."
+      label: "Max Client Connections"
+      type: "int"
+      required: true
+      default: 64
+    - variable: cm_max_header_size
+      description: "Limit size of header per message in Kb."
+      label: "Max Header Size"
+      type: "int"
+      required: true
+      default: 4
+    - variable: cm_max_payload_size
+      description: "Limit size of payload per message in Kb."
+      label: "Max Payload Size"
+      type: "int"
+      required: true
+      default: 1024
+    - variable: cm_max_msg_buffer_size
+      description: "Limit size of message buffer in Mb."
+      label: "Max Message Buffer"
+      type: "int"
+      required: true
+      default: 64
+    - variable: cm_max_topic_subs
+      description: "Limit number of topics a client can subscribe to."
+      label: "Max Subscriptions"
+      type: "int"
+      required: true
+      default: 4096
+    - variable: cm_ping_interval
+      description: "Set keep-alive ping interval in seconds. This apply to clients, edge nodes and cluster peers."
+      label: "Keep-alive Ping Interval"
+      type: "int"
+      required: true
+      default: 120
+    - variable: cm_dead_client_slow_write_deadline
+      description: |
+        Max time in seconds for blocking server writes. Usually caused by slow client. Close connection if exceeded.
+      label: "Slow Write Deadline"
+      type: "int"
+      required: true
+      default: 2
+    - variable: cm_dead_client_max_ping
+      description: "Close connection with this number of unanswered pings."
+      label: "Max Ping Client"
+      type: "int"
+      required: true
+      default: 2
+    - variable: cm_cluster_advertise
+      description: |
+        Enable servers to assist clients to automatically discover other servers in the cluster and vice verse. Ignore 
+        if not using cluster.
+      label: "Cluster Autodiscovery"
+      type: "boolean"
+      required: true
+      default: true
+    - variable: cm_cluster_connect_retries
+      description: "Number of retries before giving up connecting to an auto-discovered cluster peer. 0 means never."
+      label: "Cluster Connect Retries"
+      type: "int"
+      required: true
+      default: 0
+    - variable: cm_core_cluster_scale
+      description: "Number of seed message channel servers in the cluster. Each server must run on a distinct host."
+      label: "Core Cluster Scale"
+      type: "int"
+      required: true
+      default: 2
+    - variable: cm_cluster_tls
+      description: |
+        Using TLS encryption for in-cluster traffic? Certs volume is required unless no is selected here. If auto, will 
+        enable if TLS cert files are detected.
+      label: "Cluster TLS Encryption"
+      type: "enum"
+      required: true
+      default: "auto"
+      options:
+        - "auto"
+        - "yes"
+        - "no"
+    - variable: cm_cluster_tls_cn
+      description: "Certificate common name for in-cluster TLS."
+      label: "Cluster TLS CN"
+      type: "string"
+      required: false
+    - variable: cm_cluster_secret
+      description: "Secret for in-cluster traffic. Only set if not using Cluster TLS Encryption."
+      label: "Cluster Secret"
+      type: "password"
+      required: true
+      default: "Secret0"
+    - variable: cm_gateway_name
+      description: "Name for this cluster in the hypercluster. Can ignore if not using gateway."
+      label: "Cluster Name"
+      type: "string"
+      required: false
+    - variable: cm_gateway_connect_retries
+      description: |
+        Number of retries to attempt before giving up auto-discovered peers in a hypercluster. 0 means never give up.
+      label: "Hypercluster Connect Retries"
+      type: "int"
+      required: true
+      default: 0
+    - variable: cm_gateway_autodiscover
+      description: "Enable autodiscover for hypercluster peers."
+      label: "Hypercluster Autodiscover"
+      type: "boolean"
+      required: true
+      default: false
+    - variable: cm_gateway_tls_cn
+      description: "Certificate common name for inter-cluster TLS. Ignore if not using hypercluster."
+      label: "Hypercluster TLS CN"
+      type: "string"
+      required: false
+    - variable: cm_gateway_peers
+      description: "Space separated list of hypercluster peers. Ignore if not using hypercluster."
+      label: "Hypercluster Peers"
+      type: "string"
+      required: false
+    # --- host affinity
+    - variable: base_host_affinity_label
+      description: |
+        The services will launch on one of the hosts that has this base label and _[acsprimary,acsreplica,cm] 
+        respectively.
+      label: "Base Host Affinity Label"
+      type: string
+      required: false
+    # --- common param: storage; subst vols_required = `volume ("Volume Name"_[ncred,nsc,tokenstore,certs])`
+    - variable: datavolume_name
+      label: "Volume Base Name"
+      description: |
+        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes 
+        will be created with this value as the prefix. By default, all volumes created will be host scoped named. See 
+        "Storage Driver" for other storage options.
+      required: false
+      type: string
+    - variable: volume_exists
+      label: "Volume Exists"
+      description: |
+        Check this if you have already created the volume ("Volume Name"_[ncred,nsc,tokenstore,certs]). Remember to set 
+        the "Volume Storage Driver" too. Do not fill in "NFS Driver Host" or "NFS Driver Volume Path".
+      required: true
+      type: boolean
+      default: false
+    #- variable: storage_size
+    #  label: "Volume Storage Size"
+    #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
+    #  required: false
+    #  type: int
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name of an existing storage 
+        driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      required: true
+      type: enum
+      default: "local"
+      options:
+        - local
+        - rancher-nfs
+    - variable: storage_driver_nfsopts_host
+      label: "NFS Driver Host"
+      description: |
+        Specify a NFS hostname instead of the default NFS server. Only fill in this option if "Volume Storage Driver" 
+        is set to "rancher-nfs", and the volume does not already exist.
+      required: false
+      type: string
+    - variable: storage_driver_nfsopts_export
+      label: "NFS Driver Volume Path"
+      description: |
+        Specify the exported base path on the NFS server (e.g. "/storage/nfsvol"). The full directory(ies) created on 
+        the NFS server will be this path and the volume name(s). Do not append the "/" at the end. This exported base 
+        path must already exist on the NFS server. Only fill in this option if "Volume Storage Driver" is set to 
+        "rancher-nfs", and the volume does not already exist.
+      required: false
+      type: string
+    - variable: storage_retain_volume
+      label: "Retain NFS Volume"
+      description: |
+        Keep the volumes created even after this stack gets deleted. This option has no effect if the volume(s) already 
+        exists.
+      required: true
+      type: boolean
+      value: false
+    # --- common param: repull
+    - variable: repull_image
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      label: "Reload Images"
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      label: "Private Registry"
+      type: string
+      required: false
+    # --- common param: limit memory
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: |
+        Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower 
+        than 4.
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is 
+        lower than Limit Memory, the container will experience OOM error if it runs out of kernel memory, unless memory 
+        is unlimited, in which case it will wait  for memory released.
+      type: int
+      required: false
+    - variable: docker_memory_swap_limit
+      label: "Limit Swap Memory"
+      description: |
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to 
+        allow unlimited, or the same value as Limit Memory to disable swap.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits 
+        the container to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024

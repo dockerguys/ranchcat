@@ -529,7 +529,7 @@ services:
     # -----------------------------------
     # scaling and healthcheck
     # -----------------------------------
-    scale: ${cm_min_cluster_scale}
+    scale: ${cm_core_cluster_scale}
     health_check:
       response_timeout: 2000
       healthy_threshold: 2

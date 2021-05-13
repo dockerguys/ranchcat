@@ -623,7 +623,7 @@ volumes:
   # VOLUME
   # - holds certificates and cert keys
   # ************************************
-  {{.Values.datavolume_name}_certs:
+  {{.Values.datavolume_name}}_certs:
 {{-   if eq .Values.volume_exists "true" }}
     external: true
 {{-   end }}

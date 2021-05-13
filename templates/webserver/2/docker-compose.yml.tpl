@@ -72,8 +72,8 @@ services:
 {{- else }}
       NGINX_ENABLE_WEBAPI_PUBLIC_SERVICES: "no"
 {{- end }}
-{{- if eq .Values.nginx_enable_cdn_svc "yes" }}
-      NGINX_ENABLE_CDN_HOSTING: "true"
+{{- if eq .Values.nginx_enable_cdn_svc "true" }}
+      NGINX_ENABLE_CDN_HOSTING: "yes"
 {{- else }}
       NGINX_ENABLE_CDN_HOSTING: "no"
 {{- end }}
@@ -179,29 +179,31 @@ volumes:
     driver: local
 {{-   end }}
 
+{{-   if eq .Values.nginx_managed_conf "false" }}
   # ************************************
   # VOLUME
   # ************************************
   {{.Values.datavolume_name}}_conf:
-{{-   if eq .Values.volume_exists "true" }}
+{{-     if eq .Values.volume_exists "true" }}
     external: true
-{{-   end }}
-{{-   if eq .Values.storage_driver "rancher-nfs" }}
+{{-     end }}
+{{-     if eq .Values.storage_driver "rancher-nfs" }}
     driver: rancher-nfs
-{{-     if eq .Values.volume_exists "false" }}
-{{-       if (.Values.storage_driver_nfsopts_host) }}
+{{-       if eq .Values.volume_exists "false" }}
+{{-         if (.Values.storage_driver_nfsopts_host) }}
     driver_opts:
       host: ${storage_driver_nfsopts_host}
       exportBase: ${storage_driver_nfsopts_export}
-{{-         if eq .Values.storage_retain_volume "true" }}
+{{-           if eq .Values.storage_retain_volume "true" }}
       onRemove: retain
-{{-         else }}
+{{-           else }}
       onRemove: purge
+{{-           end }}
 {{-         end }}
 {{-       end }}
-{{-     end }}
-{{-   else }}
+{{-     else }}
     driver: local
+{{-     end }}
 {{-   end }}
 {{- end }}
 

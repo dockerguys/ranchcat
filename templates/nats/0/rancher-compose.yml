@@ -306,10 +306,10 @@ catalog:
       type: "string"
       required: false
     # --- host affinity
-    - variable: base_host_affinity_label
+    - variable: host_affinity_key_label
       description: |
-        The services will launch on one of the hosts that has this base label and _[acsprimary,acsreplica,cm] 
-        respectively.
+        The services will launch on one of the hosts that has this label key and .[acs.primary,acs.replica,cm], with  
+        the stack name as value.
       label: "Base Host Affinity Label"
       type: string
       required: false

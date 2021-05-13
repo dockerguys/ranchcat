@@ -75,8 +75,8 @@ services:
       io.rancher.container.hostname_override: container_name
       # https://rancher.com/docs/rancher/v1.6/en/cattle/scheduling
       io.rancher.scheduler.affinity:container_label_soft_ne: io.nats.role={{ .Stack.Name }}/acsprimary
-{{-   if (.Values.host_affinity_label) }}
-      io.rancher.scheduler.affinity:host_label: "${host_affinity_label}_acsprimary"
+{{-   if (.Values.host_affinity_key_label) }}
+      io.rancher.scheduler.affinity:host_label: "${host_affinity_key_label}.acs.primary={{ .Stack.Name }}"
 {{-   end }}
 {{-   if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
@@ -190,8 +190,8 @@ services:
       io.rancher.container.hostname_override: container_name
       # https://rancher.com/docs/rancher/v1.6/en/cattle/scheduling
       io.rancher.scheduler.affinity:container_label_soft_ne: io.nats.role={{ .Stack.Name }}/acsreplica
-{{-   if (.Values.host_affinity_label) }}
-      io.rancher.scheduler.affinity:host_label: "${host_affinity_label}_acsreplica"
+{{-   if (.Values.host_affinity_key_label) }}
+      io.rancher.scheduler.affinity:host_label: "${host_affinity_key_label}.acs.replica={{ .Stack.Name }}"
 {{-   end }}
 {{-   if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
@@ -314,8 +314,8 @@ services:
       io.rancher.container.hostname_override: container_name
       # https://rancher.com/docs/rancher/v1.6/en/cattle/scheduling
       io.rancher.scheduler.affinity:container_label_ne: io.nats.role={{ .Stack.Name }}/server
-{{-   if (.Values.host_affinity_label) }}
-      io.rancher.scheduler.affinity:host_label: "${host_affinity_label}_cm"
+{{-   if (.Values.host_affinity_key_label) }}
+      io.rancher.scheduler.affinity:host_label: "${host_affinity_key_label}.cm={{ .Stack.Name }}"
 {{-   end }}
 {{-   if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
@@ -474,8 +474,8 @@ services:
       io.rancher.container.hostname_override: container_name
       # https://rancher.com/docs/rancher/v1.6/en/cattle/scheduling
       io.rancher.scheduler.affinity:container_label_ne: io.nats.role={{ .Stack.Name }}/server
-{{-   if (.Values.host_affinity_label) }}
-      io.rancher.scheduler.affinity:host_label: "${host_affinity_label}_cm"
+{{-   if (.Values.host_affinity_key_label) }}
+      io.rancher.scheduler.affinity:host_label: "${host_affinity_key_label}.cm={{ .Stack.Name }}"
 {{-   end }}
 {{-   if eq .Values.repull_image "always" }}
       io.rancher.container.pull_image: always
@@ -563,6 +563,7 @@ volumes:
 {{- else }}
     driver: local
 {{- end }}
+
   # ************************************
   # VOLUME
   # - holds tokens used by nsc program
@@ -588,6 +589,7 @@ volumes:
 {{- else }}
     driver: local
 {{- end }}
+
 {{- if or (eq .Values.acs_enable "primary") (eq .Values.acs_enable "primary_and_replica") }}
   # ************************************
   # VOLUME
@@ -615,6 +617,7 @@ volumes:
     driver: local
 {{-   end }}
 {{- end }}
+
 {{- if or (ne .Values.cm_tls "no") (ne .Values.cm_cluster_tls "no") (eq .Values.cm_enable "cluster_and_gateway") }}
   # ************************************
   # VOLUME

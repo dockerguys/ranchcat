@@ -307,6 +307,11 @@ services:
       CM_TLS_DISABLE: "auto"
 {{-   end }}
     # -----------------------------------
+    # Expose ports
+    # -----------------------------------
+    ports: # expose client port on host directly
+      - 4222:4222/tcp
+    # -----------------------------------
     # Scheduler labels
     # -----------------------------------
     labels:
@@ -465,6 +470,14 @@ services:
 {{-     else }}
       CM_GATEWAY_DISABLE_AUTODISCOVER: "true"
 {{-     end }}
+{{-   end }}
+    # -----------------------------------
+    # Expose ports
+    # -----------------------------------
+    ports: # expose client and gateway ports on host directly
+      - 4222:4222/tcp
+{{-   if eq .Values.cm_enable "cluster_and_gateway" }}
+      - 5222:5222/tcp
 {{-   end }}
     # -----------------------------------
     # Scheduler labels

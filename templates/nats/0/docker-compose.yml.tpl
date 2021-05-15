@@ -268,6 +268,7 @@ services:
     # ENV
     # -----------------------------------
     environment:
+      ACS_DISABLE: "yes"
       CM_DISABLE: "no"
       ACS_EXTERNAL_FQDN: "${acs_external_fqdn}"
       CM_SERVER_NAME: "cmnode1"
@@ -400,6 +401,7 @@ services:
     # ENV
     # -----------------------------------
     environment:
+      ACS_DISABLE: "yes"
       CM_DISABLE: "no"
       ACS_EXTERNAL_FQDN: "${acs_external_fqdn}"
       CM_SERVER_NAME: ""

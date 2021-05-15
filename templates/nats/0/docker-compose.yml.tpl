@@ -96,6 +96,9 @@ services:
       - ${datavolume_name}_ncred:/data/ncred
       - ${datavolume_name}_nsc:/data/nsc
 {{-   end }}
+{{-   if eq .Values.acs_mount_nsckeys "true" }}
+      - ${datavolume_name}_nsckeys:/data/nsckeys
+{{-   end }}
     # -----------------------------------
     # LIMIT CPU
     # - can't use `cpus` in rancher 1.6, hacking it by using the older `cpu-quota`
@@ -126,7 +129,7 @@ services:
       initializing_timeout: 300000
       interval: 5000
       strategy: recreate
-      request_line: GET "/healthz" "HTTP/1.1"
+      request_line: GET "/healthz" "HTTP/1.0"
       reinitializing_timeout: 120000
 {{- end }}
 {{- if or (eq .Values.acs_enable "replica") (eq .Values.acs_enable "primary_and_replica") }}
@@ -235,7 +238,7 @@ services:
       initializing_timeout: 300000
       interval: 5000
       strategy: recreate
-      request_line: GET "/healthz" "HTTP/1.1"
+      request_line: GET "/healthz" "HTTP/1.0"
       reinitializing_timeout: 120000
 {{- end }}
 {{- if eq .Values.cm_enable "standalone" }}
@@ -538,7 +541,7 @@ services:
       initializing_timeout: 300000
       interval: 5000
       strategy: recreate
-      request_line: GET "/mon" "HTTP/1.1"
+      request_line: GET "/mon" "HTTP/1.0"
       reinitializing_timeout: 120000
 {{- end }}
 
@@ -601,6 +604,34 @@ volumes:
 {{-   end }}
 {{- else }}
     driver: local
+{{- end }}
+
+{{- if eq .Values.acs_mount_nsckeys "true" }}
+  # ************************************
+  # VOLUME
+  # - holds credentials used by nsc program
+  # ************************************
+  {{.Values.datavolume_name}}_nsckeys:
+{{-   if eq .Values.volume_exists "true" }}
+    external: true
+{{-   end }}
+{{-   if eq .Values.storage_driver "rancher-nfs" }}
+    driver: rancher-nfs
+{{-     if eq .Values.volume_exists "false" }}
+{{-       if (.Values.storage_driver_nfsopts_host) }}
+    driver_opts:
+      host: ${storage_driver_nfsopts_host}
+      exportBase: ${storage_driver_nfsopts_export}
+{{-         if eq .Values.storage_retain_volume "true" }}
+      onRemove: retain
+{{-         else }}
+      onRemove: purge
+{{-         end }}
+{{-       end }}
+{{-     end }}
+{{-   else }}
+    driver: local
+{{-   end }}
 {{- end }}
 
 {{- if or (eq .Values.acs_enable "primary") (eq .Values.acs_enable "primary_and_replica") }}

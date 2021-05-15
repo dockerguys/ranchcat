@@ -445,7 +445,7 @@ services:
       CM_CLUSTER_NAME: "${cm_cluster_name}"
       CM_CLUSTER_CONNECT_RETRIES: "${cm_cluster_connect_retries}"
       CM_CLUSTER_SECRET: "${cm_cluster_secret}"
-      CM_CLUSTER_PEER_MIN: "1"
+      CM_CLUSTER_PEER_MIN: 1
       CM_CLUSTER_PEER_MAX: "${cm_min_cluster_scale}"
       CM_CLUSTER_PEER_NAME_PATTERN: "{{ .Stack.Name }}-cmnode-%d"
       CM_CLUSTER_ROUTES: ""
@@ -532,7 +532,7 @@ services:
     # -----------------------------------
     # scaling and healthcheck
     # -----------------------------------
-    scale: ${cm_core_cluster_scale}
+    scale: ${cm_min_cluster_scale}
     health_check:
       response_timeout: 2000
       healthy_threshold: 2

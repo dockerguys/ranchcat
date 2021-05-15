@@ -465,6 +465,7 @@ services:
 {{-   end }}
 {{-   if eq .Values.cm_enable "cluster_and_gateway" }}
       CM_ENABLE_GATEWAY: "yes"
+      CM_GATEWAY_NAME: "${cm_cluster_name}"
       CM_GATEWAY_NAT_LISTEN: ""
       CM_GATEWAY_TLS_CN: "${cm_gateway_tls_cn}"
       CM_GATEWAY_CONNECT_RETRIES: "${cm_gateway_connect_retries}"

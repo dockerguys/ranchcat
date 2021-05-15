@@ -337,7 +337,6 @@ services:
     volumes:
       - /data/cmserver
       - ${datavolume_name}_ncred:/data/ncred:ro
-      - ${datavolume_name}_nsc:/data/nsc:ro
 {{-   if ne .Values.cm_tls "no" }}
       - ${datavolume_name}_certs:/etc/certkeys:ro
 {{-   end }}
@@ -505,7 +504,6 @@ services:
     volumes:
       - /data/cmserver
       - ${datavolume_name}_ncred:/data/ncred:ro
-      - ${datavolume_name}_nsc:/data/nsc:ro
 {{-   if ne .Values.cm_tls "no" }}
       - ${datavolume_name}_certs:/etc/certkeys:ro
 {{-   else if or (ne .Values.cm_cluster_tls "no") (eq .Values.cm_enable "cluster_and_gateway") }}

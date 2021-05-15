@@ -218,11 +218,11 @@ services:
       GITEA_INSTALL_SKIP_DBINIT: "no"
 {{- end }}
       # logging
-	GITEA_LOG_LEVEL: "${gitea_loglevel}"
+	    GITEA_LOG_LEVEL: "${gitea_loglevel}"
 {{- if eq .Values.gitea_runmode "prod" }}
-	GITEA_LOG_STACKTRACE: "Error"
+	    GITEA_LOG_STACKTRACE: "Error"
 {{- else }}
-	GITEA_LOG_STACKTRACE: "Warn"
+	    GITEA_LOG_STACKTRACE: "Warn"
 {{- end }}
 {{- if or (ne .Values.db_vendor "sqlite3") (eq .Values.lfs_backend "s3compat") }}
     # -----------------------------------

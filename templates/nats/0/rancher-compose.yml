@@ -254,7 +254,7 @@ catalog:
       type: "int"
       required: true
       default: 0
-    - variable: cm_core_cluster_scale
+    - variable: cm_min_cluster_scale
       description: "Number of seed message channel servers in the cluster. Each server must run on a distinct host."
       label: "Core Cluster Scale"
       type: "int"

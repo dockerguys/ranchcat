@@ -310,6 +310,15 @@ services:
 {{-   else }}
       CM_TLS_DISABLE: "auto"
 {{-   end }}
+{{-   if eq .Values.cm_enable_websocket "true" }}
+      # websocket
+      CM_ENABLE_WEBSOCKET: "yes"
+      CM_WEBSOCKET_COMPRESSION: "${cm_websocket_compression}"
+      CM_WEBSOCKET_HANDSHAKE_TIMEOUT: "${cm_websocket_handshake_timeout}s"
+      CM_WEBSOCKET_JWT_COOKIE: "${cm_websocket_jwt_cookie}"
+{{-   else }}
+      CM_ENABLE_WEBSOCKET: "no"
+{{-   end }}
     # -----------------------------------
     # Expose ports
     # -----------------------------------
@@ -475,6 +484,15 @@ services:
 {{-     else }}
       CM_GATEWAY_DISABLE_AUTODISCOVER: "true"
 {{-     end }}
+{{-   end }}
+{{-   if eq .Values.cm_enable_websocket "true" }}
+      # websocket
+      CM_ENABLE_WEBSOCKET: "yes"
+      CM_WEBSOCKET_COMPRESSION: "${cm_websocket_compression}"
+      CM_WEBSOCKET_HANDSHAKE_TIMEOUT: "${cm_websocket_handshake_timeout}s"
+      CM_WEBSOCKET_JWT_COOKIE: "${cm_websocket_jwt_cookie}"
+{{-   else }}
+      CM_ENABLE_WEBSOCKET: "no"
 {{-   end }}
     # -----------------------------------
     # Expose ports

@@ -171,6 +171,30 @@ catalog:
       type: "int"
       required: true
       default: 120
+    - variable: cm_enable_websocket
+      description: "Enable websocket protocol. This requires TLS to be enabled and not a custom CA."
+      label: "Enable Websocket"
+      type: "boolean"
+      required: true
+      default: false
+    - variable: cm_websocket_compression
+      description: "Enable compression on websocket data. The client library must support this."
+      label: "Websocket Compression"
+      type: "boolean"
+      required: true
+      default: false
+    - variable: cm_websocket_handshake_timeout
+      description: "Handshake timeout for websocket connections. In seconds."
+      label: "Websocket Handshake Timeout"
+      type: "int"
+      required: true
+      default: 2
+    - variable: cm_websocket_jwt_cookie
+      description: "Customize the websocket cookie name that stores JWT credentials."
+      label: "Websocket Cookie Name"
+      type: "string"
+      required: true
+      default: "cm_jwt_token"
     - variable: cm_disable_sublist_cache
       description: |
         Disable message channel servers from caching subscription lists. Only use if topics change too often for 

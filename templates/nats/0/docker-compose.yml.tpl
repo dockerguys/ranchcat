@@ -270,7 +270,11 @@ services:
     environment:
       ACS_DISABLE: "yes"
       CM_DISABLE: "no"
+{{-   if or (eq .Values.acs_enable "replica") (eq .Values.acs_enable "primary_and_replica") }}
+      ACS_EXTERNAL_FQDN: "http://acsreplica:9090"
+{{-   else }}
       ACS_EXTERNAL_FQDN: "${acs_external_fqdn}"
+{{-   end }}
       CM_SERVER_NAME: "cmnode1"
       CM_SYSTEM_ACCOUNT_ID: ""
       CM_DEFAULT_REGION_JWT: "${default_region_jwt}"
@@ -412,7 +416,11 @@ services:
     environment:
       ACS_DISABLE: "yes"
       CM_DISABLE: "no"
+{{-   if or (eq .Values.acs_enable "replica") (eq .Values.acs_enable "primary_and_replica") }}
+      ACS_EXTERNAL_FQDN: "http://acsreplica:9090"
+{{-   else }}
       ACS_EXTERNAL_FQDN: "${acs_external_fqdn}"
+{{-   end }}
       CM_SERVER_NAME: ""
       CM_SYSTEM_ACCOUNT_ID: ""
       CM_DEFAULT_REGION_JWT: "${default_region_jwt}" 

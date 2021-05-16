@@ -301,17 +301,17 @@ catalog:
       label: "Cluster TLS CN"
       type: "string"
       required: false
+    - variable: cm_cluster_name
+      description: "Name for this cluster. Required if using cluster or hypercluster."
+      label: "Cluster Name"
+      type: "string"
+      required: false
     - variable: cm_cluster_secret
       description: "Secret for in-cluster traffic. Only set if not using Cluster TLS Encryption."
       label: "Cluster Secret"
       type: "password"
       required: true
       default: "Secret0"
-    - variable: cm_gateway_name
-      description: "Name for this cluster in the hypercluster. Can ignore if not using gateway."
-      label: "Cluster Name"
-      type: "string"
-      required: false
     - variable: cm_gateway_connect_retries
       description: |
         Number of retries to attempt before giving up auto-discovered peers in a hypercluster. 0 means never give up.

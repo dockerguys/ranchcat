@@ -1,0 +1,844 @@
+version: '2'
+catalog:
+  name: "Gitea"
+  minimum_rancher_version: v0.51.0
+  version: "v1.14.2"
+  description: "A lightweight GitHub clone"
+  maintainer: "dockerguys <dockerguys@lizoc.com>"
+  questions:
+    - variable: gitea_image
+      label: "Gitea Image"
+      description: "Name of Gitea image"
+      type: enum
+      options:
+        - "dockerguys/gitea:1.15"
+        - "dockerguys/gitea:1.15.4"
+      required: true
+      default: "dockerguys/gitea:1.15"
+    - variable: gitea_image_custom
+      label: "Custom Gitea image"
+      description: "Use a custom Gitea image. This will override value of Gitea Image."
+      type: string
+      required: false
+    # administrative
+    - variable: admin_name
+      label: "Default Administrator"
+      description: "The default administrative user account. This account will always have administrative privileges."
+      type: string
+      required: true
+      default: "supergit"
+    - variable: admin_password
+      label: "Default Administrator Password"
+      description: "The default administrator will be initially created with this password."
+      type: password
+      required: true
+      default: "ChangeMeChangeMe"
+    - variable: gitea_secret
+      label: "Gitea Secret Token"
+      description: "Token for encrypting data ('#' and ';' is not allowed). Change this to keep user data safe!"
+      required: true
+      type: password
+      default: "ChangeMeChangeMe"
+    - variable: gitea_runmode
+      label: "Run Mode"
+      description: "Run in developer, production or test debug mode."
+      type: enum
+      options: 
+        - dev
+        - prod
+        - test
+      required: true
+      default: "prod"
+    - variable: gitea_federation
+      label: "Enable Federation"
+      description: "Enable federation feature."
+      type: boolean
+      required: true
+      default: false
+    - variable: disable_stars
+      label: "Disable Stars"
+      description: "Disable users from starring other repos."
+      type: boolean
+      required: true
+      default: false
+    - variable: enable_adopt_repos
+      label: "Enable Repo Adoption"
+      description: "Enable users to adopt orphan repos."
+      type: boolean
+      required: true
+      default: false
+    - variable: disable_create_org
+      label: "Disable Organization Creation"
+      description: "Users will not be able to create organizations themselves."
+      type: boolean
+      required: true
+      default: false
+    - variable: disable_repo_features
+      label: "Disable Repo Features"
+      description: "Comma separated list of features to disable."
+      type: string
+      required: true
+      default: ""
+    - variable: default_license
+      label: "Default License"
+      description: "Comma separated list of default licenses."
+      required: true
+      type: string
+      default: "MIT License,Apache License 2.0"
+    - variable: issue_lock_reasons
+      label: "Issue Lock Reasons"
+      description: "Comma separated list of tags to choose for locking an issue."
+      type: string
+      required: true
+      default: "Too heated,Off-topic,Resolved,Spam"
+    - variable: gitea_appid
+      label: "Gitea Branding ID"
+      description: "Rebranding application ID for Gitea. Use lower-case letters. This value is used to prefix cookie names."
+      type: string
+      required: true
+      default: "gitea"
+    - variable: max_repos
+      label: "Max Repos"
+      description: "Maximum number of repos per user."
+      type: int
+      required: true
+      default: 12288
+    - variable: gitea_install_lock
+      label: "Disable Setup Wizard"
+      description: "Disables the initial configuration wizard page. First person to sign up is admin."
+      type: boolean
+      required: true
+      default: true
+    - variable: gitea_graceful_stop_timeout
+      label: "Server Stop Timeout"
+      description: "Timeout for graceful server stop. In seconds."
+      type: int
+      required: true
+      default: 60
+    - variable: skip_fsperm_check
+      label: "Skip Filesystem Check"
+      description: "Skip checking filesystem permissions on startup. Do this if you have lots of files."
+      type: boolean
+      required: true
+      default: false
+    # html rendering
+    - variable: gitea_appname
+      label: "Gitea Site Name"
+      description: "Website name to display as title"
+      required: true
+      type: string
+      default: "Gitea: Git with a cup of tea"
+    - variable: gitea_description
+      label: "Gitea Slogan"
+      description: "Slogon to as description"
+      type: string
+      required: true
+      default: "Gitea: Git with a cup of tea"
+    - variable: render_file_size
+      label: "Render File Size"
+      description: "Maximum file size that should be showed on website."
+      type: int
+      required: true
+      default: 8388608
+    - variable: render_csv_size
+      label: "Render CSV Size"
+      description: "Maximum CSV file size that should be showed on website."
+      type: int
+      required: true
+      default: 524288
+    - variable: gitea_reaction_emojis
+      label: "Reaction Emojis"
+      description: "All available reactions users can choose on issues/prs and comments."
+      type: string
+      required: true
+      default: "+1,-1,laugh,hooray,confused,heart,rocket,eyes"
+    - variable: gitea_custom_emojis
+      label: "Custom Emojis"
+      description: "Enable addition emojis out of utf-8 standard."
+      type: string
+      required: true
+      default: "gitea"
+    - variable: gitea_theme_color
+      label: "Theme Color"
+      description: "Website theme color."
+      type: string
+      required: true
+      default: "#6cc644"
+    - variable: www_keywords
+      label: "Webpage Keywords"
+      description: "Set content of keywords tag on website."
+      type: string
+      required: true
+      default: "git,code,repository,repo"
+    - variable: www_show_branding
+      label: "Show Webpage Branding"
+      description: "Controls template rendering. Shows website branding."
+      type: boolean
+      required: true
+      default: true
+    - variable: www_show_version
+      label: "Show Webpage Version"
+      description: "Controls template rendering. Shows website version."
+      type: boolean
+      required: true
+      default: true
+    - variable: www_show_render_time
+      label: "Show Webpage Render Time"
+      description: "Controls template rendering. Shows time taken to render template."
+      type: boolean
+      required: true
+      default: false
+    # login and register
+    - variable: view_require_signin
+      label: "Sign In to View"
+      description: "Disable anonymous browsing of repos."
+      type: boolean
+      required: true
+      default: false
+    - variable: disable_registration
+      label: "Disable Registration"
+      description: "Users cannot register on their own. Enabling this automatically disables OpenID registration too."
+      type: boolean
+      required: true
+      default: false
+    - variable: disable_local_registration
+      label: "Disable Local Registration"
+      description: "User can only register using OpenID. Ignore this if you have disabled registration."
+      type: boolean
+      required: true
+      default: false
+    - variable: temp_user_period
+      label: "Delete Temp User Comments"
+      description: "A user deleted within this period will also have its comments removed. In minutes. Leave 0 for no delete."
+      type: int
+      required: false
+      default: 0
+    - variable: cookie_expire_days
+      label: "Cookie Expire Days"
+      description: "Number of days before cookie expires. User will need to login again."
+      type: int
+      required: true
+      default: 7
+    - variable: min_password_length
+      label: "Password Length"
+      description: "Minimum length of user password."
+      type: int
+      required: true
+      default: 6
+    # api
+    - variable: enable_swagger
+      label: "Enable Swagger"
+      description: "Enable the swagger API documentation page."
+      type: boolean
+      required: true
+      default: true
+    - variable: api_token_hash_cache
+      label: "API Token Cache"
+      description: "Number of API tokens to cache."
+      type: int
+      required: true
+      default: 20
+    # explore feature
+    - variable: explore_feature
+      label: "Explore Feature"
+      description: "Enable the explore repos and activities feature."
+      type: enum
+      options:
+        - Enable
+        - Disable
+        - MustLogin
+      required: true
+      default: "MustLogin"
+    - variable: explore_paginate
+      label: "Explore Paginate Count"
+      description: "Number of items in a single explore page."
+      type: int
+      required: true
+      default: 20
+    # http
+    - variable: gitea_domain
+      label: "External Domain"
+      description: "Domain to access Gitea. The SSH domain will also be set to this FQDN."
+      type: string
+      required: true
+      default: "code.lizoc.com"
+    - variable: gitea_public_url
+      label: "Public URL"
+      description: "Public URL of this service."
+      type: string
+      required: true
+      default: "http://code.lizoc.com"
+    - variable: reverse_proxy_limit
+      label: "Reverse Proxy Levels"
+      description: "Number of reverse proxies expected."
+      type: int
+      required: true
+      default: 1
+    - variable: reverse_proxy_cidr
+      label: "Reverse Proxy CIDR"
+      description: "CIDRs of reverse proxy."
+      type: string
+      required: true
+      default: "*"
+    - variable: cors_acao
+      label: "CORS access header"
+      description: "Set Access-Control-Allow-Origin header. Leave blank to disallow (recommended)."
+      type: string
+      required: true
+      default: ""
+    - variable: enable_http_gzip
+      label: "Enable HTTP GZIP"
+      description: "Set GZIP compression of HTTP content."
+      type: boolean
+      required: true
+      default: false
+    # metrics
+    - variable: metrics_token
+      label: "Metrics Token"
+      description: "Secret token to get server metrics. Metrics run at /metrics endpoint."
+      type: password
+      required: true
+      default: "ChangeMeChangeMe"
+    - variable: enable_pprof
+      label: "Enable Profiling Metrics"
+      description: "Enable CPU/MEM profiling metrics at :6060"
+      type: boolean
+      required: true
+      default: false
+    # pr
+    - variable: pr_max_queue
+      label: "PR Queue Length"
+      description: "Sets the max PR queue length."
+      type: int
+      required: true
+      default: 1000
+    # email
+    - variable: email_host
+      label: "Email Host"
+      description: "SMTP email server host. Leave blank to disable"
+      type: string
+      required: false
+    - variable: email_subject_prefix
+      label: "Email Subject Prefix"
+      description: "Text to prefix all emails sent."
+      type: string
+      required: true
+      default: ""
+    - variable: email_from
+      label: "Email Sender"
+      description: "Email sender address."
+      type: string
+      required: true
+      default: ""
+    - variable: email_account_user
+      label: "Email Account User"
+      description: "User credential to authenticate with SMTP server."
+      type: string
+      required: true
+      default: ""
+    - variable: email_account_password
+      label: "Email Account Password"
+      description: "User password to authenticate with SMTP server."
+      type: password
+      required: true
+      default: ""
+    # openid
+    - variable: oauth_whitelist
+      label: "Single SignOn Whitelist"
+      description: "List of OpenID domains for federated sign in and registration. Separate by space. Supports posix regular expression."
+      type: string
+      required: false
+      default: ""
+    - variable: openid_domain
+      label: "OpenID Domain"
+      description: "Override the OpenID domain. Leave blank to ignore. Works with OpenID IP."
+      type: string
+      required: false
+      default: ""
+    - variable: openid_ip
+      label: "OpenID IP"
+      description: "Override the OpenID domain. Separate IPs by space."
+      type: string
+      required: false
+      default: ""
+    - variable: external_user_sync_interval
+      label: "External User Sync Interval"
+      description: "Number of hours between each synchronization of user database with external SSO."
+      type: int
+      required: false
+      default: 24
+    # mirror and migrate
+    - variable: mirror_feature
+      label: "Enable Mirror Feature"
+      description: "Enable the repo mirror feature."
+      type: enum
+      options:
+        - Enable
+        - Disable
+        - NoPull
+        - NoPush
+      required: true
+      default: "Enable"
+    - variable: mirror_max_queue
+      label: "Mirror Queue Length"
+      description: "Sets the max mirror queue length."
+      type: int
+      required: true
+      default: 1000
+    - variable: mirror_min_interval
+      label: "Mirror Min Interval"
+      description: "Min mirror interval in minutes."
+      type: int
+      required: true
+      default: 10
+    - variable: migrate_feature
+      label: "Enable Migration Feature"
+      description: "Enable the repo migration feature."
+      type: enum
+      options:
+        - Enable
+        - Disable
+        - NoLAN
+      required: true
+      default: "NoLAN"
+    - variable: migrate_max_attempts
+      label: "Max Migrate Attempts"
+      description: "How many times should server try a migrate task?"
+      type: int
+      required: true
+      default: 3
+    - variable: migrate_whitelist
+      label: "Migrate Whitelist"
+      description: "Comma separated list of domains server can migrate repos from."
+      type: string
+      required: false
+    - variable: migrate_blacklist
+      label: "Migrate Blacklist"
+      description: "Comma separated list of domains server should never migrate repos from."
+      type: string
+      required: false
+    # attachments and uploads
+    - variable: max_upload_files
+      label: "Max Upload Count"
+      description: "How many files can a user upload at once? 0 means disable upload feature."
+      type: int
+      required: true
+      default: 5
+    - variable: max_upload_size
+      label: "Max Upload Size"
+      description: "Max size per file upload allowed. In megabytes."
+      type: int
+      required: true
+      default: 3
+    - variable: upload_mimetypes
+      label: "Allow Upload Mimetypes"
+      description: "What files can a user upload? Use space separated mimetypes."
+      type: string
+      required: true
+      default: "*/*"
+    # LFS
+    - variable: lfs_enable
+      label: "Enable LFS"
+      description: "Enable Git large file system."
+      type: boolean
+      required: true
+      default: true
+    - variable: lfs_max_size
+      label: "Max LFS Size"
+      description: "Maximum LFS file system."
+      type: int
+      required: true
+      default: 0
+    - variable: lfs_secret
+      label: "LFS Secret Token"
+      description: "Git LFS authentication secret ('#' and ';' is not allowed). Change this to something unique!"
+      type: password
+      required: true
+      default: "ChangeMeChangeMe2"
+    # storage backend
+    - variable: storage_backend
+      description: "Storage backend for LFS, attachments and avatars. The default is local, which stores to the data volume."
+      label: "Storage Backend"
+      type: enum
+      options:
+        - local
+        - s3
+        - s3compat
+      required: true
+      default: "local"
+    - variable: s3_service
+      description: |
+        External S3 service to use. You can reference the service as "s3" by setting this. Ignore this unless you are using s3compat.
+      label: "S3 Service"
+      type: service
+      required: false
+      default: ""
+    - variable: s3_enable_ssl
+      label: "S3 Use SSL"
+      description: "Set to true if S3 endpoint endpoint is using SSL. Ignore this unless you are using s3."
+      type: boolean
+      required: true
+      default: false
+    - variable: s3_serve_direct
+      label: "S3 Serve Direct"
+      description: "Enable redirect to authenticated URLs to serve files directly."
+      type: boolean
+      required: true
+      default: false
+    - variable: s3_endpoint
+      label: "S3 Endpoint"
+      description: "FQDN to S3 endpoint. Ignore this unless you are using s3."
+      type: string
+      required: false
+    - variable: s3_userid
+      label: "S3 User ID"
+      description: "User ID to authenticate to S3 endpoint. Ignore this unless you are using s3 or s3compat."
+      required: false
+      type: string
+    - variable: s3_secret
+      label: "S3 User Secret"
+      description: "User secret to authenticate to S3 endpoint. Ignore this unless you are using s3 or s3compat."
+      required: false
+      type: password
+    - variable: s3_bucket
+      label: "S3 Bucket"
+      description: "S3 bucket name. Ignore this unless you are using s3 or s3compat."
+      type: string
+      required: true
+      default: "gitea"
+    - variable: s3_region
+      label: "S3 Region"
+      description: "S3 region name. Ignore this unless you are using s3 or s3compat."
+      type: string
+      required: true
+      default: "us-east-1"
+    # database
+    - variable: db_vendor
+      label: "DB Vendor"
+      description: "Database backend. The default is sqlite3, which should not be used for production purposes."
+      type: "enum"
+      options:
+        - sqlite3
+        - mysql
+        - postgres
+        - mssql
+      required: true
+      default: "sqlite3"
+    - variable: db_service
+      label: "DB Service"
+      description: |
+        External DB service to use. You can reference the service as "db" by setting this. Ignore this if using sqlite3.
+      type: service
+      required: false
+      default: ""
+    - variable: db_name
+      description: "Name of database. Ignore this if using sqlite3."
+      label: "Database Name"
+      type: string
+      required: true
+      default: "gitea"
+    - variable: db_username
+      label: "Database User Name"
+      description: "Database user with full access to the database. Ignore this if using sqlite3."
+      type: string
+      required: true
+      default: "gitapp"
+    - variable: db_password
+      label: "Database Password"
+      description: |
+        Password for database user with full access to the database ("#" and ";" not allowed). Ignore this if using sqlite3.
+      type: password
+      required: true
+      default: "DatabasePassword"
+    - variable: db_schema
+      label: "Database Schema"
+      description: "Database schema. Ignore this if not using PGSQL."
+      type: string
+      required: false
+    - variable: db_max_idle_conn
+      label: "Database Max Idle Conn"
+      description: "Database maximum idle connections. Refer to doc for details."
+      type: int
+      required: true
+      default: 2
+    - variable: db_max_open_conn
+      label: "Database Max Open Conn"
+      description: "Database maximum open connections. Refer to doc for details."
+      type: int
+      required: true
+      default: 0
+    - variable: skip_db_init
+      label: "Skip Database Setup"
+      description: |
+        Force the setup procedure to skip database initialization. Use this if you are recovering from a previous instance and the database is already provisioned.
+      type: boolean
+      required: true
+      default: false
+    - variable: db_sqlite_timeout
+      description: "SQLite database timeout in seconds. Ignore this if not using sqlite."
+      label: "SQLite Timeout"
+      type: int
+      required: true
+      default: 500
+    - variable: db_iterate_buffer
+      label: "Database Iterate Buffer"
+      description: "Database iterate buffer size."
+      type: int
+      required: true
+      default: 50
+    # git settings
+    - variable: git_lo_threshold
+      label: "Git Large Object Threshold"
+      description: "Threshold size in bytes to be considered large object by Git. This setting works independently from LFS."
+      type: int
+      required: true
+      default: 1048576
+    - variable: git_timeout_default
+      label: "Default Git Timeout"
+      description: "Default timeout for all Git operations. In seconds."
+      type: int
+      required: true
+      default: 360
+    - variable: git_timeout_migrate
+      label: "Git Migrate Timeout"
+      description: "Default timeout for Git migrate operations. In seconds."
+      type: int
+      required: true
+      default: 600
+    - variable: git_timeout_mirror
+      label: "Git Mirror Timeout"
+      description: "Default timeout for Git mirror operations. In seconds."
+      type: int
+      required: true
+      default: 300
+    - variable: git_timeout_clone
+      label: "Git Clone Timeout"
+      description: "Default timeout for Git clone operations. In seconds."
+      type: int
+      required: true
+      default: 300
+    - variable: git_timeout_pull
+      label: "Git Pull Timeout"
+      description: "Default timeout for Git pull operations. In seconds."
+      type: int
+      required: true
+      default: 300
+    - variable: git_timeout_gc
+      label: "Git GC Timeout"
+      description: "Default timeout for Git garbage collection operations. In seconds."
+      type: int
+      required: true
+      default: 60
+    # caching
+    - variable: enable_redis
+      label: "Enable Redis"
+      description: "Use Redis for optimized in-memory caching, session storage and issue indexing."
+      type: boolean
+      required: true
+      default: true
+    - variable: "redis_image"
+      label: "Redis Image"
+      description: |
+        Redis is used for caching, session engine storage, and issue indexing. Ignore this option if "Enable Redis" is set to false.
+      type: enum
+      options:
+        - dockerguys/redis:5.0
+        - dockerguys/redis:6.0
+      required: true
+      default: "dockerguys/redis:6.0"
+    - variable: redis_image_custom
+      label: "Custom Redis image"
+      description: "Use a custom Redis image. This will override value of Redis Image."
+      type: string
+      required: false
+    - variable: redis_cache_size_mb
+      label: "Redis Cache Size"
+      description: |
+        Limit the amount of memory Redis can use (in mb). Ignore if "Enable Redis" is set to false.
+      type: int
+      required: true
+      default: 256
+    # search
+    - variable: indexer_max_file_size
+      label: "Indexer Max File Size"
+      description: "Sets the max file size that the indexer will try to analyze."
+      type: int
+      required: true
+      default: 1048576
+    - variable: enable_search_code
+      label: "Enable Code Search"
+      description: "Enable searching through code. Can take up a lot of space."
+      type: boolean
+      required: true
+      default: false
+    - variable: code_search_include
+      label: "Search Code Include Glob"
+      description: |
+        Glob patterns of files to index for search (e.g., **.txt). Separate using comma. Leave empty to search all.
+      type: string
+      required: false
+    - variable: code_search_exclude
+      label: "Search Code Exclude Glob"
+      description: |
+        Glob patterns of files to NOT index for search (e.g., **.txt). Separate using comma.
+      type: string
+      required: false
+    - variable: elasticsearch_service
+      label: "ElasticSearch Service"
+      description: "External ElasticSearch service to use. Ignore this to use embedded search engine."
+      type: service
+      required: false
+      default: ""
+    - variable: elasticsearch_user
+      label: "ElasticSearch User Credential"
+      description: "ElasticSearch user account in the form <user:password>. Ignore this if not using ElasticSearch."
+      type: string
+      required: true
+      default: ""
+    # logging
+    - variable: gitea_loglevel
+      label: "Log Level"
+      description: "Controls how verbose Gitea generate logs."
+      type: enum
+      options: # List of options if using type of `enum`
+        - Trace
+        - Debug
+        - Info
+        - Warn
+        - Error
+        - Critical
+      required: true
+      default: "Warn"
+    - variable: gitea_access_log
+      label: "Enable Access Log"
+      description: "Log HTTP access calls."
+      type: boolean
+      required: true
+      default: false
+    # --- common param: host affinity
+    - variable: host_affinity_label
+      label: "Host Affinity Label"
+      description: "The stack will launch on one of the hosts that has this label."
+      type: string
+      required: false
+    # --- common param: storage; subst vols_required = `volume ("Volume Name"_data)`
+    - variable: datavolume_name
+      label: "Volume Base Name"
+      description: |
+        To store the application data in volume(s), enter the base volume name that should be used. One or more volumes will be created with this value as the prefix. 
+        By default, all volumes created will be host scoped named. See "Storage Driver" for other storage options.
+      type: string
+      required: false
+    - variable: volume_exists
+      label: "Volume Exists"
+      description: |
+        Check this if you have already created the volume ("Volume Name"_data). Remember to set the "Volume Storage Driver" too. Do not fill 
+        in "NFS Driver Host" or "NFS Driver Volume Path".
+      type: boolean
+      required: true
+      default: false
+    #- variable: storage_size
+    #  label: "Volume Storage Size"
+    #  description: "Limit the size of the log volume (in megabytes). Defaults to unlimited."
+    #  required: false
+    #  type: int
+    - variable: storage_driver
+      label: "Volume Storage Driver"
+      description: |
+        To use a stack scoped volume backed by a persistent storage service, enter the name
+        of an existing storage driver (e.g. "rancher-nfs"). This also requires "Volume Name" to be set.
+      type: enum
+      options:
+        - local
+        - rancher-nfs
+      required: true
+      default: "local"
+    - variable: storage_driver_nfsopts_host
+      label: "NFS Driver Host"
+      description: |
+        Specify a NFS hostname instead of the default NFS server. Only fill in this option if "Volume Storage Driver" is 
+        set to "rancher-nfs", and the volume does not already exist.
+      type: string
+      required: false
+    - variable: storage_driver_nfsopts_export
+      label: "NFS Driver Volume Path"
+      description: |
+        Specify the exported base path on the NFS server (e.g. "/storage/nfsvol"). The full directory(ies) created 
+        on the NFS server will be this path and the volume name(s). Do not append the "/" at the end. This exported base path 
+        must already exist on the NFS server. Only fill in this option if "Volume Storage Driver" is set to "rancher-nfs", and 
+        the volume does not already exist.
+      type: string
+      required: false
+    - variable: storage_retain_volume
+      label: "Retain NFS Volume"
+      description: Keep the volumes created even after this stack gets deleted. This option has no effect if the volume(s) already exists.
+      type: boolean
+      required: true
+      value: false
+    # --- common param: repull
+    - variable: repull_image
+      label: "Reload Images"
+      description: "Pull from registry source even if the host already have a local image with the same tag."
+      type: enum
+      options:
+        - always
+        - never
+      required: true
+      default: "never"
+    # --- common param: custom registry
+    - variable: docker_registry_name
+      label: "Private Registry"
+      description: "Pull from private registry. Leave blank to pull from public Docker Hub."
+      type: string
+      required: false
+    # --- common param: limit memory
+    - variable: docker_memory_limit
+      label: "Limit Memory"
+      description: "Maxiumum memory that each container can use (in megabytes). Defaults to unlimited. Do not specify a value lower than 4."
+      type: int
+      required: false
+    - variable: docker_memory_kernel_limit
+      label: "Limit Kernel Memory"
+      description: |
+        Maxiumum kernel memory that each container can use (in megabytes). Defaults to unlimited. If this value is lower than Limit Memory, 
+        the container will experience OOM error if it runs out of kernel memory, unless memory is unlimited, in which case it will wait 
+        for memory released.
+      type: int
+      required: false
+    - variable: docker_memory_swap_limit
+      label: "Limit Swap Memory"
+      description: |
+        Maxiumum swap that each container can use (in megabytes). Defaults to twice of memory limit. Set to "-1" to allow unlimited, 
+        or the same value as Limit Memory to disable swap.
+      type: int
+      required: false
+    # --- common param: limit cpu
+    - variable: docker_cpu_quota_limit
+      label: "Limit CPUs"
+      description: |
+        Limit CPU resources (in multiples of 100,000 microseconds). Defaults to unlimited. For example, "150000" limits the container 
+        to 1.5 CPUs.
+      type: int
+      required: false
+    - variable: docker_cpu_weight_limit
+      label: "CPU Weight"
+      description: |
+        A number lower than the default will have less priority when competing for CPU resources and vice verse.
+      type: int
+      required: true
+      default: 1024
+
+services:
+  gitea:
+    scale: 1
+    retain_ip: true
+    health_check:
+      response_timeout: 2000
+      healthy_threshold: 2
+      port: 3000
+      unhealthy_threshold: 3
+      initializing_timeout: 300000
+      interval: 2000
+      strategy: recreate
+      request_line: GET "/" "HTTP/1.0"
+      reinitializing_timeout: 120000

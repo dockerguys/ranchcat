@@ -2,7 +2,7 @@ version: '2'
 catalog:
   name: "Gitea"
   minimum_rancher_version: v0.51.0
-  version: "v1.14.2"
+  version: "v1.15.4"
   description: "A lightweight GitHub clone"
   maintainer: "dockerguys <dockerguys@lizoc.com>"
   questions:

@@ -77,8 +77,7 @@ catalog:
       label: "Disable Repo Features"
       description: "Comma separated list of features to disable."
       type: string
-      required: true
-      default: ""
+      required: false
     - variable: default_license
       label: "Default License"
       description: "Comma separated list of default licenses."
@@ -284,8 +283,7 @@ catalog:
       label: "CORS access header"
       description: "Set Access-Control-Allow-Origin header. Leave blank to disallow (recommended)."
       type: string
-      required: true
-      default: ""
+      required: false
     - variable: enable_http_gzip
       label: "Enable HTTP GZIP"
       description: "Set GZIP compression of HTTP content."
@@ -322,26 +320,22 @@ catalog:
       label: "Email Subject Prefix"
       description: "Text to prefix all emails sent."
       type: string
-      required: true
-      default: ""
+      required: false
     - variable: email_from
       label: "Email Sender"
       description: "Email sender address."
       type: string
-      required: true
-      default: ""
+      required: false
     - variable: email_account_user
       label: "Email Account User"
       description: "User credential to authenticate with SMTP server."
       type: string
-      required: true
-      default: ""
+      required: false
     - variable: email_account_password
       label: "Email Account Password"
       description: "User password to authenticate with SMTP server."
       type: password
-      required: true
-      default: ""
+      required: false
     # openid
     - variable: oauth_whitelist
       label: "Single SignOn Whitelist"
@@ -693,8 +687,7 @@ catalog:
       label: "ElasticSearch User Credential"
       description: "ElasticSearch user account in the form <user:password>. Ignore this if not using ElasticSearch."
       type: string
-      required: true
-      default: ""
+      required: false
     # logging
     - variable: gitea_loglevel
       label: "Log Level"

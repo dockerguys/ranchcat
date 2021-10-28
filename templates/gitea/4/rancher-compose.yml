@@ -648,7 +648,7 @@ catalog:
     - variable: redis_cache_size_mb
       label: "Redis Cache Size"
       description: |
-        Limit the amount of memory Redis can use (in mb). Ignore if "Enable Redis" is set to false.
+        Limit the amount of OS memory Redis can use (in mb). Ignore if "Enable Redis" is set to false.
       type: int
       required: true
       default: 256

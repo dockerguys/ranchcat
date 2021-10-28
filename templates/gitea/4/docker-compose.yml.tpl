@@ -100,14 +100,14 @@ services:
       OPENID_OVERRIDE_DOMAIN: "${openid_domain}"
       OPENID_OVERRIDE_IP: "${openid_ip}"
       # LFS
-      LFS_ENABLED: ${lfs_enabled}
+      LFS_ENABLED: ${lfs_enable}
       LFS_SECRET: "${lfs_secret}"
       LFS_MAX_SIZE: ${lfs_max_size}
 {{- if eq .Values.storage_backend "local" }}
-      LFS_BACKEND: local
       GITEA_ATTACHMENT_BACKEND: "local"
       GITEA_AVATAR_BACKEND: "local"
       GITEA_REPO_AVATAR_BACKEND: "local"
+      LFS_BACKEND: local
 {{- else }}
       GITEA_ATTACHMENT_BACKEND: "minio"
       GITEA_AVATAR_BACKEND: "minio"

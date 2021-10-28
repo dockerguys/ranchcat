@@ -24,7 +24,7 @@ Usage
 3. To persist your data, create a volume called `{name_of_this_stack}_data`. This volume will be mounted to `/data` of the git server container.
 4. The setup process is triggered if `/data/gitea/setup_complete.flag` file cannot be found. Setup will try to initialize the database and create the default admin user. You can force skip the database initialization step by setting "Skip Database Setup" to `false`.
 5. For OAuth2 based users, you need to setup the password for the user, otherwise that user cannot logon.
-6. Enable redis below for faster performance. You can use `redis-cli monitor` in the redis container to verify that things are working correctly.
+6. Enable redis below for faster performance. You can use `redis-cli monitor` in the redis container to verify that things are working correctly. Redis will be scheduled on the same node as Gitea.
 
 
 Gitea Customization

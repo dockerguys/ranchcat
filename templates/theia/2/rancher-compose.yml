@@ -16,13 +16,18 @@ catalog:
       options: # List of options if using type of `enum`
         - dockerguys/theia:1.12
         - dockerguys/theia:1.12-golang1.16 
+    - variable: theia_image_custom
+      label: "Custom Theia image"
+      description: "Use a custom Theia image. This will override value of Theia Image."
+      type: string
+      required: false
     - variable: "runas_root"
       label: "Root Access"
       description: Runs the IDE as root user.
       required: true
       type: boolean
       default: false
-    - variable: "exist_datavolume_name"
+    - variable: "datavolume_name"
       label: "Volume Name"
       description: |
         Mount an existing volume to the container, so that you can edit its content using the IDE. Leave blank to NOT mount a volume.
@@ -34,7 +39,7 @@ catalog:
       required: true
       type: string
       default: "/home/project"
-    - variable: "exist_datavolume_storage_driver"
+    - variable: "datavolume_storage_driver"
       label: "Volume Storage Driver"
       description: |
         Specify the driver used by the volume. This also requires "Volume Name" to be set.

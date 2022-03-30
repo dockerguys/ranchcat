@@ -20,9 +20,17 @@ services:
     # - support private registry
     # -----------------------------------
 {{- if (.Values.docker_registry_name) }}
+{{-   if (.Values.theia_image_custom) }}
+    image: "${docker_registry_name}/${theia_image_custom}"
+{{-   else }}
     image: "${docker_registry_name}/${theia_image}"
+{{-   end }}
 {{- else }}
+{{-   if (.Values.theia_image_custom) }}
+    image: ${theia_image_custom}
+{{-   else }}
     image: ${theia_image}
+{{-   end }}
 {{- end }}
     # -----------------------------------
     # ENV
@@ -51,8 +59,8 @@ services:
     # - just write path to create dynamic named volume
     # -----------------------------------
     volumes:
-{{- if (.Values.exist_datavolume_name) }}
-      - ${exist_datavolume_name}:${datavolume_mount_path}
+{{- if (.Values.datavolume_name) }}
+      - ${datavolume_name}:${datavolume_mount_path}
 {{- else }}
       - ${datavolume_mount_path}
 {{- end }}
@@ -83,24 +91,12 @@ services:
 # BEGIN VOLUMES
 # +++++++++++++++++++++++
 
-{{- if (.Values.exist_datavolume_name) }}
+{{- if (.Values.datavolume_name) }}
 volumes:
-  {{.Values.exist_datavolume_name}}:
+  {{.Values.datavolume_name}}:
     external: true
-{{-   if eq .Values.exist_datavolume_storage_driver "rancher-nfs" }}
+{{-   if eq .Values.datavolume_storage_driver "rancher-nfs" }}
     driver: rancher-nfs
-{{-     if eq .Values.volume_exists "false" }}
-{{-       if (.Values.storage_driver_nfsopts_host) }}
-    driver_opts:
-      host: ${storage_driver_nfsopts_host}
-      exportBase: ${storage_driver_nfsopts_export}
-{{-         if eq .Values.storage_retain_volume "true" }}
-      onRemove: retain
-{{-         else }}
-      onRemove: purge
-{{-         end }}
-{{-       end }}
-{{-     end }}
 {{-   else }}
     driver: local
 {{-   end }}
